@@ -1,3 +1,4 @@
+
 <div id="container">
     
     <h2 class="blue-gradient"><?php echo (isset($id))?"Edit Task #".$id:"New Task"; ?></h2>
