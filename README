@@ -1,6 +1,9 @@
 Oscar's Task Board
 
-Description: A simple task board to help managing software projects.
+NOTE: This application is not usable right now. I'm updating it to enable multiple users/projects.
+
+Description: A simple task board to help managing software projects. It is developed in PHP and uses the CodeIgniter Framework.
+Installation: Create the database using db/create.sql, place the filed in your server and run <server>/install (where <server> should be your localhost or domain).
 
 Author: Oscar Dias
 Website: http://oscardias.com
