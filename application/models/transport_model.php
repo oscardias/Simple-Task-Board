@@ -24,7 +24,7 @@ class Transport_model extends CI_Model {
         $get = $this->db->get('transport');
 
         if($get->num_rows > 0) return $get->result();
-        return false;
+        return array();
     }
 
     public function delete($id)
