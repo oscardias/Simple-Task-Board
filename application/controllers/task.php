@@ -1,7 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Task extends CI_Controller {
-
+    
+    function Task()
+    {
+        parent::__construct();
+        
+        if(!$this->session->userdata('logged'))
+            redirect('login');
+    }
+    
     public function index()
     {
         // Load open transports
