@@ -1,7 +1,13 @@
 /* GENERAL DEFINITIONS */
 body{font-size:11px;font-family:Arial;padding:0;margin:0}
 
-h1,h2,h3,h4{padding:2px 4px;font-weight:normal}
+h1,h2,h3,h4{
+    padding:2px 4px;
+    font-weight:normal;
+    color:#fff;
+    text-shadow:1px 1px 0 #3070D5;
+    border:1px solid #3079ED
+}
 h1{font-size:22px}
 h2{font-size:20px}
 h3{font-size:18px}
@@ -10,10 +16,83 @@ a{color:#2219B2}
 a:hover{color:#7872D8}
 #container{margin:0 10px}
 
+.home-title{
+    font-size:24px;
+    font-weight:normal;
+    text-align:center;
+    width:100%;
+    padding:2px;
+    margin:0 0 10px;
+    color:#fff;
+    text-shadow:1px 1px 0 #3070D5;
+    border:1px solid #3079ED
+}
+
+/* LOGIN */
+#login{
+    width: 250px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius:20px;
+    margin:100px auto 0;
+    padding: 30px;
+    -moz-box-shadow:0px 0px 80px #999;
+    -webkit-box-shadow:0px 0px 80px #999;
+    box-shadow:0px 0px 80px #999;
+    background-color:#f5f5f5;
+    border:1px solid #D5D5D5
+}
+#login label {
+    font-size: 16px;
+    color: #666;
+    font-weight: bold;
+}
+#login input[type=text], #login input[type=password] {
+    font-size: 16px;
+    padding: 2px;
+    margin:0 0 15px;
+    border: 1px solid #999;
+    background: #fff;
+    width: 100%;
+    color:#000;
+}
+#login input[type=text]:hover, #login input[type=password]:hover {
+    -moz-box-shadow:0px 0px 5px #999;
+    -webkit-box-shadow:0px 0px 5px #999;
+    box-shadow:0px 0px 5px #999;
+}
+#login input[type=submit]{
+    font-size:16px;
+    width:100%;
+    text-align:center;
+    margin:0 auto;
+    padding:2px;
+    cursor:pointer;
+    border-radius:5px;
+    color:#fff;
+    text-shadow:1px 1px 0 #3070D5;
+    border:1px solid #3079ED;
+    font-weight: bold
+}
+
 /* MENU */
-#menu{padding:7px 4px;margin:0 0 10px;background-color:#333}
-.btn{font-size:12px;color:#000;text-decoration:none;text-shadow:1px 1px 0 #FFE540;padding:2px 4px 2px 22px;margin:0 2px;
-    background-position:0 50%;background-repeat:no-repeat}
+#menu{
+    padding:7px 4px;
+    margin:0 0 10px;
+    background-color:#333;
+    border-bottom:1px solid #D5D5D5
+}
+.btn{
+    font-size:12px;
+    color:#000;
+    text-decoration:none;
+    text-shadow:1px 1px 0 #FFE540;
+    padding:2px 4px 2px 22px;
+    margin:0 2px;
+    background-position:0 50%;
+    background-repeat:no-repeat;
+    border-radius:3px
+}
 .btn:hover{color:#000}
 .btn_add{border:1px solid #D67804;
     background-color:#FFB51B;background-image:url(../images/new.png);
@@ -51,20 +130,75 @@ a:hover{color:#7872D8}
 }
 
 /* MAIN */
-table th{font-size:14px;font-weight:normal;padding:2px}
-table.board td{width:25%;vertical-align:top}
-.transport{margin:0 0 6px;padding:2px 4px 2px 22px;
-          background-image:url(../images/box.png);background-position:2px 50%;background-repeat:no-repeat}
-.transport_info{margin:1px 0;padding:1px}
-.task{margin:2px 0;padding:2px;background:#fff;position:relative}
+#container table {
+    background-color:#f5f5f5;
+    border:1px solid #D5D5D5
+}
+#container table th{
+    font-size:14px;
+    font-weight:normal;
+    padding:2px;
+    color:#fff;
+    text-shadow:1px 1px 0 #3070D5;
+    border:1px solid #3079ED
+}
+#container table.board td{
+    width:25%;
+    vertical-align:top
+}
+.transport{
+    margin:0 0 6px;
+    padding:2px 4px 2px 22px;
+    background-image:url(../images/box.png);
+    background-position:2px 50%;
+    background-repeat:no-repeat;
+    background-color:#f5f5f5
+}
+.transport_info{
+    margin:1px 0;
+    padding:1px;
+    border:1px solid #D5D5D5
+}
+.transport_info:hover{
+    background-color:#efefef;
+    outline:1px solid #D5D5D5
+}
+.task{
+    margin:2px 0;
+    padding:2px;
+    background:#fff;
+    position:relative;
+    border:1px solid #D5D5D5
+}
+.task:hover{
+    -moz-box-shadow:0 0 5px #999;
+    -webkit-box-shadow:0 0 5px #999;
+    box-shadow:0 0 5px #999
+}
 .task_id{margin:0;padding:1px;position:absolute;right:0;top:0}
 .task_title{font-weight:bold;text-decoration:underline;margin:0;padding:1px;width:80%}
 .task_text{margin:0;padding:1px}
 .task_info{margin:0;padding:1px}
 .task_links{text-align:center;margin:0;padding:1px}
-label{font-size:14px}
-input,textarea,select,button{font-size:11px;font-family:Arial;width:400px;background-color:#fff}
-input[type=submit],button{font-size:14px;width:65px;text-align:center;margin:2px;cursor:pointer;border-radius:5px}
+#container label{font-size:14px}
+#container input,textarea,select,button{
+    font-size:11px;
+    font-family:Arial;
+    width:400px;
+    background-color:#fff;
+    border:1px solid #D5D5D5
+}
+#container input[type=submit],button{
+    font-size:14px;
+    width:65px;
+    text-align:center;
+    margin:2px;
+    cursor:pointer;
+    border-radius:5px;
+    color:#fff;
+    text-shadow:1px 1px 0 #3070D5;
+    border:1px solid #3079ED
+}
 
 /* CLASSES */
 .blue-gradient, .btn-blue{background-color:#4A8BF5;
@@ -75,25 +209,6 @@ input[type=submit],button{font-size:14px;width:65px;text-align:center;margin:2px
     background:-moz-linear-gradient(19% 75% 90deg,#4080E5, #3574D5);
     background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#3574D5), to(#4080E5));
 }
-
-/***********************/
-/* COLOURS             */
-/* Dark Background     */
-h1,h2,h3,h4,table th,input[type=submit],button{}
-input[type=submit]:hover,button:hover{}
-/* Dark Border         */
-#menu{border-bottom:1px solid #D5D5D5}
-table,.task,.transport,input,textarea,select{border:1px solid #D5D5D5}
-h1,h2,h3,h4,table th,input[type=submit],button{border:1px solid #3079ED}
-.task:hover{-moz-box-shadow:0 0 5px #999;-webkit-box-shadow:0 0 5px #999;box-shadow:0 0 5px #999}
-/* Light Background    */
-.btn{border-radius:3px}
-.transport_info:hover{background-color:#efefef;outline:1px solid #D5D5D5}
-/* Light Border        */
-.btn{}
-/* Light Text          */
-h1,h2,h3,h4,table th,input[type=submit],button{color:#fff;text-shadow:1px 1px 0 #3070D5}
-/* Clear Background    */
-table,.transport{background-color:#f5f5f5}
-/* END OF COLOURS      */
-/***********************/
+.error{
+    color:#DD0000;
+}
