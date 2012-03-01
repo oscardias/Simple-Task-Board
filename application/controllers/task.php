@@ -36,6 +36,7 @@ class Task extends CI_Controller {
 
     public function add()
     {
+        $data['page_title']  = "New Task";
         $data['title']       = '';
         $data['description'] = '';
         $data['priority']    = '2';
@@ -52,13 +53,14 @@ class Task extends CI_Controller {
         $tasks = $this->task_model->get($id);
         
         foreach ($tasks as $task) {
+            $data['page_title']  = "Edit Task #".$task->id;
             $data['id']          = $task->id;
             $data['status']      = $task->status;
             $data['title']       = $task->title;
             $data['description'] = $task->text;
             $data['priority']    = $task->priority;
-			$data['files']       = $task->files;
-			$data['database']    = $task->database;
+            $data['files']       = $task->files;
+            $data['database']    = $task->database;
         }
         
         $this->template->show('task_add', $data);
@@ -98,6 +100,3 @@ class Task extends CI_Controller {
         redirect('task');
     }
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
