@@ -25,28 +25,7 @@ class Task_model extends CI_Model {
         $get = $this->db->get('task');
 
         if($get->num_rows > 0) return $get->result();
-        return false;
-    }
-
-    public function count()
-    {
-//        if ($filter != '') {
-//            foreach ($filter as $key => $value) {
-//                $parts = explode('|', $key);
-//                switch ($parts[0]) {
-//                    case 'like':
-//                        $this->db->like($parts[1], $value);
-//                        break;
-//
-//                    default:
-//                        $this->db->where($key, $value);
-//                        break;
-//                }
-//            }
-//        }
-//        $count = $this->db->count_all_results('contato');
-//
-//        return $count;
+        return array();
     }
 
     public function delete($id)
