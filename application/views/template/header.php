@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Task Board | <?php if (isset($id)) { echo "Edit Task #".$id; } else { echo "New Task"; } ?></title>
+	<title>Task Board<?php if (isset($page_title)) { echo ' | '.$page_title; } ?></title>
 
 	<link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>css/style.css" />
     <!--[if IE]>
