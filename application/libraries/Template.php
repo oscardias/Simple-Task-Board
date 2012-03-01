@@ -6,7 +6,7 @@ class Template {
         // Get current CI Instance
         $CI = & get_instance();
                 
-        // Load views
+        // Load template views
         $CI->load->view('template/header', $data);
         $CI->load->view($view, $data);
         $CI->load->view('template/footer', $data);
