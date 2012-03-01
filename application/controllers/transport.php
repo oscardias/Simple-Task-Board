@@ -31,9 +31,10 @@ class Transport extends CI_Controller {
             }
         }
         
-        $data['tasks']    = ($list)?trim($list, ','):'';
-        $data['files']    = ($files)?trim(implode(',', $files), ','):'';
-        $data['database'] = ($database)?trim(implode(',', $database), ','):'';
+        $data['page_title'] = "New Transport";
+        $data['tasks']      = ($list)?trim($list, ','):'';
+        $data['files']      = ($files)?trim(implode(',', $files), ','):'';
+        $data['database']   = ($database)?trim(implode(',', $database), ','):'';
         
         $this->template->show('transport_add', $data);
     }
@@ -45,10 +46,11 @@ class Transport extends CI_Controller {
         $transports = $this->transport_model->get($id);
         
         foreach ($transports as $transport) {
-            $data['id']       = $transport->id;
-            $data['tasks']    = $transport->tasks;
-            $data['files']    = $transport->files;
-            $data['database'] = $transport->database;
+            $data['page_title'] = "Edit Transport #".$transport->id;
+            $data['id']         = $transport->id;
+            $data['tasks']      = $transport->tasks;
+            $data['files']      = $transport->files;
+            $data['database']   = $transport->database;
         }
         
         $this->template->show('transport_add', $data);
@@ -85,6 +87,3 @@ class Transport extends CI_Controller {
         redirect('task');
     }
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
