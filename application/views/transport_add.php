@@ -1,4 +1,4 @@
-
+<div class="home-title blue-gradient">Simple Task Board</div>
 <div id="container">
     
     <h2 class="blue-gradient"><?php echo (isset($id))?"Edit Transport #".$id:"New Transport"; ?></h2>
