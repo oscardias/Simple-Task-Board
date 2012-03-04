@@ -1,7 +1,7 @@
-<div id="menu">
-    <?php echo anchor('task/add', 'Add new task', 'class="btn btn_add"'); ?>
-    <?php echo anchor('transport/add', 'Create new transport', 'class="btn btn_transport"'); ?>
-</div>
+<?php
+// Load Menu
+$this->template->menu('task_board');
+?>
 
 <div id="container">
     <?php if(isset($transports)) { ?>
