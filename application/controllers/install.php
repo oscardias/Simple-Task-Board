@@ -32,7 +32,8 @@ class Install extends CI_Controller {
         if(!$users){
             $insert = array(
                 'email' => $this->input->post('email'),
-                'password' => $this->input->post('password')
+                'password' => $this->input->post('password'),
+                'level' => $this->user_model->USER_LEVEL_ADMIN
             );
             $this->user_model->create($insert);
         }
