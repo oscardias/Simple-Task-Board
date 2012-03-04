@@ -11,6 +11,15 @@ class Template {
         $CI->load->view($view, $data);
         $CI->load->view('template/footer', $data);
     }
+    
+    function menu($view)
+    {
+        // Get current CI Instance
+        $CI = & get_instance();
+                
+        // Load menu template
+        $CI->load->view('template/menu', array('view' => $view));
+    }
 }
 
 /* End of file Template.php */
