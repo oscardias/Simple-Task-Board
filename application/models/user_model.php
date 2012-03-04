@@ -3,6 +3,10 @@
 class User_model extends CI_Model {
 
     private $salt = 'r4nd0m';
+    
+    public $USER_LEVEL_ADMIN = 1;
+    public $USER_LEVEL_COLLABORATOR = 2;
+    public $USER_LEVEL_VIEWER = 2;
 
     public function create($data)
     {
