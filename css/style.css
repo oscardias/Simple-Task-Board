@@ -22,7 +22,7 @@ a:hover{color:#7872D8}
     text-align:center;
     width:100%;
     padding:2px;
-    margin:0 0 10px;
+    margin:0;
     color:#fff;
     text-shadow:1px 1px 0 #3070D5;
     border:1px solid #3079ED
@@ -77,7 +77,7 @@ a:hover{color:#7872D8}
 
 /* MENU */
 #menu{
-    padding:7px 4px;
+    padding:8px 4px;
     margin:0 0 10px;
     background-color:#333;
     border-bottom:1px solid #D5D5D5
@@ -88,13 +88,30 @@ a:hover{color:#7872D8}
     text-decoration:none;
     text-shadow:1px 1px 0 #FFE540;
     padding:2px 4px 2px 22px;
-    margin:0 2px;
+    margin:0 4px;
     background-position:0 50%;
     background-repeat:no-repeat;
     border-radius:3px
 }
 .btn:hover{color:#000}
-.btn_add{border:1px solid #D67804;
+.btn_dashboard{border:1px solid #D67804;float:left;
+    background-color:#FFB51B;background-image:url(../images/back.png);
+    background-image:url(../images/back.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
+    background-image:url(../images/back.png), -webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:url(../images/back.png), -moz-linear-gradient(top,#FFD500,#FF9C30); /* FF3.6+ */
+    background-image:url(../images/back.png), -ms-linear-gradient(top,#FFD500,#FF9C30); /* IE10 */
+    background-image:url(../images/back.png), -o-linear-gradient(top,#FFD500,#FF9C30); /* Opera 11.10+ */
+    background-image:url(../images/back.png), linear-gradient(top,#FFD500,#FF9C30)
+}
+.btn_dashboard:hover{background-color:#FB8F19;background-image:url(../images/back.png);
+    background-image:url(../images/back.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F78400), to(#FF9C30));
+    background-image:url(../images/back.png), -webkit-linear-gradient(top,#F78400,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:url(../images/back.png), -moz-linear-gradient(top,#F78400,#FF9C30); /* FF3.6+ */
+    background-image:url(../images/back.png), -ms-linear-gradient(top,#F78400,#FF9C30); /* IE10 */
+    background-image:url(../images/back.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
+    background-image:url(../images/back.png), linear-gradient(top,#F78400,#FF9C30)
+}
+.btn_add{border:1px solid #D67804;float:left;
     background-color:#FFB51B;background-image:url(../images/new.png);
     background-image:url(../images/new.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
     background-image:url(../images/new.png), -webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
@@ -111,7 +128,7 @@ a:hover{color:#7872D8}
     background-image:url(../images/new.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
     background-image:url(../images/new.png), linear-gradient(top,#F78400,#FF9C30)
 }
-.btn_transport{border:1px solid #D67804;
+.btn_transport{border:1px solid #D67804;float:left;
     background-color:#FFB51B;background-image:url(../images/box_open.png);
     background-image:url(../images/box_open.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
     background-image:url(../images/box_open.png), -webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
@@ -127,6 +144,23 @@ a:hover{color:#7872D8}
     background-image:url(../images/box_open.png), -ms-linear-gradient(top,#F78400,#FF9C30); /* IE10 */
     background-image:url(../images/box_open.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
     background-image:url(../images/box_open.png), linear-gradient(top,#F78400,#FF9C30)
+}
+.btn_logout{border:1px solid #D67804;float:right;
+    background-color:#FFB51B;background-image:url(../images/logout.png);
+    background-image:url(../images/logout.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
+    background-image:url(../images/logout.png), -webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:url(../images/logout.png), -moz-linear-gradient(top,#FFD500,#FF9C30); /* FF3.6+ */
+    background-image:url(../images/logout.png), -ms-linear-gradient(top,#FFD500,#FF9C30); /* IE10 */
+    background-image:url(../images/logout.png), -o-linear-gradient(top,#FFD500,#FF9C30); /* Opera 11.10+ */
+    background-image:url(../images/logout.png), linear-gradient(top,#FFD500,#FF9C30)
+}
+.btn_logout:hover{background-color:#FB8F19;background-image:url(../images/logout.png);
+    background-image:url(../images/logout.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F78400), to(#FF9C30));
+    background-image:url(../images/logout.png), -webkit-linear-gradient(top,#F78400,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:url(../images/logout.png), -moz-linear-gradient(top,#F78400,#FF9C30); /* FF3.6+ */
+    background-image:url(../images/logout.png), -ms-linear-gradient(top,#F78400,#FF9C30); /* IE10 */
+    background-image:url(../images/logout.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
+    background-image:url(../images/logout.png), linear-gradient(top,#F78400,#FF9C30)
 }
 
 /* MAIN */
@@ -211,4 +245,7 @@ a:hover{color:#7872D8}
 }
 .error{
     color:#DD0000;
+}
+.clear{
+    clear:both;
 }
