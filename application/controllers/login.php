@@ -37,4 +37,11 @@ class Login extends CI_Controller {
             $this->template->show('login', $data);
         }
     }
+    
+    public function logout()
+    {
+        $this->session->unset_userdata('logged');
+
+        redirect('login');
+    }
 }
