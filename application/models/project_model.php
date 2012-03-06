@@ -22,7 +22,8 @@ class Project_model extends CI_Model {
         $this->db->order_by('name', 'asc');
         $get = $this->db->get('project');
 
-        if($get->num_rows > 0) return $get->result();
+        if($id) return $get->row();
+        if($get->num_rows > 1) return $get->result();
         return array();
     }
     
