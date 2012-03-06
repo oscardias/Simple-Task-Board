@@ -24,7 +24,7 @@ class Login extends CI_Controller {
                 'user' => $result->id
             ));
             
-            redirect('task');
+            redirect('dashboard');
         } else {
             // Load View
             $data['page_title']  = "Login";
