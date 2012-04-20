@@ -2,7 +2,7 @@
 <div id="menu">
     <?php if($view == 'dashboard') { ?>
         <!-- Dashboard menu -->
-        <?php echo anchor('user', 'Edit Userts', 'class="btn btn_users"'); ?>
+        <?php echo anchor('user', 'Edit Users', 'class="btn btn_users"'); ?>
     <?php } elseif($view == 'task_board') { ?>
         <!-- Task board menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
