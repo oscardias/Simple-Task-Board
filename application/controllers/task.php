@@ -14,9 +14,7 @@ class Task extends CI_Controller {
     {
         // Load open transports
         $this->load->model('transport_model');
-        $transports = $this->transport_model->get(false, true);
-        if ($transports)
-            $data['transports'] = $transports;
+        $data['transports'] = $this->transport_model->get(false, true);
         
         // Load tasks
         $this->load->model('task_model');
@@ -24,13 +22,13 @@ class Task extends CI_Controller {
         $tasks = $this->task_model->get();
                 
         foreach ($tasks as $task) {
-            if ($task->status == 0) {
+            if ($task['status'] == 0) {
                 $data['stories'][] = $task;
-            } elseif ($task->status == 1) {
+            } elseif ($task['status'] == 1) {
                 $data['tasks'][] = $task;
-            } elseif ($task->status == 2) {
+            } elseif ($task['status'] == 2) {
                 $data['tests'][] = $task;
-            } elseif ($task->status == 3) {
+            } elseif ($task['status'] == 3) {
                 $data['done'][] = $task;
             }
         }
@@ -61,14 +59,8 @@ class Task extends CI_Controller {
         $tasks = $this->task_model->get($id);
         
         foreach ($tasks as $task) {
-            $data['page_title']  = "Edit Task #".$task->id;
-            $data['id']          = $task->id;
-            $data['status']      = $task->status;
-            $data['title']       = $task->title;
-            $data['description'] = $task->text;
-            $data['priority']    = $task->priority;
-            $data['files']       = $task->files;
-            $data['database']    = $task->database;
+            $data = $task;
+            $data['page_title']  = "Edit Task #".$task['id'];
         }
         
         $this->template->show('task_add', $data);
