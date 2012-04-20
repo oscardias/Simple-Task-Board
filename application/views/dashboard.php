@@ -5,18 +5,45 @@ $this->template->menu('dashboard');
 
 <div id="container">
     <?php if(isset($tasks)) { ?>
-    <div id="tasks">
-    <?php foreach ($tasks as $task) { ?>
-        #<?php echo $task->id; ?> <?php echo $task->title; ?>
-    <?php } ?>
+    <div id="dash_tasks" class="dash_wrap">
+        <div id="dash_task_title" class="dash_wrap_title blue-gradient">
+            Tasks
+        </div>
+        <div id="dash_task_items" class="dash_wrap_items">
+            <ul>
+            <?php $listControl = 0; ?>
+            <?php foreach ($tasks as $task) { ?>
+                <li>
+                <?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
+                </li>
+                <?php $listControl++; ?>
+                <?php if($listControl % 5 == 0) { ?>
+            </ul><ul>
+                <?php } ?>
+            <?php } ?>
+            </ul>
+        </div>
+        <div class="clear"></div>
     </div>
     <?php } ?>
     
     <?php if(isset($projects)) { ?>
-    <div id="projects">
+    <div id="dash_projects" class="dash_wrap">
+        <div id="dash_projects_title" class="dash_wrap_title blue-gradient">
+            Projects
+        </div>
+        <div id="dash_projects_items" class="dash_wrap_items">
     <?php foreach ($projects as $project) { ?>
-        <?php echo anchor('project/tasks/'.$project->id, $project->name); ?>
+        <div id="project_<?php echo $project['id']; ?>" class="dash_project_group">
+            <p class="dash_project_title blue-gradient"><?php echo anchor('project/tasks/'.$project['id'], $project['name']); ?></p>
+            <ul>
+                <?php foreach ($project['tasks'] as $task) { ?>
+                <li><?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?></li>
+                <?php } ?>
+            </ul>
+        </div>
     <?php } ?>
+        </div>
     </div>
     <?php } ?>
 </div>
