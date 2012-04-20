@@ -23,7 +23,7 @@ class Transport_model extends CI_Model {
         $this->db->order_by('id', 'desc');
         $get = $this->db->get('transport');
 
-        if($get->num_rows > 0) return $get->result();
+        if($get->num_rows > 0) return $get->result_array();
         return array();
     }
 
