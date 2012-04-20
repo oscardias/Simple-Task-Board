@@ -12,13 +12,21 @@ class Dashboard extends CI_Controller {
     
     public function index()
     {
-        //Load projects
+        //Load models
         $this->load->model('project_model');
-        $data['projects'] = $this->project_model->get_user_related($this->session->userdata('user'));
+        $this->load->model('task_model');
+        
+        //Load projects
+        $projects = $this->project_model->get_user_related($this->session->userdata('user'));
+        
+        foreach ($projects as $key => $project) {
+            $projects[$key]['tasks'] = $this->task_model->get_project_user_tasks($project['id'], $this->session->userdata('user'));
+        }
+        
+        $data['projects'] = $projects;
         
         // Load tasks
-        $this->load->model('task_model');
-        $tasks = $this->task_model->get_user_tasks($this->session->userdata('user'));
+        $data['tasks'] = $this->task_model->get_user_tasks($this->session->userdata('user'));
         
         // Load View
         $this->template->show('dashboard', $data);
