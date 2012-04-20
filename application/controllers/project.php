@@ -29,13 +29,13 @@ class Project extends CI_Controller {
         $tasks = $this->task_model->get_project_tasks($project_id);
         
         foreach ($tasks as $task) {
-            if ($task->status == 0) {
+            if ($task['status'] == 0) {
                 $data['stories'][] = $task;
-            } elseif ($task->status == 1) {
+            } elseif ($task['status'] == 1) {
                 $data['tasks'][] = $task;
-            } elseif ($task->status == 2) {
+            } elseif ($task['status'] == 2) {
                 $data['tests'][] = $task;
-            } elseif ($task->status == 3) {
+            } elseif ($task['status'] == 3) {
                 $data['done'][] = $task;
             }
         }
@@ -43,7 +43,7 @@ class Project extends CI_Controller {
         // Load project info
         $this->load->model('project_model');
         $project = $this->project_model->get($project_id);
-        $data['page_title']  = "Project: ".$project->name;
+        $data['page_title']  = "Project: ".$project['name'];
         
         // Load text helper to be used in the view
         $this->load->helper('text');
@@ -71,14 +71,8 @@ class Project extends CI_Controller {
         $tasks = $this->task_model->get($id);
         
         foreach ($tasks as $task) {
-            $data['page_title']  = "Edit Task #".$task->id;
-            $data['id']          = $task->id;
-            $data['status']      = $task->status;
-            $data['title']       = $task->title;
-            $data['description'] = $task->text;
-            $data['priority']    = $task->priority;
-            $data['files']       = $task->files;
-            $data['database']    = $task->database;
+            $data = $task;
+            $data['page_title']  = "Edit Task #".$task['id'];
         }
         
         $this->template->show('task_add', $data);
