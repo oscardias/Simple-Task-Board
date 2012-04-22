@@ -354,7 +354,6 @@ input[type=submit],button{
 /* JQUERY UI DIALOG */
 .ui-dialog{
     border:1px solid #D5D5D5;
-    border-radius:4px;
     background: #f5f5f5;
     padding:2px;
 }
@@ -371,11 +370,14 @@ input[type=submit],button{
 }
 .ui-dialog-titlebar-close{
     float:right;
-    font-size:10px;
-    border:1px solid #d5d5d5;
-    background: #f5f5f5;
-    color:#000;
-    text-decoration:none;
+    margin-right: 16px;
+    text-indent: -1000px;
+}
+.ui-icon-closethick{
+    background-image: url(../images/close.png);
+    width:16px;
+    height:16px;
+    float:left;
 }
 .ui-button{
     background-color:#4A8BF5;
@@ -383,7 +385,16 @@ input[type=submit],button{
     background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4F8FFF), to(#4080E5));
 }
 .ui-dialog-buttonset{
-    text-align: center;
+    border-top:1px solid #d5d5d5;
+    padding:2px 0 0;
+    text-align:center;
+}
+.ui-icon-alert{
+    background-image: url(../images/alert.png);
+    width:16px;
+    height:16px;
+    float:left;
+    margin:10px;
 }
 /* CLASSES */
 .blue-gradient, .btn-blue{background-color:#4A8BF5;
