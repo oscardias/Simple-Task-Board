@@ -28,6 +28,8 @@ class Dashboard extends CI_Controller {
         // Load tasks
         $data['tasks'] = $this->task_model->get_user_tasks($this->session->userdata('user'));
         
+        $data['page_title']  = "Dashboard";
+        
         // Load View
         $this->template->show('dashboard', $data);
     }
