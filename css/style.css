@@ -95,7 +95,7 @@ a:hover{color:#7872D8}
     text-shadow:1px 1px 0 #FFE540;
     padding:2px 4px 2px 22px;
     margin:0 4px;
-    background-position:0 50%;
+    background-position:2px 50%;
     background-repeat:no-repeat;
     border-radius:3px
 }
@@ -151,6 +151,23 @@ a:hover{color:#7872D8}
     background-image:url(../images/new.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
     background-image:url(../images/new.png), linear-gradient(top,#F78400,#FF9C30)
 }
+.btn_edit{border:1px solid #D67804;float:left;
+    background-color:#FFB51B;background-image:url(../images/edit.png);
+    background-image:url(../images/edit.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
+    background-image:url(../images/edit.png), -webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:url(../images/edit.png), -moz-linear-gradient(top,#FFD500,#FF9C30); /* FF3.6+ */
+    background-image:url(../images/edit.png), -ms-linear-gradient(top,#FFD500,#FF9C30); /* IE10 */
+    background-image:url(../images/edit.png), -o-linear-gradient(top,#FFD500,#FF9C30); /* Opera 11.10+ */
+    background-image:url(../images/edit.png), linear-gradient(top,#FFD500,#FF9C30)
+}
+.btn_edit:hover{background-color:#FB8F19;background-image:url(../images/edit.png);
+    background-image:url(../images/edit.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F78400), to(#FF9C30));
+    background-image:url(../images/edit.png), -webkit-linear-gradient(top,#F78400,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:url(../images/edit.png), -moz-linear-gradient(top,#F78400,#FF9C30); /* FF3.6+ */
+    background-image:url(../images/edit.png), -ms-linear-gradient(top,#F78400,#FF9C30); /* IE10 */
+    background-image:url(../images/edit.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
+    background-image:url(../images/edit.png), linear-gradient(top,#F78400,#FF9C30)
+}
 .btn_transport{border:1px solid #D67804;float:left;
     background-color:#FFB51B;background-image:url(../images/box_open.png);
     background-image:url(../images/box_open.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
@@ -205,20 +222,18 @@ a:hover{color:#7872D8}
     border:1px solid #D5D5D5;
     margin-bottom: 10px;
     padding:2px;
-    height: 100px;
-    min-width: 900px;
+    height: 200px;
     overflow:hidden;
 }
 .dash_wrap:hover{
     -moz-box-shadow:0 0 5px #999;
     -webkit-box-shadow:0 0 5px #999;
     box-shadow:0 0 5px #999
-
 }
 .dash_wrap_title{
     float:left;
-    height:98px;
-    line-height: 98px;
+    height:198px;
+    line-height: 198px;
     width:130px;
     font-size:14px;
     text-align: center;
@@ -227,7 +242,7 @@ a:hover{color:#7872D8}
     border:1px solid #3079ED
 }
 .dash_wrap_items{
-    float:left;
+    padding-left:130px;
     margin-left: 10px;
     width:80%;
 }
@@ -246,7 +261,9 @@ a:hover{color:#7872D8}
 }
 .dash_project_group{
     border:1px solid #D5D5D5;
+    margin:0 4px 4px 0;
     padding:2px;
+    width:250px;
     float:left;
 }
 .dash_project_group ul{
@@ -269,6 +286,19 @@ a:hover{color:#7872D8}
 #users_table tr{
     text-align: center;
     font-size: 12px;
+}
+/* PROJECTS */
+.project-users{
+    margin:2px auto 8px;
+    padding:2px;
+    font-size:14px;
+    text-align: center;
+    color:#fff;
+    text-shadow:1px 1px 0 #3070D5;
+    border:1px solid #3079ED
+}
+#associated-users{
+    display:none;
 }
 /* TASKS */
 #container table {
@@ -324,7 +354,6 @@ a:hover{color:#7872D8}
 .task_links{text-align:center;margin:0;padding:1px}
 /* FORMS */
 label{
-    font-size:14px;
     margin:4px 5px 0;
 }
 input,textarea,select,button{
@@ -340,7 +369,6 @@ input[type=checkbox]{
     width:auto;
 }
 input[type=submit],button{
-    font-size:12px;
     width:65px;
     text-align:center;
     margin:4px 5px;
@@ -407,6 +435,32 @@ input[type=submit],button{
 }
 .darker-on-hover:hover{
     background:#e5e5e5;
+}
+.expand{
+    background-image: url(../images/expand.png);
+    background-repeat: no-repeat;
+    padding-left:16px;
+    cursor:pointer;
+}
+.collapse{
+    background-image: url(../images/collapse.png);
+    background-repeat: no-repeat;
+    padding-left:16px;
+    cursor:pointer;
+}
+.half-width{
+    width:50%;
+    float:left;
+}
+.notice{
+    background-image: url(../images/alert.png);
+    background-repeat: no-repeat;
+    background-position: 10px 10px;
+    background-color: #f5f5f5;
+    border:1px solid #D5D5D5;
+    padding:10px 10px 10px 34px;
+    margin:0 auto;
+    width:500px;
 }
 .form-save-buttons{
     text-align:center;
