@@ -29,6 +29,7 @@ class User_model extends CI_Model {
         $this->db->order_by('email', 'asc');
         $get = $this->db->get('user');
 
+        if($id) return $get->row_array();
         if($get->num_rows > 0) return $get->result_array();
         return array();
     }
