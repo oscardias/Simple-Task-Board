@@ -1,6 +1,9 @@
 <?php
 // Load Menu
-$this->template->menu('projects');
+if (isset($id))
+    $this->template->menu('return_to_tasks');
+else
+    $this->template->menu('projects');
 ?>
 
 <div id="container">
