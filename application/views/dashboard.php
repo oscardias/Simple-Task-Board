@@ -16,6 +16,7 @@ $this->template->menu('dashboard');
                 <?php foreach ($tasks as $task) { ?>
                     <li>
                     <?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
+                    (<?php echo $status[$task['status']] ?>)
                     </li>
                     <?php $listControl++; ?>
                     <?php if($listControl % 10 == 0) { ?>
@@ -43,7 +44,10 @@ $this->template->menu('dashboard');
             <ul>
                 <?php if($project['tasks']) { ?>
                 <?php foreach ($project['tasks'] as $task) { ?>
-                <li><?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?></li>
+                <li>
+                    <?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
+                    (<?php echo $status[$task['status']] ?>)
+                </li>
                 <?php } ?>
                 <?php } else { ?>
                 No tasks here!
