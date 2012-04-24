@@ -12,7 +12,7 @@ class Project extends CI_Controller {
     
     public function index()
     {
-        
+        redirect('dashboard');
     }
     
     public function tasks($project_id)
@@ -43,7 +43,9 @@ class Project extends CI_Controller {
         // Load project info
         $this->load->model('project_model');
         $project = $this->project_model->get($project_id);
-        $data['page_title']  = "Project: ".$project['name'];
+        
+        $data['page_title'] = "Project: ".$project['name'];
+        $data['project']    = $project_id;
         
         // Load text helper to be used in the view
         $this->load->helper('text');
@@ -54,48 +56,66 @@ class Project extends CI_Controller {
 
     public function add()
     {
-        $data['page_title']  = "New Task";
-        $data['title']       = '';
-        $data['description'] = '';
-        $data['priority']    = '2';
-        $data['files']       = '';
-        $data['database']    = '';
+        $this->load->model('project_model');
         
-        $this->template->show('task_add', $data);
+        $data['page_title']  = "New Project";
+        $data['user']        = '';
+        $data['name']        = '';
+        $data['description'] = '';
+        
+        $users = $this->project_model->get_related_users();
+        foreach ($users as $key => $value) {
+            if($value['id'] == $this->session->userdata('user'))
+                $users['key']['project'] = 1;
+        }
+        
+        $this->template->show('project_add', $data);
     }
 
     public function edit($id)
     {
-        $this->load->model('task_model');
+        $this->load->model('project_model');
         
-        $tasks = $this->task_model->get($id);
+        $data = $this->project_model->get($id);
         
-        foreach ($tasks as $task) {
-            $data = $task;
-            $data['page_title']  = "Edit Task #".$task['id'];
-        }
+        $data['page_title']  = "Edit Project #".$id;
+        $data['users'] = $this->project_model->get_related_users($id);
         
-        $this->template->show('task_add', $data);
+        $this->template->show('project_add', $data);
     }
     
     public function save()
     {
-        $this->load->model('task_model');
+        $this->load->model('project_model');
         
         $sql_data = array(
-            'status'   => ($this->input->post('status'))?$this->input->post('status'):0,
-            'title'    => $this->input->post('title'),
-            'text'     => $this->input->post('description'),
-            'priority' => $this->input->post('priority'),
-			'files'    => ($this->input->post('files'))?$this->input->post('files'):'',
-			'database' => ($this->input->post('database'))?$this->input->post('database'):''
+            'user'        => $this->session->userdata('user'),
+            'name'        => $this->input->post('name'),
+            'description' => $this->input->post('description')
         );
         
-        if ($this->input->post('id'))
-            $this->task_model->update($this->input->post('id'),$sql_data);
+        $project_id = $this->input->post('id');
+        
+        if ($project_id)
+            $this->project_model->update($project_id,$sql_data);
         else
-            $this->task_model->create($sql_data);
+            $id = $this->project_model->create($sql_data);
+            
+        // Related users
+        $this->project_model->delete_related($project_id);
+        
+        $users = $this->input->post('users');
+        foreach ($users as $user) {
+            $sql_data = array(
+                'user' => $user,
+                'project' => $project_id
+            );
+            $this->project_model->create_related($sql_data);
+        }
 
-        redirect('task');
+        if ($project_id)
+            redirect('project/tasks/'.$project_id);
+        else
+            redirect('project');
     }
 }
