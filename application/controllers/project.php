@@ -26,7 +26,7 @@ class Project extends CI_Controller {
         
         // Load tasks
         $this->load->model('task_model');
-        $tasks = $this->task_model->get_project_tasks($project_id);
+        $tasks = $this->task_model->get($project_id);
         
         foreach ($tasks as $task) {
             if ($task['status'] == 0) {
@@ -46,6 +46,7 @@ class Project extends CI_Controller {
         
         $data['page_title'] = "Project: ".$project['name'];
         $data['project']    = $project_id;
+        $data['current_user'] = $this->session->userdata('user');
         
         // Load text helper to be used in the view
         $this->load->helper('text');
@@ -79,6 +80,7 @@ class Project extends CI_Controller {
         $data = $this->project_model->get($id);
         
         $data['page_title']  = "Edit Project #".$id;
+        $data['project']  = $id;
         $data['users'] = $this->project_model->get_related_users($id);
         
         $this->template->show('project_add', $data);
