@@ -2,12 +2,21 @@
 
 class Dashboard extends CI_Controller {
     
+    private $STATUS;
+    
     function Dashboard()
     {
         parent::__construct();
         
+        $this->STATUS = array(
+            0 => 'To Do',
+            1 => 'In Progress',
+            2 => 'Testing',
+            3 => 'Done'
+        );
+        
         if(!$this->session->userdata('logged'))
-            redirect('login');
+            redirect('login');        
     }
     
     public function index()
@@ -29,6 +38,7 @@ class Dashboard extends CI_Controller {
         $data['tasks'] = $this->task_model->get_user_tasks($this->session->userdata('user'));
         
         $data['page_title']  = "Dashboard";
+        $data['status'] = $this->STATUS;
         
         // Load View
         $this->template->show('dashboard', $data);
