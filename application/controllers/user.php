@@ -45,13 +45,10 @@ class User extends CI_Controller {
     public function edit($id)
     {
         $this->load->model('user_model');
-        $users = $this->user_model->get($id);
+        $data = $this->user_model->get($id);
         
-        foreach ($users as $user) {
-            $data = $user;
-            $data['password'] = 'password';
-            $data['page_title']  = "Edit User #".$user['id'];
-        }
+        $data['password'] = 'password';
+        $data['page_title']  = "Edit User #".$id;
         
         $data['level_list'] = $this->LEVEL;
         
