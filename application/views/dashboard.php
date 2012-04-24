@@ -11,15 +11,19 @@ $this->template->menu('dashboard');
         </div>
         <div id="dash_task_items" class="dash_wrap_items">
             <ul>
-            <?php $listControl = 0; ?>
-            <?php foreach ($tasks as $task) { ?>
-                <li>
-                <?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
-                </li>
-                <?php $listControl++; ?>
-                <?php if($listControl % 5 == 0) { ?>
-            </ul><ul>
+            <?php if($tasks) { ?>
+                <?php $listControl = 0; ?>
+                <?php foreach ($tasks as $task) { ?>
+                    <li>
+                    <?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
+                    </li>
+                    <?php $listControl++; ?>
+                    <?php if($listControl % 10 == 0) { ?>
+                </ul><ul>
+                    <?php } ?>
                 <?php } ?>
+            <?php } else { ?>
+                There are no tasks assigned to you.
             <?php } ?>
             </ul>
         </div>
@@ -37,8 +41,12 @@ $this->template->menu('dashboard');
         <div id="project_<?php echo $project['id']; ?>" class="dash_project_group">
             <p class="dash_project_title blue-gradient"><?php echo anchor('project/tasks/'.$project['id'], $project['name']); ?></p>
             <ul>
+                <?php if($project['tasks']) { ?>
                 <?php foreach ($project['tasks'] as $task) { ?>
                 <li><?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?></li>
+                <?php } ?>
+                <?php } else { ?>
+                No tasks here!
                 <?php } ?>
             </ul>
         </div>
