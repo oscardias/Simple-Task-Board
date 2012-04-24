@@ -1,7 +1,9 @@
-<div class="home-title blue-gradient">Simple Task Board</div>
+<?php
+// Load Menu
+$this->template->menu('return_to_tasks');
+?>
+
 <div id="container">
-    
-    <h2 class="blue-gradient"><?php echo (isset($id))?"Edit Task #".$id:"New Task"; ?></h2>
 
     <?php echo form_open('task/save'); ?>
 
@@ -36,6 +38,20 @@
                               'cols'        => '80');
 
                 echo form_textarea($data); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <?php echo form_label('Assigned to', 'user'); ?>
+            </td>
+            <td>
+                <?php
+                $options = array();
+                foreach ($users as $value) {
+                    $options[$value['id']] = $value['email'];
+                }
+                echo form_dropdown('user', $options, $user);
+                ?>
             </td>
         </tr>
         <?php if (isset($id)) { ?>
@@ -74,6 +90,7 @@
                 <td colspan="2">
                     <?php if (isset($id)) echo form_hidden('id', $id); ?>
                     <?php if (isset($status)) echo form_hidden('status', $status); ?>
+                    <?php if (isset($project)) echo form_hidden('project', $project); ?>
 
                     <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
                     <?php echo form_button('cancel', 'Cancel', 'class="btn-blue" onClick="history.go(-1)"');; ?>
