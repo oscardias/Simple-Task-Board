@@ -8,10 +8,13 @@
         <!-- Task board menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
         <?php echo anchor('project/edit/'.$project, 'Edit project', 'class="btn btn_edit"'); ?>
-        <?php echo anchor('task/add', 'Add new task', 'class="btn btn_add"'); ?>
+        <?php echo anchor('task/add/'.$project, 'Add new task', 'class="btn btn_add"'); ?>
         <?php //echo anchor('transport/add', 'Create new transport', 'class="btn btn_transport"'); ?>
+    <?php } elseif($view == 'return_to_tasks') { ?>
+        <!-- Projects menu -->
+        <?php echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_dashboard"'); ?>
     <?php } elseif($view == 'projects') { ?>
-        <!-- Users menu -->
+        <!-- Projects menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
     <?php } elseif($view == 'users') { ?>
         <!-- Users menu -->
@@ -21,4 +24,9 @@
     <?php echo anchor('login/logout', 'Logout', 'class="btn btn_logout"'); ?>
     <div class="clear"></div>
 </div>
-<div id="page-title"><?php echo $page_title; ?></div>
+<div id="page-title">
+    <?php echo $page_title; ?>
+    <?php if($view == 'task_board') { ?>
+    <span class="switch-project-view-event global-tasks btn" title="Show all"></span>
+    <?php } ?>
+</div>
