@@ -25,4 +25,15 @@ $(document).ready(function(){
         
         return false;
     });
+    
+    $(".show-hide-event").click(function(){
+        var targetId = $(this).attr('target-id');
+        if($(this).hasClass('expand')){
+            $(this).removeClass('expand').addClass('collapse');
+            $('#' + targetId).show('slow');
+        } else {
+            $(this).removeClass('collapse').addClass('expand');
+            $('#' + targetId).hide('slow');
+        }
+    });
  });
