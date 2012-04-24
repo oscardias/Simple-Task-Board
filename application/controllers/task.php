@@ -12,36 +12,13 @@ class Task extends CI_Controller {
     
     public function index()
     {
-        // Load open transports
-        $this->load->model('transport_model');
-        $data['transports'] = $this->transport_model->get(false, true);
-        
-        // Load tasks
-        $this->load->model('task_model');
-        
-        $tasks = $this->task_model->get();
-                
-        foreach ($tasks as $task) {
-            if ($task['status'] == 0) {
-                $data['stories'][] = $task;
-            } elseif ($task['status'] == 1) {
-                $data['tasks'][] = $task;
-            } elseif ($task['status'] == 2) {
-                $data['tests'][] = $task;
-            } elseif ($task['status'] == 3) {
-                $data['done'][] = $task;
-            }
-        }
-
-        // Load text helper to be used in the view
-        $this->load->helper('text');
-        
-        // Load View
-        $this->template->show('task_board', $data);
+        redirect('dashboard');
     }
 
-    public function add()
+    public function add($project)
     {
+        $this->load->model('task_model');
+        
         $data['page_title']  = "New Task";
         $data['title']       = '';
         $data['description'] = '';
@@ -49,19 +26,22 @@ class Task extends CI_Controller {
         $data['files']       = '';
         $data['database']    = '';
         
+        $data['project']  = $project;
+        $data['users'] = $this->task_model->get_related_users($project);
+        $data['user'] = $this->session->userdata('user');
+        
         $this->template->show('task_add', $data);
     }
 
-    public function edit($id)
+    public function edit($project, $id)
     {
         $this->load->model('task_model');
         
-        $tasks = $this->task_model->get($id);
+        $data = $this->task_model->get($project, $id);
+        $data['page_title']  = "Edit Task #".$id;
         
-        foreach ($tasks as $task) {
-            $data = $task;
-            $data['page_title']  = "Edit Task #".$task['id'];
-        }
+        $data['project']  = $project;
+        $data['users'] = $this->task_model->get_related_users($project);
         
         $this->template->show('task_add', $data);
     }
@@ -71,23 +51,25 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $sql_data = array(
-            'status'   => ($this->input->post('status'))?$this->input->post('status'):0,
-            'title'    => $this->input->post('title'),
-            'text'     => $this->input->post('description'),
+            'project' => $this->input->post('project'),
+            'status' => ($this->input->post('status'))?$this->input->post('status'):0,
+            'title' => $this->input->post('title'),
+            'description' => $this->input->post('description'),
             'priority' => $this->input->post('priority'),
-			'files'    => ($this->input->post('files'))?$this->input->post('files'):'',
-			'database' => ($this->input->post('database'))?$this->input->post('database'):''
+            'user'     => $this->input->post('user'),
+            'files'    => ($this->input->post('files'))?$this->input->post('files'):'',
+            'database' => ($this->input->post('database'))?$this->input->post('database'):''
         );
         
         if ($this->input->post('id'))
-            $this->task_model->update($this->input->post('id'),$sql_data);
+            $this->task_model->update($this->input->post('project'), $this->input->post('id'),$sql_data);
         else
             $this->task_model->create($sql_data);
 
-        redirect('task');
+        redirect('project/tasks/'.$this->input->post('project'));
     }
     
-    public function move($id, $status)
+    public function move($project, $id, $status)
     {
         $this->load->model('task_model');
         
@@ -95,8 +77,8 @@ class Task extends CI_Controller {
             'status' => $status
         );
 
-        $this->task_model->update($id, $sql_data);
+        $this->task_model->update($project, $id, $sql_data);
 
-        redirect('task');
+        redirect('project/tasks/'.$project);
     }
 }
