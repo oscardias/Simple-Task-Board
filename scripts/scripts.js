@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("#reset_password").click(function(){
+    $('#reset_password').click(function(){
         if ($(this).is(':checked')) {
             $('#password').removeAttr('disabled');
         } else {
@@ -7,9 +7,9 @@ $(document).ready(function(){
         }   
     });
     
-    $(".remove-user-event").click(function(){
+    $('.remove-user-event').click(function(){
         var url = $(this).attr('href');
-        $( "#dialog-confirm" ).dialog({
+        $('#dialog-confirm').dialog({
             resizable: false,
             height:140,
             modal: true,
@@ -26,7 +26,7 @@ $(document).ready(function(){
         return false;
     });
     
-    $(".show-hide-event").click(function(){
+    $('.show-hide-event').click(function(){
         var targetId = $(this).attr('target-id');
         if($(this).hasClass('expand')){
             $(this).removeClass('expand').addClass('collapse');
@@ -34,6 +34,18 @@ $(document).ready(function(){
         } else {
             $(this).removeClass('collapse').addClass('expand');
             $('#' + targetId).hide('slow');
+        }
+    });
+    
+    $('.switch-project-view-event').click(function(){
+        if($(this).hasClass('global-tasks')) {
+            $('.project-task').show('slow');
+            $(this).attr('title', 'Show mine');
+            $(this).removeClass('global-tasks').addClass('user-tasks');
+        } else {
+            $('.project-task').hide('slow');
+            $(this).attr('title', 'Show all');
+            $(this).removeClass('user-tasks').addClass('global-tasks');
         }
     });
  });
