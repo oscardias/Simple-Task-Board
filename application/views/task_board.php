@@ -21,6 +21,7 @@ $this->template->menu('task_board');
         </div>
     <?php } ?>
 
+    <?php if(isset($stories) || isset($tasks) || isset($tests) || isset($done)) { ?>
     <table class="board">
         <tr>
             <th class="blue-gradient">To Do</th>
@@ -94,4 +95,7 @@ $this->template->menu('task_board');
         </tr>
 
     </table>
+    <?php } else { ?>
+    <div class="notice">This project doesn't have any task.</div>
+    <?php } ?>
 </div>
