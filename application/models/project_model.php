@@ -57,7 +57,11 @@ class Project_model extends CI_Model {
     
     public function get_related_users($id = false)
     {
-        $this->db->select('u.*, up.project');
+        if($id)
+            $this->db->select('u.*, up.project');
+        else
+            $this->db->select('u.*');
+        
         $this->db->from('user u');
         if($id)
             $this->db->join('user_project up', 'up.user = u.id and up.project = '.$id, 'left');
