@@ -81,4 +81,12 @@ class Task extends CI_Controller {
 
         redirect('project/tasks/'.$project);
     }
+    
+    public function remove($project, $id)
+    {
+        $this->load->model('task_model');
+        $this->task_model->delete($project, $id);
+
+        redirect('project/tasks/'.$project);
+    }
 }
