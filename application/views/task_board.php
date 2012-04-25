@@ -31,67 +31,29 @@ $this->template->menu('task_board');
         </tr>
         <tr>
             <td>
-                <?php if(isset($stories)) {
-                      $i = 0; ?>
-                <?php foreach ($stories as $task) {
-                      $i++; ?>
-                <div id="task_<?php echo $task['id']; ?>" <?php if($i >= 3) { ?>title="<?php echo $task['description']; ?>"<?php } ?>
-                     class="task <?php echo ($task['user'] == $current_user)?'my-task':'project-task'; ?>">
-                    <p class="task_id">#<?php echo $task['id']; ?></p>
-                    <p class="task_title"><?php echo anchor('task/edit/'.$project.'/'.$task['id'], $task['title']); ?></p>
-                    <?php if($i < 3) { ?>
-                    <p class="task_text"><?php echo word_limiter($task['description'], 30); ?></p>
-                    <?php } ?>
-                    <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['id'].'/1', 'Start &raquo;'); ?></p>
-                </div>
-                <?php } ?>
-                <?php } ?>
+                <?php
+                if(isset($stories)) {
+                    // Load Tasks
+                    $this->template->tasks($project, $stories);
+                } ?>
             </td>
             <td>
-                <?php if(isset($tasks)) { ?>
-                <?php foreach ($tasks as $task) { ?>
-                <div id="task_<?php echo $task['id']; ?>" class="task <?php echo ($task['user'] == $current_user)?'my-task':'project-task'; ?>">
-                    <p class="task_id">#<?php echo $task['id']; ?></p>
-                    <p class="task_title"><?php echo anchor('task/edit/'.$project.'/'.$task['id'], $task['title']); ?></p>
-                    <p class="task_text"><?php echo word_limiter($task['description'], 30); ?></p>
-                    <p class="task_info"><?php
-                        $files = explode(",",$task['files']);
-                        $database = explode(",",$task['database']);
-                        echo "Changes: ".(($task['files'])?count($files):0)." files, ".(($task['database'])?count($database):0)." tables/fields"; ?></p>
-                    <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['id'].'/0', '&laquo; Back'); ?> |
-                        <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/2', 'Test &raquo;'); ?></p>
-                </div>
-                <?php } ?>
-                <?php } ?>
+                <?php if(isset($tasks)) {
+                    // Load Tasks
+                    $this->template->tasks($project, $tasks);
+                } ?>
             </td>
             <td>
-                <?php if(isset($tests)) { ?>
-                <?php foreach ($tests as $task) { ?>
-                <div id="task_<?php echo $task['id']; ?>" class="task <?php echo ($task['user'] == $current_user)?'my-task':'project-task'; ?>" title="<?php echo $task['description']; ?>">
-                    <p class="task_id">#<?php echo $task['id']; ?></p>
-                    <p class="task_title"><?php echo anchor('task/edit/'.$project.'/'.$task['id'], $task['title']); ?></p>
-                    <!--<p class="task_text"><?php echo word_limiter($task['description'], 30); ?></p>-->
-                    <p class="task_info"><?php
-                        $files = explode(",",$task['files']);
-                        $database = explode(",",$task['database']);
-                        echo "Changes: ".(($task['files'])?count($files):0)." files, ".(($task['database'])?count($database):0)." tables/fields"; ?></p>
-                    <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['id'].'/1', '&laquo; Back'); ?> |
-                        <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/3', 'Finish &raquo;'); ?></p>
-                </div>
-                <?php } ?>
-                <?php } ?>
+                <?php if(isset($tests)) {
+                    // Load Tasks
+                    $this->template->tasks($project, $tests);
+                } ?>
             </td>
             <td>
-                <?php if(isset($done)) { ?>
-                <?php foreach ($done as $task) { ?>
-                <div id="task_<?php echo $task['id']; ?>" class="task <?php echo ($task['user'] == $current_user)?'my-task':'project-task'; ?>" title="<?php echo $task['description']; ?>">
-                    <p class="task_id">#<?php echo $task['id']; ?></p>
-                    <p class="task_title"><?php echo anchor('task/edit/'.$project.'/'.$task['id'], $task['title']); ?></p>
-                    <!--<p class="task_text"><?php echo word_limiter($task['description'], 30); ?></p>-->
-                    <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['id'].'/2', '&laquo; Back'); ?></p>
-                </div>
-                <?php } ?>
-                <?php } ?>
+                <?php if(isset($done)) {
+                    // Load Tasks
+                    $this->template->tasks($project, $done);
+                } ?>
             </td>
         </tr>
 
