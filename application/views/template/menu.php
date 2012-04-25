@@ -12,7 +12,8 @@
         <?php //echo anchor('transport/add', 'Create new transport', 'class="btn btn_transport"'); ?>
     <?php } elseif($view == 'return_to_tasks') { ?>
         <!-- Projects menu -->
-        <?php echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_dashboard"'); ?>
+        <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
+        <?php echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_taskboard"'); ?>
     <?php } elseif($view == 'projects') { ?>
         <!-- Projects menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
