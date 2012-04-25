@@ -400,6 +400,7 @@ a:hover{color:#7872D8}
 .task_text{margin:0;padding:1px}
 .task_info{margin:0;padding:1px}
 .task_links{text-align:center;margin:0;padding:1px}
+.task_user{margin:2px 0;font-style:italic;color:#666;font-size:11px;}
 /* FORMS */
 label{
     margin:4px 5px 0;
