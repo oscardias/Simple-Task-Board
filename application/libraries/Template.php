@@ -20,6 +20,19 @@ class Template {
         // Load menu template
         $CI->load->view('template/menu', array('view' => $view));
     }
+    
+    function tasks($project, $tasks)
+    {
+        // Get current CI Instance
+        $CI = & get_instance();
+                
+        $i = 0;
+        foreach ($tasks as $task) {
+            $i++;
+            // Load menu template
+            $CI->load->view('template/single_task', array('i' => $i, 'project' => $project, 'task' => $task));
+        }
+    }
 }
 
 /* End of file Template.php */
