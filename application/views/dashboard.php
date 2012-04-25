@@ -15,7 +15,7 @@ $this->template->menu('dashboard');
                 <?php $listControl = 0; ?>
                 <?php foreach ($tasks as $task) { ?>
                     <li>
-                    <?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
+                    <?php echo anchor('task/edit/'.$task['project'].'/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
                     (<?php echo $status[$task['status']] ?>)
                     </li>
                     <?php $listControl++; ?>
@@ -45,7 +45,7 @@ $this->template->menu('dashboard');
                 <?php if($project['tasks']) { ?>
                 <?php foreach ($project['tasks'] as $task) { ?>
                 <li>
-                    <?php echo anchor('task/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
+                    <?php echo anchor('task/edit/'.$project['id'].'/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
                     (<?php echo $status[$task['status']] ?>)
                 </li>
                 <?php } ?>
