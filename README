@@ -1,9 +1,25 @@
 Simple Task Board
 
-NOTE: This application is not usable right now. I'm updating it to enable multiple users/projects.
+NOTE: This is the first usable version of this application.
+
+Version 1.0
 
 Description: A simple task board to help managing software projects. It is developed in PHP and uses the CodeIgniter Framework.
-Installation: Create the database using db/create.sql, place the filed in your server and run <server>/install (where <server> should be your localhost or domain).
+It includes multiple users/projects/tasks and is very simple to use and install.
+
+Next updates: I plan to update some portions of this application in the following months. Currently these are the features to be developed:
+- Task comments: add comments in each task.
+- User levels: implement level verification to allow the correct functionalities to each level.
+- User profile: create a user profile with more information about the users.
+- Task history: track what happens with the tasks and how long it takes in each phase.
+- Tasks estimation: add an estimation field to enable a comparison between estimated and realised.
+- ... if you have any ideas, let me know ...
+
+Installation: Create the database using db/create.sql, place the files in your server and update the following:
+- application/config/config.php: update $config['base_url'] with your url.
+- application/config/database.php: update your database information.
+Run <server>/install (where <server> should be your localhost or domain/folder).
+If you have any problems let me know.
 
 Author: Oscar Dias
 Website: http://oscardias.com
