@@ -46,7 +46,15 @@ class Project extends CI_Controller {
         
         $data['page_title'] = "Project: ".$project['name'];
         $data['project']    = $project_id;
+        
         $data['current_user'] = $this->session->userdata('user');
+        
+        $db_users = $this->project_model->get_related_users($project_id);
+        $users = array();
+        foreach ($db_users as $user) {
+            $users[$user['id']] = $user;
+        }
+        $data['users'] = $users;
         
         // Load text helper to be used in the view
         $this->load->helper('text');
