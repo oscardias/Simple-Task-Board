@@ -92,8 +92,13 @@ $this->template->menu('return_to_tasks');
                     <?php if (isset($status)) echo form_hidden('status', $status); ?>
                     <?php if (isset($project)) echo form_hidden('project', $project); ?>
 
-                    <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
-                    <?php echo form_button('cancel', 'Cancel', 'class="btn-blue" onClick="history.go(-1)"');; ?>
+                    <div class="form-save-buttons">
+                        <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
+                        <?php echo form_button('cancel', 'Cancel', 'class="btn-blue" onClick="history.go(-1)"');; ?>
+                        <?php
+                        $remove_url = base_url().'task/remove/'.$project.'/'.$id;
+                        echo form_button('remove', 'Remove', 'class="btn-blue" id="remove-task" target-url="'.$remove_url.'"'); ?>
+                    </div>
                 </td>
         </tr>
     </table>
