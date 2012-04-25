@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    /* User actions */
     $('#reset_password').click(function(){
         if ($(this).is(':checked')) {
             $('#password').removeAttr('disabled');
@@ -26,6 +27,7 @@ $(document).ready(function(){
         return false;
     });
     
+    /* General actions */
     $('.show-hide-event').click(function(){
         var targetId = $(this).attr('target-id');
         if($(this).hasClass('expand')){
@@ -37,6 +39,7 @@ $(document).ready(function(){
         }
     });
     
+    /* Dashboard actions*/
     $('.switch-project-view-event').click(function(){
         if($(this).hasClass('global-tasks')) {
             $('.project-task').show('slow');
@@ -48,4 +51,26 @@ $(document).ready(function(){
             $(this).removeClass('user-tasks').addClass('global-tasks');
         }
     });
+    
+    /* Task actios */
+    $('#remove-task').click(function(){
+        var targetUrl = $(this).attr('target-url');
+        
+        $('#dialog-confirm').dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Remove": function() {
+                    window.location = targetUrl;
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        
+        return false;
+    });
+    
  });
