@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tempo de Geração: 01/03/2012 às 20h32min
+-- Tempo de Geração: 25/04/2012 às 19h01min
 -- Versão do Servidor: 5.5.20
 -- Versão do PHP: 5.3.9
 
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Estrutura da tabela `ci_sessions`
 --
 
-DROP TABLE IF EXISTS `ci_sessions`;
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
   `session_id` varchar(40) NOT NULL DEFAULT '0',
   `ip_address` varchar(16) NOT NULL DEFAULT '0',
@@ -42,7 +41,6 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 -- Estrutura da tabela `project`
 --
 
-DROP TABLE IF EXISTS `project`;
 CREATE TABLE IF NOT EXISTS `project` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user` int(10) unsigned NOT NULL,
@@ -50,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `project` (
   `description` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -58,7 +56,6 @@ CREATE TABLE IF NOT EXISTS `project` (
 -- Estrutura da tabela `task`
 --
 
-DROP TABLE IF EXISTS `task`;
 CREATE TABLE IF NOT EXISTS `task` (
   `project` int(10) unsigned NOT NULL,
   `id` int(10) unsigned NOT NULL,
@@ -66,9 +63,10 @@ CREATE TABLE IF NOT EXISTS `task` (
   `status` tinyint(4) unsigned NOT NULL,
   `title` varchar(50) NOT NULL,
   `priority` tinyint(4) unsigned NOT NULL,
-  `text` text NOT NULL,
+  `description` text NOT NULL,
   `files` text NOT NULL,
   `database` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`project`,`id`),
   KEY `position` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -79,7 +77,6 @@ CREATE TABLE IF NOT EXISTS `task` (
 -- Estrutura da tabela `task_comments`
 --
 
-DROP TABLE IF EXISTS `task_comments`;
 CREATE TABLE IF NOT EXISTS `task_comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `task` int(10) unsigned NOT NULL,
@@ -92,26 +89,9 @@ CREATE TABLE IF NOT EXISTS `task_comments` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `task_history`
---
-
-DROP TABLE IF EXISTS `task_history`;
-CREATE TABLE IF NOT EXISTS `task_history` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `task` int(10) unsigned NOT NULL,
-  `status` tinyint(3) unsigned NOT NULL,
-  `user` int(10) unsigned NOT NULL,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `transport`
 --
 
-DROP TABLE IF EXISTS `transport`;
 CREATE TABLE IF NOT EXISTS `transport` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `open` tinyint(1) NOT NULL DEFAULT '1',
@@ -128,15 +108,29 @@ CREATE TABLE IF NOT EXISTS `transport` (
 -- Estrutura da tabela `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `password` varchar(40) NOT NULL,
+  `level` tinyint(4) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `user_project`
+--
+
+CREATE TABLE IF NOT EXISTS `user_project` (
+  `user` int(10) unsigned NOT NULL,
+  `project` int(10) unsigned NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user`,`project`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
