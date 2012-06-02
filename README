@@ -7,6 +7,8 @@ Version 1.0
 Description: A simple task board to help managing software projects. It is developed in PHP and uses the CodeIgniter Framework.
 It includes multiple users/projects/tasks and is very simple to use and install.
 
+Link: http://oscardias.com/development/php/codeigniter/php-project-simple-task-board/
+
 Next updates: I plan to update some portions of this application in the following months. Currently these are the features to be developed:
 - Task comments: add comments in each task.
 - User levels: implement level verification to allow the correct functionalities to each level.
