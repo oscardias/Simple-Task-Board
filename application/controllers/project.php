@@ -75,8 +75,11 @@ class Project extends CI_Controller {
         $users = $this->project_model->get_related_users();
         foreach ($users as $key => $value) {
             if($value['id'] == $this->session->userdata('user'))
-                $users['key']['project'] = 1;
+                $users[$key]['project'] = 1;
+            else
+                $users[$key]['project'] = 0;
         }
+        $data['users'] = $users;
         
         $this->template->show('project_add', $data);
     }
@@ -109,7 +112,7 @@ class Project extends CI_Controller {
         if ($project_id)
             $this->project_model->update($project_id,$sql_data);
         else
-            $id = $this->project_model->create($sql_data);
+            $project_id = $this->project_model->create($sql_data);
             
         // Related users
         $this->project_model->delete_related($project_id);
