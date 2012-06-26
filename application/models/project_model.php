@@ -5,7 +5,10 @@ class Project_model extends CI_Model {
     public function create($data)
     {
         $insert = $this->db->insert('project', $data);
-        return $insert;
+        if($insert)
+            return $this->db->insert_id();
+        else
+            return false;
     }
 
     public function create_related($data)
