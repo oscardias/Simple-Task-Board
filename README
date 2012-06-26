@@ -2,7 +2,7 @@ Simple Task Board
 
 NOTE: This is the first usable version of this application.
 
-Version 1.0
+Version 1.0.1
 
 Description: A simple task board to help managing software projects. It is developed in PHP and uses the CodeIgniter Framework.
 It includes multiple users/projects/tasks and is very simple to use and install.
