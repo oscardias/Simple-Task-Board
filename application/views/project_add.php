@@ -49,7 +49,7 @@ else
             <?php foreach ($users as $user) { ?>
             <div class="half-width">
                 <label>
-                <?php echo form_checkbox('users[]', $user['id'], (isset($id) && $user['project'])?1:0); ?>
+                <?php echo form_checkbox('users[]', $user['id'], ($user['project'])?1:0); ?>
                 <?php echo $user['email']; ?></label>
                 <?php //echo form_label($user['email'], 'users[]'); ?>
             </div>
