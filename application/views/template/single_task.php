@@ -18,7 +18,7 @@
     <p class="task_links">
         <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/0', '&laquo; Back'); ?>
         |
-        <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/2', 'Finish &raquo;'); ?>
+        <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/3', 'Finish &raquo;'); ?>
     </p>
     <?php } else if($task['status'] == 3) { ?>
     <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['id'].'/0', '&laquo; Back'); ?></p>
