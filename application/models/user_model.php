@@ -17,7 +17,8 @@ class User_model extends CI_Model {
 
     public function update($id, $data)
     {
-        $data['password'] = sha1($data['password'].$this->salt);
+        if(isset($data['password']))
+            $data['password'] = sha1($data['password'].$this->salt);
         $this->db->where('id', $id);
         $update = $this->db->update('user', $data);
         return $update;
