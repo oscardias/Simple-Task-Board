@@ -23,7 +23,7 @@ $this->template->menu('users');
             <td>
                 <?php if (isset($id)) { ?>
                     <?php echo form_password('password', $password, 'id="password" disabled'); ?>
-                    <?php echo form_checkbox('reset_password', 0, false, 'id="reset_password" title="Edit Password"'); ?>
+                    <?php echo form_checkbox('reset_password', 1, false, 'id="reset_password" title="Edit Password"'); ?>
                 <?php } else { ?>
                     <?php echo form_password('password', $password, 'id="password"'); ?>
                     <?php echo form_hidden('reset_password', 1); ?>
