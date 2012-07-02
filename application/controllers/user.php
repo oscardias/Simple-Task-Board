@@ -47,7 +47,7 @@ class User extends CI_Controller {
         $this->load->model('user_model');
         $data = $this->user_model->get($id);
         
-        $data['password'] = 'password';
+        $data['password'] = '';
         $data['page_title']  = "Edit User #".$id;
         
         $data['level_list'] = $this->LEVEL;
