@@ -16,11 +16,11 @@
     </p>
     <?php } else if($task['status'] == 2) { ?>
     <p class="task_links">
-        <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/0', '&laquo; Back'); ?>
+        <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/1', '&laquo; Back'); ?>
         |
         <?php echo anchor('task/move/'.$project.'/'.$task['id'].'/3', 'Finish &raquo;'); ?>
     </p>
     <?php } else if($task['status'] == 3) { ?>
-    <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['id'].'/0', '&laquo; Back'); ?></p>
+    <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['id'].'/2', '&laquo; Back'); ?></p>
     <?php } ?>
 </div>
