@@ -15,7 +15,10 @@ class Task_model extends CI_Model {
             $data['id'] = 1;
         
         $insert = $this->db->insert('task', $data);
-        return $insert;
+        if($insert)
+            return $data['id'];
+        
+        return false;
     }
 
 
@@ -85,9 +88,39 @@ class Task_model extends CI_Model {
 
     public function delete($project, $id)
     {
+        $this->db->trans_start();
+        
+        // Remove task comments
+        $this->db->where('project', $project);
+        $this->db->where('task', $id);
+        $this->db->delete('task_comments');
+        
+        // Remove task
         $this->db->where('project', $project);
         $this->db->where('id', $id);
         $this->db->delete('task');
+        
+        $this->db->trans_complete();
+        return $this->db->trans_status();
+    }
+    
+    public function create_comment($data)
+    {
+        return $this->db->insert('task_comments', $data);
     }
 
+    public function get_comments($project, $task)
+    {
+        $this->db->select('task_comments.*, user.email')->
+                from('task_comments')->
+                join('user', 'task_comments.user = user.id')->
+                where('project', $project)->
+                where('task', $task);
+        $get = $this->db->get();
+        
+        if($get->num_rows > 0)
+            return $get->result_array();
+        
+        return array();
+    }
 }
