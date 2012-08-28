@@ -35,6 +35,14 @@ class User_model extends CI_Model {
         return array();
     }
     
+    public function get_count()
+    {
+        $this->db->select('count(*) as count');
+        $get = $this->db->get('user')->row_array();
+
+        return $get['count'];
+    }
+    
     public function validate($email, $password)
     {
         $this->db->where('email', $email)->where('password', sha1($password.$this->salt));

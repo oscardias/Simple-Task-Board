@@ -1,6 +1,6 @@
 <?php
 // Load Menu
-$this->template->menu('return_to_tasks');
+$this->template->menu('task_edit');
 ?>
 
 <div id="container">

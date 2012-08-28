@@ -2,10 +2,8 @@
 -- version 3.4.9
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tempo de Geração: 25/04/2012 às 19h01min
--- Versão do Servidor: 5.5.20
--- Versão do PHP: 5.3.9
+-- Simple Task Board v1.1
+--
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,19 +15,19 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Banco de Dados: `task_board`
+-- Database: `task_board`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `ci_sessions`
+-- Table `ci_sessions`
 --
 
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
   `session_id` varchar(40) NOT NULL DEFAULT '0',
   `ip_address` varchar(16) NOT NULL DEFAULT '0',
-  `user_agent` varchar(50) NOT NULL,
+  `user_agent` varchar(120) NOT NULL,
   `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
   `user_data` text NOT NULL,
   PRIMARY KEY (`session_id`),
@@ -39,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `project`
+-- Table `project`
 --
 
 CREATE TABLE IF NOT EXISTS `project` (
@@ -49,17 +47,40 @@ CREATE TABLE IF NOT EXISTS `project` (
   `description` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `task`
+-- Table `settings`
+--
+
+CREATE TABLE IF NOT EXISTS `settings` (
+  `setting_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `setting_name` varchar(50) DEFAULT NULL,
+  `setting_value` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`setting_id`),
+  UNIQUE KEY `setting_name` (`setting_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Data for `settings`
+--
+
+INSERT INTO `settings` (`setting_id`, `setting_name`, `setting_value`) VALUES
+(1, 'database_version', '1.1'),
+(2, 'stb_install_date', CURDATE());
+
+-- --------------------------------------------------------
+
+--
+-- Table `task`
 --
 
 CREATE TABLE IF NOT EXISTS `task` (
   `project` int(10) unsigned NOT NULL,
   `id` int(10) unsigned NOT NULL,
+  `parent` int(10) unsigned NOT NULL,
   `user` int(10) unsigned NOT NULL,
   `status` tinyint(4) unsigned NOT NULL,
   `title` varchar(50) NOT NULL,
@@ -75,38 +96,23 @@ CREATE TABLE IF NOT EXISTS `task` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `task_comments`
+-- Table `task_comments`
 --
 
 CREATE TABLE IF NOT EXISTS `task_comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `project` int(10) unsigned NOT NULL,
   `task` int(10) unsigned NOT NULL,
   `user` int(10) unsigned NOT NULL,
   `comment` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `transport`
---
-
-CREATE TABLE IF NOT EXISTS `transport` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `open` tinyint(1) NOT NULL DEFAULT '1',
-  `tasks` varchar(255) NOT NULL,
-  `files` text NOT NULL,
-  `database` text NOT NULL,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `user`
+-- Table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -117,12 +123,12 @@ CREATE TABLE IF NOT EXISTS `user` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `user_project`
+-- Table `user_project`
 --
 
 CREATE TABLE IF NOT EXISTS `user_project` (
@@ -131,7 +137,6 @@ CREATE TABLE IF NOT EXISTS `user_project` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user`,`project`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

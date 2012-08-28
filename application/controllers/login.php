@@ -4,6 +4,17 @@ class Login extends CI_Controller {
 
     public function index()
     {
+        // Check if users exist
+        $this->load->model('user_model');
+        $users = $this->user_model->get_count();
+        if($users == 0)
+            redirect('install');
+        
+        // Check if database version is correct
+        $this->load->model('database_model');
+        if(!$this->database_model->is_up_to_date())
+            redirect('install');
+        
         // Load View
         $data['page_title']  = "Login";
         
