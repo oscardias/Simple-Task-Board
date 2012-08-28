@@ -41,9 +41,29 @@ class Task extends CI_Controller {
         $data['page_title']  = "Edit Task #".$id;
         
         $data['project']  = $project;
+        $data['task']  = $id;
         $data['users'] = $this->task_model->get_related_users($project);
         
         $this->template->show('task_add', $data);
+    }
+
+    public function view($project, $id)
+    {
+        $this->load->model('task_model');
+        $this->load->model('user_model');
+        
+        $data = $this->task_model->get($project, $id);
+        $data['page_title']  = "View Task #".$id;
+        
+        $data['project']  = $project;
+        $data['task']  = $id;
+        
+        $user = $this->user_model->get($data['user']);
+        $data['user'] = $user['email'];
+        
+        $data['comments'] = $this->task_model->get_comments($project, $id);
+        
+        $this->template->show('task', $data);
     }
     
     public function save()
@@ -61,12 +81,14 @@ class Task extends CI_Controller {
             'database' => ($this->input->post('database'))?$this->input->post('database'):''
         );
         
-        if ($this->input->post('id'))
-            $this->task_model->update($this->input->post('project'), $this->input->post('id'),$sql_data);
+        $id = $this->input->post('id');
+        
+        if ($id)
+            $this->task_model->update($this->input->post('project'), $id, $sql_data);
         else
-            $this->task_model->create($sql_data);
+            $id = $this->task_model->create($sql_data);
 
-        redirect('project/tasks/'.$this->input->post('project'));
+        redirect('task/view/'.$this->input->post('project').'/'.$id);
     }
     
     public function move($project, $id, $status)
@@ -89,4 +111,22 @@ class Task extends CI_Controller {
 
         redirect('project/tasks/'.$project);
     }
+    
+    public function comment()
+    {
+        // TODO: Check if user is related to project
+        
+        $data = array(
+            'project' => $this->input->post('project'),
+            'task' => $this->input->post('task'),
+            'user' => $this->session->userdata('user'),
+            'comment' => $this->input->post('comment')
+        );
+        
+        $this->load->model('task_model');
+        $this->task_model->create_comment($data);
+
+        redirect('task/view/'.$data['project'].'/'.$data['task']);
+    }
+
 }
