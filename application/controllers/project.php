@@ -16,14 +16,7 @@ class Project extends CI_Controller {
     }
     
     public function tasks($project_id)
-    {
-//        TODO: review transport functionality
-//        // Load open transports
-//        $this->load->model('transport_model');
-//        $transports = $this->transport_model->get(false, true);
-//        if ($transports)
-//            $data['transports'] = $transports;
-        
+    {        
         // Load tasks
         $this->load->model('task_model');
         $tasks = $this->task_model->get($project_id);
