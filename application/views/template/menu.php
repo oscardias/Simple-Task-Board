@@ -10,10 +10,16 @@
         <?php echo anchor('project/edit/'.$project, 'Edit project', 'class="btn btn_edit"'); ?>
         <?php echo anchor('task/add/'.$project, 'Add new task', 'class="btn btn_add"'); ?>
         <?php //echo anchor('transport/add', 'Create new transport', 'class="btn btn_transport"'); ?>
-    <?php } elseif($view == 'return_to_tasks') { ?>
-        <!-- Projects menu -->
+    <?php } elseif($view == 'task_view') { ?>
+        <!-- Task View menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
         <?php echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_taskboard"'); ?>
+        <?php echo anchor('task/edit/'.$project.'/'.$task, 'Edit Task', 'class="btn btn_taskboard"'); ?>
+    <?php } elseif($view == 'task_edit') { ?>
+        <!-- Task Edit menu -->
+        <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
+        <?php echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_taskboard"'); ?>
+        <?php echo (isset($task))?anchor('task/view/'.$project.'/'.$task, 'View Task', 'class="btn btn_taskboard"'):''; ?>
     <?php } elseif($view == 'projects') { ?>
         <!-- Projects menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
