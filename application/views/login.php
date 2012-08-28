@@ -1,7 +1,20 @@
 <div class="home-title blue-gradient">Simple Task Board</div>
 <div id="login">
+    <?php if(isset($answer)) { ?>
+    <div class="install-answer"><?php echo $answer; ?></div>
+    <?php } ?>
+    
     <?php if(isset($already_installed) && $already_installed) { ?>
-    Simple Task Board has already been installed.
+        <?php if(isset($update_database) && $update_database) { ?>
+            <p>Your database needs to be upgraded.</p>
+            <?php echo form_open('install/database'); ?>
+
+            <?php echo form_submit('upgrade', 'Upgrade', 'class="btn-blue"'); ?>
+
+            <?php echo form_close(); ?>
+        <?php } else { ?>
+            Simple Task Board has already been installed.
+        <?php } ?>
     <?php } else { ?>
         <?php if(isset($already_installed) && !$already_installed) { echo form_open('install/run'); }
         else { echo form_open('login/validate'); } ?>
