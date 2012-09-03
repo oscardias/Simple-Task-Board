@@ -1,7 +1,7 @@
 <?php
 // Load Menu
 if (isset($id))
-    $this->template->menu('return_to_tasks');
+    $this->template->menu('project_edit');
 else
     $this->template->menu('projects');
 ?>
