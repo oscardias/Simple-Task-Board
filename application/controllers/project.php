@@ -2,21 +2,17 @@
 
 class Project extends CI_Controller {
     
-    function Project()
-    {
-        parent::__construct();
-        
-        if(!$this->session->userdata('logged'))
-            redirect('login');
-    }
-    
     public function index()
     {
         redirect('dashboard');
     }
     
     public function tasks($project_id)
-    {        
+    {
+        // Check permission
+        if(!$this->usercontrol->has_permission('project', 'tasks'))
+            redirect('dashboard');
+        
         // Load tasks
         $this->load->model('task_model');
         $tasks = $this->task_model->get($project_id);
@@ -58,6 +54,10 @@ class Project extends CI_Controller {
 
     public function add()
     {
+        // Check permission
+        if(!$this->usercontrol->has_permission('project'))
+            redirect('dashboard');
+        
         $this->load->model('project_model');
         
         $data['page_title']  = "New Project";
@@ -79,6 +79,10 @@ class Project extends CI_Controller {
 
     public function edit($id)
     {
+        // Check permission
+        if(!$this->usercontrol->has_permission('project'))
+            redirect('dashboard');
+        
         $this->load->model('project_model');
         
         $data = $this->project_model->get($id);
@@ -92,6 +96,10 @@ class Project extends CI_Controller {
     
     public function save()
     {
+        // Check permission
+        if(!$this->usercontrol->has_permission('project'))
+            redirect('dashboard');
+        
         $this->load->model('project_model');
         
         $sql_data = array(

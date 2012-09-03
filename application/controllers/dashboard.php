@@ -15,7 +15,7 @@ class Dashboard extends CI_Controller {
             3 => 'Done'
         );
         
-        if(!$this->session->userdata('logged'))
+        if(!$this->usercontrol->has_permission('dashboard'))
             redirect('login');        
     }
     

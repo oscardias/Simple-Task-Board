@@ -8,8 +8,8 @@ class User extends CI_Controller {
     {
         parent::__construct();
         
-        if(!$this->session->userdata('logged'))
-            redirect('login');
+        if(!$this->usercontrol->has_permission('user'))
+            redirect('dashboard');
         
         $this->LEVEL = array(
             1 => 'Full Access',

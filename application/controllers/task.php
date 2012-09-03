@@ -6,8 +6,8 @@ class Task extends CI_Controller {
     {
         parent::__construct();
         
-        if(!$this->session->userdata('logged'))
-            redirect('login');
+        if(!$this->usercontrol->has_permission('task'))
+            redirect('dashboard');
     }
     
     public function index()
