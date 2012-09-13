@@ -2,7 +2,7 @@
 -- version 3.4.9
 -- http://www.phpmyadmin.net
 --
--- Simple Task Board v1.1
+-- Simple Task Board v1.2
 --
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 --
 
 INSERT INTO `settings` (`setting_id`, `setting_name`, `setting_value`) VALUES
-(1, 'database_version', '1.1'),
+(1, 'database_version', '1.2'),
 (2, 'stb_install_date', CURDATE());
 
 -- --------------------------------------------------------
@@ -78,10 +78,11 @@ INSERT INTO `settings` (`setting_id`, `setting_name`, `setting_value`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `task` (
-  `project` int(10) unsigned NOT NULL,
-  `id` int(10) unsigned NOT NULL,
-  `parent` int(10) unsigned NOT NULL,
-  `user` int(10) unsigned NOT NULL,
+  `task_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `project_id` int(10) unsigned NOT NULL,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `code` int(10) unsigned NOT NULL,
   `status` tinyint(4) unsigned NOT NULL,
   `title` varchar(50) NOT NULL,
   `priority` tinyint(4) unsigned NOT NULL,
@@ -89,9 +90,10 @@ CREATE TABLE IF NOT EXISTS `task` (
   `files` text NOT NULL,
   `database` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`project`,`id`),
-  KEY `position` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`task_id`),
+  KEY `status` (`project_id`,`status`),
+  KEY `parent` (`parent_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -100,14 +102,31 @@ CREATE TABLE IF NOT EXISTS `task` (
 --
 
 CREATE TABLE IF NOT EXISTS `task_comments` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `project` int(10) unsigned NOT NULL,
-  `task` int(10) unsigned NOT NULL,
-  `user` int(10) unsigned NOT NULL,
+  `task_comments_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `task_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `comment` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`task_comments_id`),
+  KEY `task` (`task_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table `task_history`
+--
+
+CREATE TABLE IF NOT EXISTS `task_history` (
+  `task_history_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `task_id` int(10) unsigned NOT NULL,
+  `status` tinyint(4) unsigned NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_finished` datetime DEFAULT NULL,
+  `duration` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`task_history_id`),
+  KEY `task` (`task_id`,`status`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -137,6 +156,29 @@ CREATE TABLE IF NOT EXISTS `user_project` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user`,`project`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Restrictions
+--
+
+--
+-- Table `task`
+--
+ALTER TABLE `task`
+  ADD CONSTRAINT `task_stbfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `task_stbfk_2` FOREIGN KEY (`parent_id`) REFERENCES `task` (`task_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Table `task_comments`
+--
+ALTER TABLE `task_comments`
+  ADD CONSTRAINT `task_comments_stbfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`task_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Table `task_history`
+--
+ALTER TABLE `task_history`
+  ADD CONSTRAINT `task_history_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`task_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
