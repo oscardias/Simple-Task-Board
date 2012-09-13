@@ -15,8 +15,8 @@ $this->template->menu('dashboard');
                 <?php $listControl = 0; ?>
                 <?php foreach ($tasks as $task) { ?>
                     <li>
-                    <?php echo anchor('task/view/'.$task['project'].'/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
-                    (<?php echo $status[$task['status']] ?>)
+                    <?php echo anchor('task/view/'.$task['project_id'].'/'.$task['task_id'], '#'.$task['code'].' - '.$task['title']); ?>
+                    (<?php echo $status_arr[$task['status']] ?>)
                     </li>
                     <?php $listControl++; ?>
                     <?php if($listControl % 10 == 0) { ?>
@@ -41,18 +41,22 @@ $this->template->menu('dashboard');
     <?php foreach ($projects as $project) { ?>
         <div id="project_<?php echo $project['id']; ?>" class="dash_project_group">
             <p class="dash_project_title blue-gradient"><?php echo anchor('project/tasks/'.$project['id'], $project['name']); ?></p>
+            
+            <?php if($project['tasks']) { ?>
             <ul>
-                <?php if($project['tasks']) { ?>
-                <?php foreach ($project['tasks'] as $task) { ?>
-                <li>
-                    <?php echo anchor('task/view/'.$project['id'].'/'.$task['id'], '#'.$task['id'].' - '.$task['title']); ?>
-                    (<?php echo $status[$task['status']] ?>)
-                </li>
-                <?php } ?>
+            <?php foreach ($project['tasks'] as $key => $task) { ?>
+                <?php if($key < 4) { ?>
+                <li><?php echo anchor('task/view/'.$project['id'].'/'.$task['task_id'], '#'.$task['code'].' - '.$task['title']); ?>
+                    <em>(<?php echo $status_arr[$task['status']] ?>)</em></li>
                 <?php } else { ?>
-                No tasks here!
+                <li><em>more ...</em></li>
                 <?php } ?>
+            <?php } ?>
             </ul>
+            <p class="form-save-buttons"><?php echo anchor('project/tasks/'.$project['id'], 'View all tasks', 'class="btn-blue dash_view_all_tasks"'); ?></p>
+            <?php } else { ?>
+            No tasks here!
+            <?php } ?>
         </div>
     <?php } ?>
         </div>

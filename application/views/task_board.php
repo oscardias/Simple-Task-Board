@@ -17,25 +17,25 @@ $this->template->menu('task_board');
                 <?php
                 if(isset($stories)) {
                     // Load Tasks
-                    $this->template->tasks($project, $stories);
+                    $this->template->tasks($project_id, $stories);
                 } ?>
             </td>
             <td>
                 <?php if(isset($tasks)) {
                     // Load Tasks
-                    $this->template->tasks($project, $tasks);
+                    $this->template->tasks($project_id, $tasks);
                 } ?>
             </td>
             <td>
                 <?php if(isset($tests)) {
                     // Load Tasks
-                    $this->template->tasks($project, $tests);
+                    $this->template->tasks($project_id, $tests);
                 } ?>
             </td>
             <td>
                 <?php if(isset($done)) {
                     // Load Tasks
-                    $this->template->tasks($project, $done);
+                    $this->template->tasks($project_id, $done);
                 } ?>
             </td>
         </tr>

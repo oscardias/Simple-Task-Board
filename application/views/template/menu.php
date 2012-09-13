@@ -15,33 +15,33 @@
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
         <?php
         if($this->usercontrol->has_permission('project'))
-            echo anchor('project/edit/'.$project, 'Edit project', 'class="btn btn_edit"');
+            echo anchor('project/edit/'.$project_id, 'Edit project', 'class="btn btn_edit"');
         ?>
         <?php
         if($this->usercontrol->has_permission('task'))
-            echo anchor('task/add/'.$project, 'Add new task', 'class="btn btn_add"');
+            echo anchor('task/add/'.$project_id, 'Add new task', 'class="btn btn_add"');
         ?>
     <?php } elseif($view == 'task_view') { ?>
         <!-- Task View menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
         <?php
         if($this->usercontrol->has_permission('project', 'tasks'))
-            echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_taskboard"');
+            echo anchor('project/tasks/'.$project_id, 'Task Board', 'class="btn btn_taskboard"');
         ?>
         <?php
         if($this->usercontrol->has_permission('task'))
-            echo anchor('task/edit/'.$project.'/'.$task, 'Edit Task', 'class="btn btn_edit"');
+            echo anchor('task/edit/'.$project_id.'/'.$task_id, 'Edit Task', 'class="btn btn_edit"');
         ?>
     <?php } elseif($view == 'task_edit') { ?>
         <!-- Task Edit menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
         <?php
         if($this->usercontrol->has_permission('project', 'task'))
-            echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_taskboard"');
+            echo anchor('project/tasks/'.$project_id, 'Task Board', 'class="btn btn_taskboard"');
         ?>
         <?php
         if($this->usercontrol->has_permission('project', 'task'))
-            echo (isset($task))?anchor('task/view/'.$project.'/'.$task, 'View Task', 'class="btn btn_taskboard"'):'';
+            echo (isset($task))?anchor('task/view/'.$project_id.'/'.$task_id, 'View Task', 'class="btn btn_taskboard"'):'';
         ?>
     <?php } elseif($view == 'projects') { ?>
         <!-- Projects menu -->
@@ -51,7 +51,7 @@
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
         <?php
         if($this->usercontrol->has_permission('project', 'task'))
-            echo anchor('project/tasks/'.$project, 'Task Board', 'class="btn btn_taskboard"');
+            echo anchor('project/tasks/'.$project_id, 'Task Board', 'class="btn btn_taskboard"');
         ?>
     <?php } elseif($view == 'users') { ?>
         <!-- Users menu -->

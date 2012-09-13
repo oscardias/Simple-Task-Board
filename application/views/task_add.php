@@ -18,6 +18,21 @@ $this->template->menu('task_edit');
         </tr>
         <tr>
             <td>
+                <?php echo form_label('Parent', 'parent_id'); ?>
+            </td>
+            <td>
+                <?php
+                $options = array();
+                $options[0] = '- None -';
+                foreach ($tasks as $value) {
+                    $options[$value['id']] = $value['title'];
+                }
+                echo form_dropdown('parent_id', $options, $parent_id);
+                ?>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <?php echo form_label('Priority', 'priority'); ?>
             </td>
             <td>
@@ -42,7 +57,7 @@ $this->template->menu('task_edit');
         </tr>
         <tr>
             <td>
-                <?php echo form_label('Assigned to', 'user'); ?>
+                <?php echo form_label('Assigned to', 'user_id'); ?>
             </td>
             <td>
                 <?php
@@ -50,7 +65,7 @@ $this->template->menu('task_edit');
                 foreach ($users as $value) {
                     $options[$value['id']] = $value['email'];
                 }
-                echo form_dropdown('user', $options, $user);
+                echo form_dropdown('user_id', $options, $user_id);
                 ?>
             </td>
         </tr>
@@ -88,9 +103,9 @@ $this->template->menu('task_edit');
         <?php } ?>
         <tr>
                 <td colspan="2">
-                    <?php if (isset($id)) echo form_hidden('id', $id); ?>
+                    <?php if (isset($task_id)) echo form_hidden('task_id', $task_id); ?>
                     <?php if (isset($status)) echo form_hidden('status', $status); ?>
-                    <?php if (isset($project)) echo form_hidden('project', $project); ?>
+                    <?php if (isset($project_id)) echo form_hidden('project_id', $project_id); ?>
 
                     <div class="form-save-buttons">
                         <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
