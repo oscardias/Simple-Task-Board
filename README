@@ -1,16 +1,22 @@
-== Simple Task Board ==
+#################
+Simple Task Board
+#################
 
-Version: 1.2
+Version: 1.3
 Link: http://oscardias.com/projects/simple-task-board/
 Author: Oscar Dias
 Website: http://oscardias.com
 
-== Description ==
+***********
+Description
+***********
 
 A simple task board to help managing software projects. It is developed in PHP and uses the CodeIgniter Framework.
 It includes multiple users/projects/tasks.
 
-== Installation ==
+************
+Installation
+************
 
 Create the database using db/create.sql, place the files in your server and update the following:
 - application/config/config.php: update $config['base_url'] with your url.
@@ -20,10 +26,11 @@ Create the database using db/create.sql, place the files in your server and upda
 Run <server>/install (where <server> should be your localhost or domain/folder).
 If you have any problems let me know.
 
-== Next updates ==
+************
+Next updates
+************
 
 I plan to update some portions of this application in the following months. Currently these are the features to be developed:
 - User profile: create a user profile with more information about the users.
-- Task history: track what happens with the tasks and how long it takes in each phase.
 - Tasks estimation: add an estimation field to enable a comparison between estimated and realised.
 - ... if you have any ideas, let me know ...
