@@ -4,36 +4,73 @@ class Task_model extends CI_Model {
 
     public function create($data)
     {
-        $this->db->select_max('id');
-        $this->db->where('project', $data['project']);
+        if(!$data['parent_id'])
+            $data['parent_id'] = null;
+        
+        $this->db->select_max('code');
+        $this->db->where('project_id', $data['project_id']);
         $get = $this->db->get('task');
         
         if($get->num_rows > 0) {
             $row = $get->row_array();
-            $data['id'] = $row['id'] + 1;
+            $data['code'] = $row['code'] + 1;
         } else
-            $data['id'] = 1;
+            $data['code'] = 1;
         
         $insert = $this->db->insert('task', $data);
         if($insert)
-            return $data['id'];
+            return $this->db->insert_id();
         
         return false;
     }
 
 
-    public function update($project, $id, $data)
+    public function update($project, $id, $data, $move = false)
     {
-        $this->db->where('project', $project);
-        $this->db->where('id', $id);
-        $update = $this->db->update('task', $data);
-        return $update;
+        $this->db->trans_start();
+        
+        if(isset($data['parent_id']) && !$data['parent_id'])
+            $data['parent_id'] = null;
+        
+        if($move) {
+            // Save history information
+            $history = $this->db->select('date_created')->
+                    where('task_id', $id)->
+                    where('date_finished', NULL)->
+                    get('task_history')->row_array();
+            
+            if($history){
+                $now = strtotime(date('Y-m-d H:i:s'));
+                $before = strtotime($history['date_created']);
+                
+                $this->db->where('task_id', $id)->
+                        where('date_finished', NULL)->
+                        set('date_finished', date('Y-m-d H:i:s'))->
+                        set('duration', $now - $before)->
+                        update('task_history');
+            }
+            
+            $history_data = array(
+                'task_id' => $id,
+                'status' => $data['status'],
+                'date_created' => date('Y-m-d H:i:s'),
+                'date_finished' => NULL
+            );
+            $this->db->insert('task_history', $history_data);
+        }
+        
+        $this->db->where('project_id', $project);
+        $this->db->where('task_id', $id);
+        $this->db->update('task', $data);
+        
+        $this->db->trans_complete();
+        return $this->db->trans_status();
     }
 
     public function get($project, $id = false, $status = false)
     {
-        $this->db->where('project', $project);
-        if ($id) $this->db->where('id', $id);
+        $this->db->where('project_id', $project);
+        if ($id) $this->db->where('task_id', $id);
         if ($status) $this->db->where('status', $status);
         $this->db->order_by('status', 'asc');
         $this->db->order_by('priority', 'asc');
@@ -44,12 +81,69 @@ class Task_model extends CI_Model {
         return array();
     }
     
+    public function get_hierarchy($project, $parent = null, $single_array = true, $output = array(), $i = 0)
+    {
+        // Select tasks according to project and parent - count children so it knows if there are any
+        $this->db->select('task.*, count(child.task_id) as children')->
+                from('task')->
+                join('task child', 'task.task_id = child.parent_id', 'left')->
+                where('task.project_id', $project)->
+                where('task.parent_id', $parent)->
+                order_by('task.title', 'asc')->
+                group_by('task.task_id');
+        
+        $tasks = $this->db->get()->result_array();
+
+        // If it IS a single array, add children in the same array
+        if($single_array) {
+            foreach ($tasks as $value) {
+                $output[] = array(
+                    'id' => $value['task_id'], 
+                    'title' => str_repeat('&nbsp;&nbsp;', $i).(($i)?'- ':'').$value['title']
+                    );
+
+                if($value['children'] > 0)
+                    $output = $this->get_hierarchy($project, $value['task_id'], $single_array, $output, $i+1);
+            }
+        } else {
+            // If it IS NOT a single array, add children as a sub array
+            foreach ($tasks as $value) {
+                $output[] = array(
+                    'id' => $value['task_id'], 
+                    'title' => $value['title'],
+                    'children' => ($value['children'] > 0)?$this->get_hierarchy($project, $value['task_id'], $single_array, $output, $i+1):array()
+                    );
+            }
+        }
+        
+        return $output;
+    }
+    
+    public function get_parents($project, $id)
+    {
+        $this->db->select('task.*')->
+                from('task')->
+                where('task.project_id', $project)->
+                where('task.task_id', $id);
+        
+        $tasks = $this->db->get()->result_array();
+
+        foreach ($tasks as $value) {
+            if($value['parent_id'])
+                $output = $this->get_parents ($project, $value['parent_id']);
+            
+            $output[] = array('id' => $value['task_id'], 'title' => $value['title']);
+        }
+        
+        return $output;
+    }
+    
     public function get_user_tasks($user)
     {
         $this->db->select('t.*');
         $this->db->distinct();
         $this->db->from('task t');
-        $this->db->where('t.user', $user);
+        $this->db->where('t.user_id', $user);
         $this->db->where('t.status !=', 3);
         $this->db->order_by('t.status', 'desc');
         $get = $this->db->get();
@@ -58,15 +152,17 @@ class Task_model extends CI_Model {
         return array();
     }
     
-    public function get_project_user_tasks($project, $user)
+    public function get_project_user_tasks($project, $user, $limit = FALSE)
     {
-        $this->db->select('t.*');
-        $this->db->distinct();
-        $this->db->from('task t');
-        $this->db->where('t.user', $user);
-        $this->db->where('t.project', $project);
-        $this->db->where('t.status !=', 3);
-        $this->db->order_by('t.status', 'desc');
+        $this->db->select('t.*')->
+                distinct()->
+                from('task t')->
+                where('t.user_id', $user)->
+                where('t.project_id', $project)->
+                where('t.status !=', 3)->
+                order_by('t.status', 'desc');
+        if($limit)
+            $this->db->limit($limit);
         $get = $this->db->get();
 
         if($get->num_rows > 0) return $get->result_array();
@@ -89,15 +185,10 @@ class Task_model extends CI_Model {
     public function delete($project, $id)
     {
         $this->db->trans_start();
-        
-        // Remove task comments
-        $this->db->where('project', $project);
-        $this->db->where('task', $id);
-        $this->db->delete('task_comments');
-        
+                
         // Remove task
-        $this->db->where('project', $project);
-        $this->db->where('id', $id);
+        $this->db->where('project_id', $project);
+        $this->db->where('task_id', $id);
         $this->db->delete('task');
         
         $this->db->trans_complete();
@@ -109,18 +200,56 @@ class Task_model extends CI_Model {
         return $this->db->insert('task_comments', $data);
     }
 
-    public function get_comments($project, $task)
+    public function get_comments($task)
     {
         $this->db->select('task_comments.*, user.email')->
                 from('task_comments')->
-                join('user', 'task_comments.user = user.id')->
-                where('project', $project)->
-                where('task', $task);
+                join('user', 'task_comments.user_id = user.id')->
+                where('task_id', $task);
         $get = $this->db->get();
         
         if($get->num_rows > 0)
             return $get->result_array();
         
         return array();
+    }
+    
+    public function get_history($task)
+    {
+        $this->db->select('status, sum(duration) as duration')->
+                from('task_history')->
+                where('task_id', $task)->
+                group_by('status')->
+                order_by('status');
+        $get = $this->db->get();
+        
+        if($get->num_rows > 0)
+            return $get->result_array();
+        
+        return array();
+    }
+    
+    public function get_last_history($task)
+    {
+        $this->db->select('status, date_created')->
+                from('task_history')->
+                where('task_id', $task)->
+                where('date_finished', NULL);
+        $get = $this->db->get();
+        
+        if($get->num_rows > 0)
+            return $get->row_array();
+        
+        return array();
+    }
+    
+    public function get_status_array()
+    {
+        return array(
+            0 => 'To Do',
+            1 => 'In Progress',
+            2 => 'Testing',
+            3 => 'Done'
+        );
     }
 }
