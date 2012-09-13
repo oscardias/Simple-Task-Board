@@ -61,7 +61,9 @@ class Install extends CI_Controller {
     {
         // Update the database
         $this->load->model('database_model');
-        $this->database_model->upgrade();
+        if(!$this->database_model->is_up_to_date()) {
+            $this->database_model->upgrade();
+        }
         
         // Load View
         $data['page_title']  = "Login";
