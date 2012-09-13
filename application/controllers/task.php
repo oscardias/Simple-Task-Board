@@ -20,15 +20,17 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $data['page_title']  = "New Task";
+        $data['parent_id']      = 0;
         $data['title']       = '';
         $data['description'] = '';
         $data['priority']    = '2';
         $data['files']       = '';
         $data['database']    = '';
         
-        $data['project']  = $project;
+        $data['project_id']  = $project;
         $data['users'] = $this->task_model->get_related_users($project);
-        $data['user'] = $this->session->userdata('user');
+        $data['user_id'] = $this->session->userdata('user');
+        $data['tasks'] = $this->task_model->get_hierarchy($project);
         
         $this->template->show('task_add', $data);
     }
@@ -38,30 +40,43 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $data = $this->task_model->get($project, $id);
-        $data['page_title']  = "Edit Task #".$id;
+        $data['page_title']  = "Edit Task #".$data['code'];
         
-        $data['project']  = $project;
-        $data['task']  = $id;
+        $data['project_id']  = $project;
         $data['users'] = $this->task_model->get_related_users($project);
+        $data['tasks'] = $this->task_model->get_hierarchy($project);
         
         $this->template->show('task_add', $data);
     }
 
     public function view($project, $id)
     {
+        $this->load->helper('tasks');
+        $this->load->helper('stb_date');
+        
         $this->load->model('task_model');
         $this->load->model('user_model');
         
         $data = $this->task_model->get($project, $id);
-        $data['page_title']  = "View Task #".$id;
+        $data['page_title']  = "View Task #".$data['code'];
         
-        $data['project']  = $project;
-        $data['task']  = $id;
+        $data['project_id']  = $project;
         
-        $user = $this->user_model->get($data['user']);
+        if($data['parent_id'])
+            $data['parent_tasks'] = $this->task_model->get_parents($project, $data['parent_id']);
+        else
+            $data['parent_tasks'] = false;
+        
+        $data['children_tasks'] = $this->task_model->get_hierarchy($project, $id, false);
+        
+        $user = $this->user_model->get($data['user_id']);
         $data['user'] = $user['email'];
         
-        $data['comments'] = $this->task_model->get_comments($project, $id);
+        $data['comments'] = $this->task_model->get_comments($id);
+        
+        $data['task_history'] = $this->task_model->get_history($id);
+        $data['task_history_last'] = $this->task_model->get_last_history($id);
+        $data['status_arr'] = $this->task_model->get_status_array();
         
         $this->template->show('task', $data);
     }
@@ -71,24 +86,25 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $sql_data = array(
-            'project' => $this->input->post('project'),
+            'project_id' => $this->input->post('project_id'),
             'status' => ($this->input->post('status'))?$this->input->post('status'):0,
             'title' => $this->input->post('title'),
+            'parent_id' => $this->input->post('parent_id'),
             'description' => $this->input->post('description'),
             'priority' => $this->input->post('priority'),
-            'user'     => $this->input->post('user'),
+            'user_id'     => $this->input->post('user_id'),
             'files'    => ($this->input->post('files'))?$this->input->post('files'):'',
             'database' => ($this->input->post('database'))?$this->input->post('database'):''
         );
         
-        $id = $this->input->post('id');
+        $id = $this->input->post('task_id');
         
         if ($id)
-            $this->task_model->update($this->input->post('project'), $id, $sql_data);
+            $this->task_model->update($this->input->post('project_id'), $id, $sql_data);
         else
             $id = $this->task_model->create($sql_data);
 
-        redirect('task/view/'.$this->input->post('project').'/'.$id);
+        redirect('task/view/'.$this->input->post('project_id').'/'.$id);
     }
     
     public function move($project, $id, $status)
@@ -99,7 +115,7 @@ class Task extends CI_Controller {
             'status' => $status
         );
 
-        $this->task_model->update($project, $id, $sql_data);
+        $this->task_model->update($project, $id, $sql_data, true);
 
         redirect('project/tasks/'.$project);
     }
@@ -117,16 +133,15 @@ class Task extends CI_Controller {
         // TODO: Check if user is related to project
         
         $data = array(
-            'project' => $this->input->post('project'),
-            'task' => $this->input->post('task'),
-            'user' => $this->session->userdata('user'),
+            'task_id' => $this->input->post('task_id'),
+            'user_id' => $this->session->userdata('user'),
             'comment' => $this->input->post('comment')
         );
         
         $this->load->model('task_model');
         $this->task_model->create_comment($data);
 
-        redirect('task/view/'.$data['project'].'/'.$data['task']);
+        redirect('task/view/'.$this->input->post('project_id').'/'.$data['task_id']);
     }
 
 }

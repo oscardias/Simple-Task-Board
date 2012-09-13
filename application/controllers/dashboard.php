@@ -2,18 +2,9 @@
 
 class Dashboard extends CI_Controller {
     
-    private $STATUS;
-    
     function Dashboard()
     {
         parent::__construct();
-        
-        $this->STATUS = array(
-            0 => 'To Do',
-            1 => 'In Progress',
-            2 => 'Testing',
-            3 => 'Done'
-        );
         
         if(!$this->usercontrol->has_permission('dashboard'))
             redirect('login');        
@@ -29,7 +20,7 @@ class Dashboard extends CI_Controller {
         $projects = $this->project_model->get_user_related($this->session->userdata('user'));
         
         foreach ($projects as $key => $project) {
-            $projects[$key]['tasks'] = $this->task_model->get_project_user_tasks($project['id'], $this->session->userdata('user'));
+            $projects[$key]['tasks'] = $this->task_model->get_project_user_tasks($project['id'], $this->session->userdata('user'),5);
         }
         
         $data['projects'] = $projects;
@@ -38,7 +29,7 @@ class Dashboard extends CI_Controller {
         $data['tasks'] = $this->task_model->get_user_tasks($this->session->userdata('user'));
         
         $data['page_title']  = "Dashboard";
-        $data['status'] = $this->STATUS;
+        $data['status_arr'] = $this->task_model->get_status_array();
         
         // Load View
         $this->template->show('dashboard', $data);

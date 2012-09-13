@@ -34,7 +34,7 @@ class Project extends CI_Controller {
         $project = $this->project_model->get($project_id);
         
         $data['page_title'] = "Project: ".$project['name'];
-        $data['project']    = $project_id;
+        $data['project_id']    = $project_id;
         
         $data['current_user'] = $this->session->userdata('user');
         
@@ -88,7 +88,7 @@ class Project extends CI_Controller {
         $data = $this->project_model->get($id);
         
         $data['page_title']  = "Edit Project #".$id;
-        $data['project']  = $id;
+        $data['project_id']  = $id;
         $data['users'] = $this->project_model->get_related_users($id);
         
         $this->template->show('project_add', $data);
