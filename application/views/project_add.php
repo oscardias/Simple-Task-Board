@@ -38,7 +38,7 @@ else
             <td colspan="2">
                 <div class="project-users blue-gradient">
                     Associated Users
-                    <span class="show-hide-event expand" target-id="associated-users"></span>
+                    <span id="show-hide-users" class="expand" target-id="associated-users"></span>
                 </div>
             </td>
         </tr>
