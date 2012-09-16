@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    /* Login focus */
+    $('input[name=email]').focus();
+    
     /* User actions */
     $('#reset_password').click(function(){
         if ($(this).is(':checked')) {
