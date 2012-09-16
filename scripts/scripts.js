@@ -11,7 +11,7 @@ $(document).ready(function(){
         }   
     });
     
-    $('.remove-user-event').click(function(){
+    $('a.remove-user-event').click(function(){
         var url = $(this).attr('href');
         $('#dialog-confirm').dialog({
             resizable: false,
@@ -31,7 +31,7 @@ $(document).ready(function(){
     });
     
     /* General actions */
-    $('.show-hide-event').click(function(){
+    $('#show-hide-users').click(function(){
         var targetId = $(this).attr('target-id');
         if($(this).hasClass('expand')){
             $(this).removeClass('expand').addClass('collapse');
@@ -43,13 +43,13 @@ $(document).ready(function(){
     });
     
     /* Dashboard actions*/
-    $('.switch-project-view-event').click(function(){
+    $('#switch-project-view').click(function(){
         if($(this).hasClass('global-tasks')) {
-            $('.project-task').show('slow');
+            $('div.project-task').show('slow');
             $(this).attr('title', 'Show mine');
             $(this).removeClass('global-tasks').addClass('user-tasks');
         } else {
-            $('.project-task').hide('slow');
+            $('div.project-task').hide('slow');
             $(this).attr('title', 'Show all');
             $(this).removeClass('user-tasks').addClass('global-tasks');
         }
