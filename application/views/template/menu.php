@@ -67,6 +67,6 @@
 <div id="page-title">
     <?php echo $page_title; ?>
     <?php if($view == 'task_board') { ?>
-    <span class="switch-project-view-event global-tasks btn" title="Show all"></span>
+    <span id="switch-project-view" class="global-tasks btn" title="Show all"></span>
     <?php } ?>
 </div>
