@@ -3,9 +3,34 @@
     <p class="task_id">#<?php echo $task['code']; ?></p>
     <p class="task_title"><?php echo anchor('task/view/'.$project.'/'.$task['task_id'], $task['title']); ?></p>
     <p class="task_user">Assigned to: <?php echo $users[$task['user_id']]['email']; ?></p>
+
     <?php if($task['status'] < 3) { ?>
-    <p class="task_text"><?php echo word_limiter($task['description'], 30); ?></p>
+    
+        <?php if($task['status'] > 0) { ?>
+    
+            <?php if($task['total_duration'] || $task['task_history_date_created']) { ?>
+            <p class="task_time">Duration:
+                <?php if($task['task_history_date_created']) { ?>
+                    <?php echo anchor('task/timer/'.$project.'/'.$task['task_id'].'/stop', 'Stop', 'class="task_time_control stop" title="Stop"'); ?>
+
+                    <?php echo timespan_diff($task['total_duration'] + (time() - strtotime($task['task_history_date_created']))); ?>
+                    <?php if($task['status'] != 3) { ?>
+                    - ongoing
+                    <?php } ?>
+                <?php } else { ?>
+                    <?php echo anchor('task/timer/'.$project.'/'.$task['task_id'].'/play', 'Continue', 'class="task_time_control play" title="Continue"'); ?>
+
+                    <?php echo timespan_diff($task['total_duration']); ?>
+                <?php } ?>
+            </p>
+            <?php } ?>
+            
+        <?php } ?>
+
+        <p class="task_text"><?php echo word_limiter($task['description'], 30); ?></p>
+    
     <?php } ?>
+    
     <?php if($task['status'] == 0) { ?>
     <p class="task_links"><?php echo anchor('task/move/'.$project.'/'.$task['task_id'].'/1', 'Start &raquo;'); ?></p>
     <?php } else if($task['status'] == 1) { ?>

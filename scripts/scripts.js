@@ -76,4 +76,34 @@ $(document).ready(function(){
         return false;
     });
     
+    $('a.task_time_control').live('click', function(){
+        var element = $(this);
+        var parent = element.parent();
+        
+        $.get(element.attr('href'),
+            function(data){
+                if(data.result == 1){
+                    if(element.hasClass('stop')) {
+                        element.attr('title', 'Continue');
+                        element.attr('href', data.new_action);
+                        element.removeClass('stop').addClass('play');
+                        
+                        var html = parent.html();
+                        parent.html(html.replace('- ongoing', ''));
+                    } else {
+                        element.attr('title', 'Stop');
+                        element.attr('href', data.new_action);
+                        element.removeClass('play').addClass('stop');
+                        
+                        var html = parent.html();
+                        parent.html(html + '- ongoing');
+                    }
+                }
+            },
+            'json'
+        );
+            
+        return false;
+    });
+    
  });

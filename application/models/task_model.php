@@ -33,30 +33,7 @@ class Task_model extends CI_Model {
             $data['parent_id'] = null;
         
         if($move) {
-            // Save history information
-            $history = $this->db->select('date_created')->
-                    where('task_id', $id)->
-                    where('date_finished', NULL)->
-                    get('task_history')->row_array();
-            
-            if($history){
-                $now = strtotime(date('Y-m-d H:i:s'));
-                $before = strtotime($history['date_created']);
-                
-                $this->db->where('task_id', $id)->
-                        where('date_finished', NULL)->
-                        set('date_finished', date('Y-m-d H:i:s'))->
-                        set('duration', $now - $before)->
-                        update('task_history');
-            }
-            
-            $history_data = array(
-                'task_id' => $id,
-                'status' => $data['status'],
-                'date_created' => date('Y-m-d H:i:s'),
-                'date_finished' => NULL
-            );
-            $this->db->insert('task_history', $history_data);
+            $this->timer($id, 'move', $data['status']);
         }
         
         $this->db->where('project_id', $project);
@@ -69,12 +46,20 @@ class Task_model extends CI_Model {
 
     public function get($project, $id = false, $status = false)
     {
-        $this->db->where('project_id', $project);
-        if ($id) $this->db->where('task_id', $id);
-        if ($status) $this->db->where('status', $status);
-        $this->db->order_by('status', 'asc');
-        $this->db->order_by('priority', 'asc');
-        $get = $this->db->get('task');
+        $this->db->select('t.*, sum(th.duration) as total_duration, th_last.date_created as task_history_date_created')->
+                from('task t')->
+                join('task_history th', 't.task_id = th.task_id', 'left')->
+                join('task_history th_last', 't.task_id = th_last.task_id AND th_last.date_finished IS NULL', 'left')->
+                where('t.project_id', $project);
+        
+        if ($id) $this->db->where('t.task_id', $id);
+        if ($status) $this->db->where('t.status', $status);
+        
+        $this->db->group_by('t.task_id')->
+                order_by('t.status', 'asc')->
+                order_by('t.priority', 'asc');
+        
+        $get = $this->db->get();
 
         if ($id) return $get->row_array();
         if($get->num_rows > 0) return $get->result_array();
@@ -251,5 +236,59 @@ class Task_model extends CI_Model {
             2 => 'Testing',
             3 => 'Done'
         );
+    }
+    
+    public function timer($task_id, $type = 'move', $status = false)
+    {
+        $this->db->trans_start();
+        
+        if($type != 'play') {
+            
+            // Update date finished and duration
+            $history = $this->db->select('task_history_id, status, date_created')->
+                    where('task_id', $task_id)->
+                    where('date_finished', NULL)->
+                    get('task_history')->row_array();
+
+            if($history){
+                $now = strtotime(date('Y-m-d H:i:s'));
+                $before = strtotime($history['date_created']);
+                
+                if($status === false)
+                    $status = $history['status'];
+
+                $this->db->where('task_history_id', $history['task_history_id'])->
+                        set('date_finished', date('Y-m-d H:i:s'))->
+                        set('duration', $now - $before)->
+                        update('task_history');
+            }
+            
+        }
+        
+        if($status === false) {
+            // Get status of last entry in case it was not defined
+            $history = $this->db->select('status')->
+                    from('task_history')->
+                    where('task_id', $task_id)->
+                    order_by('task_history_id', 'desc')->
+                    get()->row_array();
+            $status = $history['status'];
+        }
+
+        if($type != 'stop') {
+            
+            // Create new entry in history
+            $history_data = array(
+                'task_id' => $task_id,
+                'status' => $status,
+                'date_created' => date('Y-m-d H:i:s'),
+                'date_finished' => NULL
+            );
+            $this->db->insert('task_history', $history_data);
+            
+        }
+        
+        $this->db->trans_complete();
+        return $this->db->trans_status();
     }
 }

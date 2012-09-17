@@ -44,7 +44,7 @@ a:hover{color:#7872D8}
     -webkit-box-shadow:0px 0px 80px #999;
     box-shadow:0px 0px 80px #999;
     background-color:#f5f5f5;
-    border:1px solid #D5D5D5
+    border:1px solid #999;
 }
 #login label {
     font-size: 16px;
@@ -395,19 +395,22 @@ a:hover{color:#7872D8}
     padding:10px;
     margin:0 0 10px 0;
     overflow:hidden;
+    display: table;
 }
 .task-info-left{
-    float:left;
-    max-width:70%;
+    width:75%;
     padding-right: 10px;
+    display:table-cell;
 }
 .task-info-right{
-    float:right;
+    width:25%;
     padding: 10px;
     margin-left: 10px;
     border: 1px solid #d5d5d5;
+    display:table-cell;
 }
 .task-info-title{
+    display: table-row;
     font-size: 2em;
     margin:0.5em 0;
     text-shadow: 1px 1px 0 #fff;
@@ -484,7 +487,20 @@ a:hover{color:#7872D8}
 .task_text{margin:0;padding:1px}
 .task_info{margin:0;padding:1px}
 .task_links{text-align:center;margin:0;padding:1px}
-.task_user{margin:2px 0;font-style:italic;color:#666;font-size:11px;}
+.task_user, .task_time{margin:2px 0;font-style:italic;color:#666;font-size:11px;}
+.task_time_control{
+    float:right;
+    width:16px;
+    height:16px;
+    text-indent: -10000px;
+    outline: none;
+}
+.task_time_control.stop{
+    background-image:url(../images/stop.png);
+}
+.task_time_control.play{
+    background-image:url(../images/play.png);
+}
 ul.task-hierarchy{
     list-style: none;
     padding-left:0;

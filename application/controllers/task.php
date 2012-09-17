@@ -143,5 +143,24 @@ class Task extends CI_Controller {
 
         redirect('task/view/'.$this->input->post('project_id').'/'.$data['task_id']);
     }
+    
+    public function timer($project, $id, $action = 'stop')
+    {
+        $this->load->model('task_model');
+        
+        $result = $this->task_model->timer($id, $action);
 
+        if(!IS_AJAX)
+            redirect('task/view/'.$project.'/'.$id);
+        else {
+            if($result)
+                echo json_encode (array(
+                    'result' => 1,
+                    'new_action' => base_url().'task/timer/'.$project.'/'.$id.(($action == 'stop')?'/play':'/stop')
+                    ));
+            else
+                echo json_encode (array('result' => 0));
+        }
+    }
+    
 }

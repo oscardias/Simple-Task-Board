@@ -9,6 +9,8 @@ class Project extends CI_Controller {
     
     public function tasks($project_id)
     {
+        $this->load->helper('stb_date');
+        
         // Check permission
         if(!$this->usercontrol->has_permission('project', 'tasks'))
             redirect('dashboard');

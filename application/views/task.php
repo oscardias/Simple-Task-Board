@@ -17,6 +17,8 @@ $this->template->menu('task_view');
                 <?php echo ($key == 0)?'':'&gt;'; ?>
                 <?php echo anchor(base_url()."task/view/{$project_id}/{$value['id']}", $value['title']); ?>
                 <?php } ?>
+                &gt;
+                <?php echo $title; ?>
             </p>
             <?php endif; ?>
             
@@ -56,7 +58,27 @@ $this->template->menu('task_view');
                 <strong>Assigned To:</strong>
                 <em><?php echo $user; ?></em>
             </p>
+            <p>
+                <strong>Current Phase:</strong>
+                <?php echo $status_arr[$status]; ?>
+            </p>
             <p class="task-info-status">
+                <?php if($total_duration || $task_history_date_created) { ?>
+                <p><strong>Duration:</strong><br/>
+                    <?php if($task_history_date_created) { ?>
+                        <?php echo anchor('task/timer/'.$project_id.'/'.$task_id.'/stop', 'Stop', 'class="task_time_control stop" title="Stop"'); ?>
+
+                        <?php echo timespan_diff($total_duration + (time() - strtotime($task_history_date_created))); ?>
+                        <?php if($status != (count($status_arr) - 1)) { ?>
+                        - ongoing
+                        <?php } ?>
+                    <?php } else { ?>
+                        <?php echo anchor('task/timer/'.$project_id.'/'.$task_id.'/play', 'Continue', 'class="task_time_control play" title="Continue"'); ?>
+
+                        <?php echo timespan_diff($total_duration); ?>
+                    <?php } ?>
+                </p>
+                <?php } ?>
                 <strong>History:</strong>
             <ul class="task-history">
                 <?php if($task_history) { ?>
@@ -66,8 +88,11 @@ $this->template->menu('task_view');
                     <ul>
                         <li>
                             <em>
-                        <?php if($task_history_last['status'] == $value['status']) { ?>
-                        <?php echo timespan_diff($value['duration'] + (time() - strtotime($task_history_last['date_created']))); ?> - ongoing
+                        <?php if($task_history_date_created) { ?>
+                        <?php echo timespan_diff($value['duration'] + (time() - strtotime($task_history_date_created))); ?>
+                                <?php if($value['status'] != (count($status_arr) - 1)) { ?>
+                                - ongoing
+                                <?php } ?>
                         <?php } else { ?>
                         <?php echo timespan_diff($value['duration']); ?>
                         <?php } ?>
