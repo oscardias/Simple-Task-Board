@@ -10,7 +10,7 @@ $this->template->menu('users');
     <table>
         <tr>
             <td>
-                <?php echo form_label('Email', 'email'); ?>
+                <?php echo form_label('Email *', 'email'); ?>
             </td>
             <td>
                 <?php echo form_input('email', $email); ?>
@@ -38,6 +38,13 @@ $this->template->menu('users');
                 <?php echo form_dropdown('level', $level_list, $level); ?>
             </td>
         </tr>
+        <?php if(isset($error)) : ?>
+        <tr>
+            <td colspan="2" class="error">
+                <?php echo validation_errors(); ?>
+            </td>
+        </tr>
+        <?php endif; ?>
         <tr>
                 <td colspan="2">
                     <?php if (isset($id)) echo form_hidden('id', $id); ?>

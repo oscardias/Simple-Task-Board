@@ -2,6 +2,8 @@
 
 class Project extends CI_Controller {
     
+    private $error = false;
+    
     public function index()
     {
         redirect('dashboard');
@@ -76,6 +78,9 @@ class Project extends CI_Controller {
         }
         $data['users'] = $users;
         
+        if($this->error)
+            $data['error'] = $this->error;
+        
         $this->template->show('project_add', $data);
     }
 
@@ -93,6 +98,9 @@ class Project extends CI_Controller {
         $data['project_id']  = $id;
         $data['users'] = $this->project_model->get_related_users($id);
         
+        if($this->error)
+            $data['error'] = $this->error;
+        
         $this->template->show('project_add', $data);
     }
     
@@ -101,25 +109,41 @@ class Project extends CI_Controller {
         // Check permission
         if(!$this->usercontrol->has_permission('project'))
             redirect('dashboard');
+
+        // Get project ID - false if new entry
+        $project_id = $this->input->post('id');
+        
+        $this->load->library('form_validation');
+        
+        $this->form_validation->set_rules('name', 'Name', 'trim|required');
+        
+        if($this->form_validation->run() === false)  {
+            $this->error = true;
+            
+            if ($project_id)
+                $this->edit ($project_id);
+            else
+                $this->add ();
+            
+            return;
+        }
         
         $this->load->model('project_model');
-        
+
         $sql_data = array(
             'user'        => $this->session->userdata('user'),
             'name'        => $this->input->post('name'),
             'description' => $this->input->post('description')
         );
-        
-        $project_id = $this->input->post('id');
-        
+
         if ($project_id)
             $this->project_model->update($project_id,$sql_data);
         else
             $project_id = $this->project_model->create($sql_data);
-            
+
         // Related users
         $this->project_model->delete_related($project_id);
-        
+
         $users = $this->input->post('users');
         foreach ($users as $user) {
             $sql_data = array(
@@ -133,5 +157,6 @@ class Project extends CI_Controller {
             redirect('project/tasks/'.$project_id);
         else
             redirect('project');
+
     }
 }

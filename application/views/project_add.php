@@ -13,10 +13,10 @@ else
     <table>
         <tr>
             <td>
-                <?php echo form_label('Name', 'name'); ?>
+                <?php echo form_label('Name *', 'name'); ?>
             </td>
             <td>
-                <?php echo form_input('name', $name); ?>
+                <?php echo form_input('name', set_value('name', $name)); ?>
             </td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@ else
                 <?php
                 $data = array('name'        => 'description',
                               'id'          => 'description',
-                              'value'       => $description,
+                              'value'       => set_value('description', $description),
                               'rows'        => '6',
                               'cols'        => '80');
 
@@ -61,6 +61,13 @@ else
             </td>
         </tr>
         </tbody>
+        <?php if(isset($error)) : ?>
+        <tr>
+            <td colspan="2" class="error">
+                <?php echo validation_errors(); ?>
+            </td>
+        </tr>
+        <?php endif; ?>
         <tr>
                 <td colspan="2">
                     <?php if (isset($id)) echo form_hidden('id', $id); ?>

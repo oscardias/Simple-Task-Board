@@ -20,8 +20,8 @@ $this->template->menu('users');
                 <td><?php echo $level_list[$user['level']]; ?></td>
                 <td><?php echo date("j/M/Y, g:i a", strtotime($user['date_created'])); ?></td>
                 <td>
-                    <?php echo anchor('user/edit/'.$user['id'], '<img src="images/edit.png" title="Edit User"/>'); ?>
-                    <?php echo anchor('user/remove/'.$user['id'], '<img src="images/remove.png" title="Remove User"/>', 'class="remove-user-event"'); ?>
+                    <?php echo anchor('user/edit/'.$user['id'], '<img src="'.base_url().'images/edit.png" title="Edit User"/>'); ?>
+                    <?php echo anchor('user/remove/'.$user['id'], '<img src="'.base_url().'images/remove.png" title="Remove User"/>', 'class="remove-user-event"'); ?>
                 </td>
             </tr>
         <?php } ?>

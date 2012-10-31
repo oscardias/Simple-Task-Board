@@ -2,6 +2,8 @@
 
 class Task extends CI_Controller {
     
+    private $error = false;
+    
     function Task()
     {
         parent::__construct();
@@ -32,6 +34,9 @@ class Task extends CI_Controller {
         $data['user_id'] = $this->session->userdata('user');
         $data['tasks'] = $this->task_model->get_hierarchy($project);
         
+        if($this->error)
+            $data['error'] = $this->error;
+        
         $this->template->show('task_add', $data);
     }
 
@@ -45,6 +50,9 @@ class Task extends CI_Controller {
         $data['project_id']  = $project;
         $data['users'] = $this->task_model->get_related_users($project);
         $data['tasks'] = $this->task_model->get_hierarchy($project);
+        
+        if($this->error)
+            $data['error'] = $this->error;
         
         $this->template->show('task_add', $data);
     }
@@ -83,10 +91,31 @@ class Task extends CI_Controller {
     
     public function save()
     {
+        $project_id = $this->input->post('project_id');
+        $id = $this->input->post('task_id');
+        
+        $this->load->library('form_validation');
+        
+        $this->form_validation->set_rules('title', 'Title', 'trim|required');
+        
+        if($this->form_validation->run() === false)  {
+            $this->error = true;
+            
+            if ($id)
+                $this->edit ($project_id, $id);
+            else
+                if($project_id)
+                    $this->add ($project_id);
+                else
+                    redirect('dashboard');
+            
+            return;
+        }
+        
         $this->load->model('task_model');
         
         $sql_data = array(
-            'project_id' => $this->input->post('project_id'),
+            'project_id' => $project_id,
             'status' => ($this->input->post('status'))?$this->input->post('status'):0,
             'title' => $this->input->post('title'),
             'parent_id' => $this->input->post('parent_id'),
@@ -96,8 +125,6 @@ class Task extends CI_Controller {
             'files'    => ($this->input->post('files'))?$this->input->post('files'):'',
             'database' => ($this->input->post('database'))?$this->input->post('database'):''
         );
-        
-        $id = $this->input->post('task_id');
         
         if ($id)
             $this->task_model->update($this->input->post('project_id'), $id, $sql_data);

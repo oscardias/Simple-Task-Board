@@ -10,7 +10,7 @@ $this->template->menu('task_edit');
     <table>
         <tr>
             <td>
-                <?php echo form_label('Title', 'title'); ?>
+                <?php echo form_label('Title *', 'title'); ?>
             </td>
             <td>
                 <?php echo form_input('title', $title, 'maxlength="50"'); ?>
@@ -101,6 +101,13 @@ $this->template->menu('task_edit');
             </td>
         </tr>
         <?php } ?>
+        <?php if(isset($error)) : ?>
+        <tr>
+            <td colspan="2" class="error">
+                <?php echo validation_errors(); ?>
+            </td>
+        </tr>
+        <?php endif; ?>
         <tr>
                 <td colspan="2">
                     <?php if (isset($task_id)) echo form_hidden('task_id', $task_id); ?>

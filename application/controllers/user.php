@@ -3,7 +3,8 @@
 class User extends CI_Controller {
     
     private $LEVEL;
-    
+    private $error = false;
+        
     function User()
     {
         parent::__construct();
@@ -39,6 +40,9 @@ class User extends CI_Controller {
         $data['level']    = '1';
         $data['level_list'] = $this->LEVEL;
         
+        if($this->error)
+            $data['error'] = $this->error;
+        
         $this->template->show('users_add', $data);
     }
 
@@ -51,6 +55,9 @@ class User extends CI_Controller {
         $data['page_title']  = "Edit User #".$id;
         
         $data['level_list'] = $this->LEVEL;
+        
+        if($this->error)
+            $data['error'] = $this->error;
         
         $this->template->show('users_add', $data);
     }
@@ -65,6 +72,23 @@ class User extends CI_Controller {
     
     public function save()
     {
+        $user_id = $this->input->post('id');
+        
+        $this->load->library('form_validation');
+        
+        $this->form_validation->set_rules('email', 'Email', 'trim|required');
+        
+        if($this->form_validation->run() === false)  {
+            $this->error = true;
+            
+            if ($user_id)
+                $this->edit ($user_id);
+            else
+                $this->add ();
+            
+            return;
+        }
+        
         $this->load->model('user_model');
         
         $sql_data = array(
@@ -76,8 +100,8 @@ class User extends CI_Controller {
             $sql_data['password'] = $this->input->post('password');
         }
         
-        if ($this->input->post('id'))
-            $this->user_model->update($this->input->post('id'),$sql_data);
+        if ($user_id)
+            $this->user_model->update($user_id,$sql_data);
         else
             $this->user_model->create($sql_data);
 
