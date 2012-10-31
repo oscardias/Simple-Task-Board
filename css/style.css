@@ -554,6 +554,10 @@ input[type=submit],button{
     text-shadow:1px 1px 0 #3070D5;
     border:1px solid #3079ED
 }
+td.error{
+    color: #DD0000;
+    padding:0 5px;
+}
 
 /* JQUERY UI DIALOG */
 .ui-dialog{
