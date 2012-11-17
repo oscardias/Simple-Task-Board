@@ -395,7 +395,6 @@ a:hover{color:#7872D8}
     padding:10px;
     margin:0 0 10px 0;
     overflow:hidden;
-    display: table;
 }
 .task-info-left{
     width:75%;
@@ -440,6 +439,7 @@ a:hover{color:#7872D8}
     background-color:#f5f5f5;
     border:1px solid #D5D5D5;
     margin:0 auto;
+    width:100%;
 }
 #container table th{
     font-size:14px;
@@ -453,22 +453,17 @@ a:hover{color:#7872D8}
     width:25%;
     vertical-align:top;
 }
-.transport{
-    margin:0 0 6px;
-    padding:2px 4px 2px 22px;
-    background-image:url(../images/box.png);
-    background-position:2px 50%;
-    background-repeat:no-repeat;
-    background-color:#f5f5f5
+table.history thead tr td{
+    font-size:14px;
+    font-weight:normal;
+    padding:2px;
+    color:#fff;
+    text-shadow:1px 1px 0 #3070D5;
+    border:1px solid #3079ED
 }
-.transport_info{
-    margin:1px 0;
-    padding:1px;
-    border:1px solid #D5D5D5
-}
-.transport_info:hover{
-    background-color:#efefef;
-    outline:1px solid #D5D5D5
+table.history td{
+    width:20%;
+    vertical-align:top;
 }
 .task{
     margin:2px 0;
@@ -580,7 +575,7 @@ td.error{
 .ui-dialog-titlebar-close{
     float:right;
     margin-right: 16px;
-    text-indent: -1000px;
+    text-indent: -9999px;
 }
 .ui-icon-closethick{
     background-image: url(../images/close.png);
