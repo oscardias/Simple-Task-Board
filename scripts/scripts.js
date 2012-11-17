@@ -76,34 +76,52 @@ $(document).ready(function(){
         return false;
     });
     
-    $('a.task_time_control').live('click', function(){
-        var element = $(this);
-        var parent = element.parent();
-        
-        $.get(element.attr('href'),
-            function(data){
-                if(data.result == 1){
-                    if(element.hasClass('stop')) {
-                        element.attr('title', 'Continue');
-                        element.attr('href', data.new_action);
-                        element.removeClass('stop').addClass('play');
-                        
-                        var html = parent.html();
-                        parent.html(html.replace('- ongoing', ''));
-                    } else {
-                        element.attr('title', 'Stop');
-                        element.attr('href', data.new_action);
-                        element.removeClass('play').addClass('stop');
-                        
-                        var html = parent.html();
-                        parent.html(html + '- ongoing');
-                    }
-                }
-            },
-            'json'
-        );
-            
-        return false;
-    });
+     $('a.task_time_control').live('click', function(){
+       var element = $(this);
+       var duration = element.next();
+       
+       $.get(element.attr('href'),
+           function(data){
+               if(data.result == 1){
+                   if(element.hasClass('stop')) {
+                       element.attr('title', 'Continue');
+                       element.attr('href', data.new_action);
+                       element.removeClass('stop').addClass('play');
+                       duration.html(data.duration);
+                   } else {
+                       element.attr('title', 'Stop');
+                       element.attr('href', data.new_action);
+                       element.removeClass('play').addClass('stop');
+                       duration.html(data.duration + ' - ongoing');
+                   }
+               }
+           },
+           'json'
+       );
+           
+       return false;
+   });
+   
+   $('#task-history-details').click(function(){
+       var href = $(this).attr('href');
+       console.log(href);
+       $.get(href, 
+           function(data){
+               $(data).dialog({
+                   resizable: false,
+                   height:0.8 * $(document).height(),
+                   width:0.8 * $(document).width(),
+                   modal: true,
+                   buttons: {
+                       Close: function() {
+                           $( this ).dialog( "close" );
+                       }
+                   }
+               });
+           }
+       );
+       
+       return false;
+   });
     
  });
