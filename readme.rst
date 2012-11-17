@@ -2,7 +2,7 @@
 Simple Task Board
 #################
 
-- Version: 1.3.2
+- Version: 1.3.3
 - Link: http://oscardias.com/projects/simple-task-board/
 - Author: Oscar Dias
 - Website: http://oscardias.com
