@@ -173,6 +173,7 @@ class Task extends CI_Controller {
     
     public function timer($project, $id, $action = 'stop')
     {
+        $this->load->helper('stb_date');
         $this->load->model('task_model');
         
         $result = $this->task_model->timer($id, $action);
@@ -180,14 +181,45 @@ class Task extends CI_Controller {
         if(!IS_AJAX)
             redirect('task/view/'.$project.'/'.$id);
         else {
-            if($result)
+            if($result) {
+                $task  = $this->task_model->get($project, $id);
+                if($action == 'stop')
+                    $duration = timespan_diff($task['total_duration']);
+                else
+                    $duration = timespan_diff($task['total_duration'] + (time() - strtotime($task['task_history_date_created'])));
+                
                 echo json_encode (array(
                     'result' => 1,
-                    'new_action' => base_url().'task/timer/'.$project.'/'.$id.(($action == 'stop')?'/play':'/stop')
+                    'new_action' => base_url().'task/timer/'.$project.'/'.$id.(($action == 'stop')?'/play':'/stop'),
+                    'duration' => $duration
                     ));
-            else
+            } else
                 echo json_encode (array('result' => 0));
         }
     }
+    
+    public function history($project, $id)
+    {
+        $this->load->helper('stb_date');
+        $this->load->model('task_model');
+        
+        // Get the task
+        $data = $this->task_model->get($project, $id);
+        $data['page_title']  = "Task #".$data['code']." History";
+        
+        // Get the history
+        $data['task_history'] = $this->task_model->get_history($id, true);
+        
+        $data['status_arr'] = $this->task_model->get_status_array();
+
+        if(!IS_AJAX) {
+            $data['project_id']  = $project;
+            $data['task_id']  = $id;
+            
+            $this->template->show('task_history', $data);
+        } else {
+            $this->load->view('task_history_details', $data);
+        }
+    }    
     
 }

@@ -68,18 +68,22 @@ $this->template->menu('task_view');
                     <?php if($task_history_date_created) { ?>
                         <?php echo anchor('task/timer/'.$project_id.'/'.$task_id.'/stop', 'Stop', 'class="task_time_control stop" title="Stop"'); ?>
 
+                        <span class="task_time_value">
                         <?php echo timespan_diff($total_duration + (time() - strtotime($task_history_date_created))); ?>
                         <?php if($status != (count($status_arr) - 1)) { ?>
                         - ongoing
                         <?php } ?>
+                        </span>
                     <?php } else { ?>
                         <?php echo anchor('task/timer/'.$project_id.'/'.$task_id.'/play', 'Continue', 'class="task_time_control play" title="Continue"'); ?>
 
+                        <span class="task_time_value">
                         <?php echo timespan_diff($total_duration); ?>
+                        </span>
                     <?php } ?>
                 </p>
                 <?php } ?>
-                <strong>History:</strong>
+                <strong>History (<?php echo anchor('task/history/'.$project_id.'/'.$task_id, 'details', 'id="task-history-details"'); ?>):</strong>
             <ul class="task-history">
                 <?php if($task_history) { ?>
                 <?php foreach ($task_history as $value) { ?>

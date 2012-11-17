@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '1.2';
+    private $latest_database_version = '1.3';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -302,6 +302,34 @@ class Database_model extends CI_Model {
             // Create database version indicator
             $this->update_setting('database_version', '1.2');
             $this->current_database_version = '1.2';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+        // Execute 1.2 -> 1.3 database updates
+        if($this->current_database_version == '1.2') {
+            
+            $this->db->trans_start();
+            
+            //ALTER TABLE  `task_history` ADD  `user_id` INT UNSIGNED NULL AFTER  `task_id`;
+            if(!$this->field_exists('task_history', 'user_id'))
+                $this->db->query('ALTER TABLE  `task_history` ADD  `user_id` INT UNSIGNED NULL AFTER  `task_id`');
+
+            // Indexes
+            $this->db->query('ALTER TABLE  `task_history` ADD INDEX  `user` (  `user_id` )');
+                
+            // Foreign Keys
+            $this->db->query('ALTER TABLE  `task_history` ADD CONSTRAINT `task_history_stbfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION');
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '1.3');
+            $this->current_database_version = '1.3';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));

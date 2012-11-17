@@ -32,6 +32,13 @@
         if($this->usercontrol->has_permission('task'))
             echo anchor('task/edit/'.$project_id.'/'.$task_id, 'Edit Task', 'class="btn btn_edit"');
         ?>
+    <?php } elseif($view == 'task_history') { ?>
+        <!-- Task History menu -->
+        <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
+        <?php
+        if($this->usercontrol->has_permission('project', 'task'))
+            echo (isset($task_id))?anchor('task/view/'.$project_id.'/'.$task_id, 'View Task', 'class="btn btn_taskboard"'):'';
+        ?>
     <?php } elseif($view == 'task_edit') { ?>
         <!-- Task Edit menu -->
         <?php echo anchor('dashboard', 'Dashboard', 'class="btn btn_dashboard"'); ?>
@@ -41,7 +48,7 @@
         ?>
         <?php
         if($this->usercontrol->has_permission('project', 'task'))
-            echo (isset($task))?anchor('task/view/'.$project_id.'/'.$task_id, 'View Task', 'class="btn btn_taskboard"'):'';
+            echo (isset($task_id))?anchor('task/view/'.$project_id.'/'.$task_id, 'View Task', 'class="btn btn_taskboard"'):'';
         ?>
     <?php } elseif($view == 'projects') { ?>
         <!-- Projects menu -->

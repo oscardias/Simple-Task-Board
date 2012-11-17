@@ -199,13 +199,23 @@ class Task_model extends CI_Model {
         return array();
     }
     
-    public function get_history($task)
+    public function get_history($task, $detail = false)
     {
-        $this->db->select('status, sum(duration) as duration')->
-                from('task_history')->
-                where('task_id', $task)->
-                group_by('status')->
-                order_by('status');
+        if($detail)
+            // Get all entries
+            $this->db->select('u.email, th.status, th.date_created, th.date_finished, th.duration')->
+                    from('task_history th')->
+                    join('user u', 'th.user_id = u.id', 'left')->
+                    where('task_id', $task)->
+                    order_by('status, date_created');
+        else
+            // Get sum fro each phase
+            $this->db->select('status, sum(duration) as duration')->
+                    from('task_history')->
+                    where('task_id', $task)->
+                    group_by('status')->
+                    order_by('status');
+        
         $get = $this->db->get();
         
         if($get->num_rows > 0)
@@ -244,7 +254,7 @@ class Task_model extends CI_Model {
         
         if($type != 'play') {
             
-            // Update date finished and duration
+            // Update user ID, date finished and duration
             $history = $this->db->select('task_history_id, status, date_created')->
                     where('task_id', $task_id)->
                     where('date_finished', NULL)->
@@ -258,6 +268,7 @@ class Task_model extends CI_Model {
                     $status = $history['status'];
 
                 $this->db->where('task_history_id', $history['task_history_id'])->
+                        set('user_id', $this->session->userdata('user'))->
                         set('date_finished', date('Y-m-d H:i:s'))->
                         set('duration', $now - $before)->
                         update('task_history');
@@ -280,6 +291,7 @@ class Task_model extends CI_Model {
             // Create new entry in history
             $history_data = array(
                 'task_id' => $task_id,
+                'user_id' => $this->session->userdata('user'),
                 'status' => $status,
                 'date_created' => date('Y-m-d H:i:s'),
                 'date_finished' => NULL

@@ -13,14 +13,18 @@
                 <?php if($task['task_history_date_created']) { ?>
                     <?php echo anchor('task/timer/'.$project.'/'.$task['task_id'].'/stop', 'Stop', 'class="task_time_control stop" title="Stop"'); ?>
 
+                    <span class="task_time_value">
                     <?php echo timespan_diff($task['total_duration'] + (time() - strtotime($task['task_history_date_created']))); ?>
                     <?php if($task['status'] != 3) { ?>
                     - ongoing
                     <?php } ?>
+                    </span>
                 <?php } else { ?>
                     <?php echo anchor('task/timer/'.$project.'/'.$task['task_id'].'/play', 'Continue', 'class="task_time_control play" title="Continue"'); ?>
 
+                    <span class="task_time_value">
                     <?php echo timespan_diff($task['total_duration']); ?>
+                    </span>
                 <?php } ?>
             </p>
             <?php } ?>
