@@ -50,6 +50,11 @@ class Usercontrol {
                     return true;
                 break;
 
+            case 'profile':
+                // All users have access to edit their own profiles or view other's
+                return true;
+                break;
+                
             default:
                 break;
         }
