@@ -49,7 +49,7 @@ else
             <?php foreach ($users as $user) { ?>
             <div class="half-width">
                 <label>
-                <?php echo form_checkbox('users[]', $user['id'], ($user['project'])?1:0); ?>
+                <?php echo form_checkbox('users[]', $user['id'], set_checkbox('users[]', $user['id'], ($user['project'])?1:0)); ?>
                 <?php echo $user['email']; ?></label>
                 <?php //echo form_label($user['email'], 'users[]'); ?>
             </div>
@@ -74,7 +74,7 @@ else
 
                     <div class="form-save-buttons">
                         <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
-                        <?php echo form_button('cancel', 'Cancel', 'class="btn-blue" onClick="history.go(-1)"');; ?>
+                        <?php echo form_submit('cancel', 'Cancel', 'class="btn-blue"'); ?>
                     </div>
                 </td>
         </tr>
