@@ -106,6 +106,9 @@ class Project extends CI_Controller {
     
     public function save()
     {
+        if($this->input->post('cancel') !== FALSE)
+            redirect('dashboard');
+            
         // Check permission
         if(!$this->usercontrol->has_permission('project'))
             redirect('dashboard');
@@ -116,6 +119,8 @@ class Project extends CI_Controller {
         $this->load->library('form_validation');
         
         $this->form_validation->set_rules('name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('description', 'Description', 'trim');
+        $this->form_validation->set_rules('users[]', 'Associated Users', '');
         
         if($this->form_validation->run() === false)  {
             $this->error = true;
