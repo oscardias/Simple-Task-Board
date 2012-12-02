@@ -13,7 +13,7 @@ $this->template->menu('users');
                 <?php echo form_label('Email *', 'email'); ?>
             </td>
             <td>
-                <?php echo form_input('email', $email); ?>
+                <?php echo form_input('email', set_value('email', $email)); ?>
             </td>
         </tr>
         <tr>
@@ -22,20 +22,20 @@ $this->template->menu('users');
             </td>
             <td>
                 <?php if (isset($id)) { ?>
-                    <?php echo form_password('password', $password, 'id="password" disabled'); ?>
+                    <?php echo form_password('password', set_value('password', $password), 'id="password" disabled'); ?>
                     <?php echo form_checkbox('reset_password', 1, false, 'id="reset_password" title="Edit Password"'); ?>
                 <?php } else { ?>
-                    <?php echo form_password('password', $password, 'id="password"'); ?>
+                    <?php echo form_password('password', set_value('password', $password), 'id="password"'); ?>
                     <?php echo form_hidden('reset_password', 1); ?>
                 <?php } ?>
             </td>
         </tr>
         <tr>
             <td>
-                <?php echo form_label('Level', 'level'); ?>
+                <?php echo form_label('Level *', 'level'); ?>
             </td>
             <td>
-                <?php echo form_dropdown('level', $level_list, $level); ?>
+                <?php echo form_dropdown('level', $level_list, set_value('level', $level)); ?>
             </td>
         </tr>
         <?php if(isset($error)) : ?>
@@ -50,7 +50,7 @@ $this->template->menu('users');
                     <?php if (isset($id)) echo form_hidden('id', $id); ?>
                     <div class="form-save-buttons">
                         <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
-                        <?php echo form_button('cancel', 'Cancel', 'class="btn-blue" onClick="history.go(-1)"');; ?>
+                        <?php echo form_submit('cancel', 'Cancel', 'class="btn-blue"');; ?>
                     </div>
                 </td>
         </tr>
