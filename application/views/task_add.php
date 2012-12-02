@@ -13,7 +13,7 @@ $this->template->menu('task_edit');
                 <?php echo form_label('Title *', 'title'); ?>
             </td>
             <td>
-                <?php echo form_input('title', $title, 'maxlength="50"'); ?>
+                <?php echo form_input('title', set_value('title', $title), 'maxlength="50"'); ?>
             </td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@ $this->template->menu('task_edit');
                 foreach ($tasks as $value) {
                     $options[$value['id']] = $value['title'];
                 }
-                echo form_dropdown('parent_id', $options, $parent_id);
+                echo form_dropdown('parent_id', $options, set_value('parent_id', $parent_id));
                 ?>
             </td>
         </tr>
@@ -37,7 +37,7 @@ $this->template->menu('task_edit');
             </td>
             <td>
                 <?php $options = array('0' => 'Very High', '1' => 'High', '2' => 'Normal', '3' => 'Low', '4' => 'Very Low');
-                      echo form_dropdown('priority', $options, $priority); ?>
+                      echo form_dropdown('priority', $options, set_value('priority', $priority)); ?>
             </td>
         </tr>
         <tr>
@@ -48,7 +48,7 @@ $this->template->menu('task_edit');
                 <?php
                 $data = array('name'        => 'description',
                               'id'          => 'description',
-                              'value'       => $description,
+                              'value'       => set_value('description', $description),
                               'rows'        => '6',
                               'cols'        => '80');
 
@@ -65,7 +65,7 @@ $this->template->menu('task_edit');
                 foreach ($users as $value) {
                     $options[$value['id']] = $value['email'];
                 }
-                echo form_dropdown('user_id', $options, $user_id);
+                echo form_dropdown('user_id', $options, set_value('user_id', $user_id));
                 ?>
             </td>
         </tr>
@@ -78,7 +78,7 @@ $this->template->menu('task_edit');
                 <?php
                 $data = array('name'        => 'files',
                               'id'          => 'files',
-                              'value'       => $files,
+                              'value'       => set_value('files', $files),
                               'rows'        => '3',
                               'cols'        => '80');
 
@@ -93,7 +93,7 @@ $this->template->menu('task_edit');
                 <?php
                 $data = array('name'        => 'database',
                               'id'          => 'database',
-                              'value'       => $database,
+                              'value'       => set_value('database', $database),
                               'rows'        => '3',
                               'cols'        => '80');
 
@@ -116,7 +116,7 @@ $this->template->menu('task_edit');
 
                     <div class="form-save-buttons">
                         <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
-                        <?php echo form_button('cancel', 'Cancel', 'class="btn-blue" onClick="history.go(-1)"');; ?>
+                        <?php echo form_submit('cancel', 'Cancel', 'class="btn-blue"');; ?>
                         <?php
                         if(isset($id)) {
                             $remove_url = base_url().'task/remove/'.$project.'/'.$id;
