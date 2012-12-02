@@ -94,9 +94,18 @@ class Task extends CI_Controller {
         $project_id = $this->input->post('project_id');
         $id = $this->input->post('task_id');
         
+        if($this->input->post('cancel') !== FALSE)
+            redirect('project/tasks/'.$project_id);
+                    
         $this->load->library('form_validation');
         
         $this->form_validation->set_rules('title', 'Title', 'trim|required');
+        $this->form_validation->set_rules('parent_id', 'Parent', '');
+        $this->form_validation->set_rules('priority', 'Priority', '');
+        $this->form_validation->set_rules('description', 'Description', 'trim');
+        $this->form_validation->set_rules('user_id', 'Assigned to', '');
+        $this->form_validation->set_rules('files', 'Files changed', 'trim');
+        $this->form_validation->set_rules('database', 'Database changes', 'trim');
         
         if($this->form_validation->run() === false)  {
             $this->error = true;
