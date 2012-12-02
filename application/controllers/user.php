@@ -72,11 +72,16 @@ class User extends CI_Controller {
     
     public function save()
     {
+        if($this->input->post('cancel') !== FALSE)
+            redirect('user');
+            
         $user_id = $this->input->post('id');
         
         $this->load->library('form_validation');
         
-        $this->form_validation->set_rules('email', 'Email', 'trim|required');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'trim');
+        $this->form_validation->set_rules('level', 'Level', 'required');
         
         if($this->form_validation->run() === false)  {
             $this->error = true;
