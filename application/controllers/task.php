@@ -78,7 +78,7 @@ class Task extends CI_Controller {
         $data['children_tasks'] = $this->task_model->get_hierarchy($project, $id, false);
         
         $user = $this->user_model->get($data['user_id']);
-        $data['user'] = $user['email'];
+        $data['user'] = $user;
         
         $data['comments'] = $this->task_model->get_comments($id);
         
