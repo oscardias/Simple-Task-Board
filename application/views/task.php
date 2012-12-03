@@ -56,7 +56,7 @@ $this->template->menu('task_view');
             </p>
             <p class="task-info-user">
                 <strong>Assigned To:</strong>
-                <em><?php echo $user; ?></em>
+                <em><?php echo anchor('profile/view/'.$user['id'], ($user['name'])?$user['name']:$user['email'], 'class="view-profile-details"'); ?></em>
             </p>
             <p>
                 <strong>Current Phase:</strong>
