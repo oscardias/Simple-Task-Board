@@ -2,7 +2,10 @@
         class="task <?php echo ($task['user_id'] == $current_user)?'my-task':'project-task'; ?>">
     <p class="task_id">#<?php echo $task['code']; ?></p>
     <p class="task_title"><?php echo anchor('task/view/'.$project.'/'.$task['task_id'], $task['title']); ?></p>
-    <p class="task_user">Assigned to: <?php echo $users[$task['user_id']]['email']; ?></p>
+    <p class="task_user">Assigned to:
+        <?php echo anchor('profile/view/'.$task['user_id'], 
+                ($users[$task['user_id']]['name'])?$users[$task['user_id']]['name']:$users[$task['user_id']]['email'], 
+                'class="view-profile-details"'); ?></p>
 
     <?php if($task['status'] < 3) { ?>
     
