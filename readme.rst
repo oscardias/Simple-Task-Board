@@ -2,7 +2,7 @@
 Simple Task Board
 #################
 
-- Version: 1.3.3
+- Version: 1.4
 - Link: http://oscardias.com/projects/simple-task-board/
 - Author: Oscar Dias
 - Website: http://oscardias.com
@@ -35,6 +35,7 @@ Next updates
 
 I plan to update some portions of this application in the following months. Currently these are the features to be developed:
 
-- User profile: create a user profile with more information about the users.
+- Moving tasks: tasks need to ask for new user and comment when moved from In Progress to Testing.
+- Pagination: paginate tasks in the dashboard and the list of users.
 - Tasks estimation: add an estimation field to enable a comparison between estimated and realised.
 - ... if you have any ideas, let me know ...
