@@ -67,8 +67,12 @@
         if($this->usercontrol->has_permission('user'))
             echo anchor('user/add', '<i></i>Add new user', 'class="btn btn_add"');
         ?>
+    <?php } elseif($view == 'profile') { ?>
+        <!-- Profile menu -->
+        <?php echo anchor('dashboard', '<i></i>Dashboard', 'class="btn btn_dashboard"'); ?>
     <?php } ?>
     <?php echo anchor('login/logout', '<i></i>Logout', 'class="btn btn_logout"'); ?>
+    <?php echo anchor('profile', '<i></i>My Profile', 'class="btn btn_profile"'); ?>
     <div class="clear"></div>
 </div>
 <div id="page-title">
