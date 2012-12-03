@@ -30,6 +30,49 @@ $(document).ready(function(){
         return false;
     });
     
+    var profile_links = $('#profile-links');
+    if(profile_links[0]){
+        $('.add_link', profile_links).live('click', function(){
+            if ($(this).html() == '(+)') {
+                var add = $('<div>' + $('div', profile_links).last().html() + '</div>').hide();
+                profile_links.append(add);
+                add.find('input').val('');
+                add.fadeIn();
+                $(this).html('(-)');
+            } else {
+                $(this).parent().fadeOut().remove();
+            }   
+        });
+    }
+    
+    var profile_photo = $('#profile_photo');
+    if(profile_photo[0]){
+        $('img', profile_photo).click(function(){
+            $(this).parent().next().click();
+        });
+    }
+    
+    $('.view-profile-details').live('click', function(){
+        var href = $(this).attr('href');
+        $.get(href, 
+            function(data){
+                $(data).dialog({
+                    resizable: false,
+                    height:0.5 * $(window).height(),
+                    width:0.5 * $(window).width(),
+                    modal: true,
+                    buttons: {
+                        Close: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            }
+        );
+
+        return false;
+    });
+    
     /* General actions */
     $('#show-hide-users').click(function(){
         var targetId = $(this).attr('target-id');
@@ -104,13 +147,12 @@ $(document).ready(function(){
    
    $('#task-history-details').click(function(){
        var href = $(this).attr('href');
-       console.log(href);
        $.get(href, 
            function(data){
                $(data).dialog({
                    resizable: false,
-                   height:0.8 * $(document).height(),
-                   width:0.8 * $(document).width(),
+                   height:0.8 * $(window).height(),
+                   width:0.8 * $(window).width(),
                    modal: true,
                    buttons: {
                        Close: function() {
