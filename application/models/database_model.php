@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '1.3';
+    private $latest_database_version = '1.4';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -330,6 +330,36 @@ class Database_model extends CI_Model {
             // Create database version indicator
             $this->update_setting('database_version', '1.3');
             $this->current_database_version = '1.3';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+
+        // Execute 1.3 -> 1.4 database updates
+        if($this->current_database_version == '1.3') {
+            
+            $this->db->trans_start();
+            
+            //ALTER TABLE  `user` ADD  `name` VARCHAR(100) NULL AFTER  `level`;
+            if(!$this->field_exists('user', 'name'))
+                $this->db->query('ALTER TABLE  `user` ADD  `name` VARCHAR(100) NULL AFTER  `level`');
+            
+            //ALTER TABLE  `user` ADD  `links` TEXT NULL AFTER  `name`;
+            if(!$this->field_exists('user', 'links'))
+                $this->db->query('ALTER TABLE  `user` ADD  `links` TEXT NULL AFTER  `name`');
+
+            //ALTER TABLE  `user` ADD  `photo` VARCHAR(255) NULL AFTER  `links`;
+            if(!$this->field_exists('user', 'photo'))
+                $this->db->query('ALTER TABLE  `user` ADD  `photo` VARCHAR(255) NULL AFTER  `links`');
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '1.4');
+            $this->current_database_version = '1.4';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
