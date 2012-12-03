@@ -16,7 +16,7 @@ $this->template->menu('users');
         <?php foreach ($users as $user) { ?>
             <tr id="user_<?php echo $user['id']; ?>" class="darker-on-hover">
                 <td><?php echo $user['id']; ?></td>
-                <td><?php echo $user['email']; ?></td>
+                <td><?php echo anchor('profile/view/'.$user['id'], $user['email'], 'class="view-profile-details"'); ?></td>
                 <td><?php echo $level_list[$user['level']]; ?></td>
                 <td><?php echo date("j/M/Y, g:i a", strtotime($user['date_created'])); ?></td>
                 <td>
