@@ -66,7 +66,7 @@ class Task_model extends CI_Model {
         return array();
     }
     
-    public function get_hierarchy($project, $parent = null, $single_array = true, $output = array(), $i = 0)
+    public function get_hierarchy($project, $parent = null, $single_array = true, $output = array(), $i = 0, $current_id = false)
     {
         // Select tasks according to project and parent - count children so it knows if there are any
         $this->db->select('task.*, count(child.task_id) as children')->
@@ -76,6 +76,9 @@ class Task_model extends CI_Model {
                 where('task.parent_id', $parent)->
                 order_by('task.title', 'asc')->
                 group_by('task.task_id');
+        
+        if($current_id)
+            $this->db->where('task.task_id !=', $current_id);
         
         $tasks = $this->db->get()->result_array();
 
@@ -88,7 +91,7 @@ class Task_model extends CI_Model {
                     );
 
                 if($value['children'] > 0)
-                    $output = $this->get_hierarchy($project, $value['task_id'], $single_array, $output, $i+1);
+                    $output = $this->get_hierarchy($project, $value['task_id'], $single_array, $output, $i+1, $current_id);
             }
         } else {
             // If it IS NOT a single array, add children as a sub array
@@ -96,7 +99,7 @@ class Task_model extends CI_Model {
                 $output[] = array(
                     'id' => $value['task_id'], 
                     'title' => $value['title'],
-                    'children' => ($value['children'] > 0)?$this->get_hierarchy($project, $value['task_id'], $single_array, $output, $i+1):array()
+                    'children' => ($value['children'] > 0)?$this->get_hierarchy($project, $value['task_id'], $single_array, $output, $i+1, $current_id):array()
                     );
             }
         }
