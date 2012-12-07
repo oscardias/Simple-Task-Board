@@ -49,7 +49,7 @@ class Task extends CI_Controller {
         
         $data['project_id']  = $project;
         $data['users'] = $this->task_model->get_related_users($project);
-        $data['tasks'] = $this->task_model->get_hierarchy($project);
+        $data['tasks'] = $this->task_model->get_hierarchy($project, null, true, array(), 0, $id);
         
         if($this->error)
             $data['error'] = $this->error;
@@ -95,7 +95,7 @@ class Task extends CI_Controller {
         $id = $this->input->post('task_id');
         
         if($this->input->post('cancel') !== FALSE)
-            redirect('project/tasks/'.$project_id);
+            redirect('task/view/'.$project_id.'/'.$id);
                     
         $this->load->library('form_validation');
         
