@@ -409,7 +409,7 @@ table.history td{
     box-shadow:0 0 5px #999
 }
 .task_id{margin:0;padding:1px;position:absolute;right:0;top:0}
-.task_title{font-weight:bold;text-decoration:underline;margin:0;padding:1px;width:80%}
+.task_title{font-weight:bold;margin:0;padding:1px;width:80%}
 .task_text{margin:0;padding:1px}
 .task_info{margin:0;padding:1px}
 .task_links{text-align:center;margin:0;padding:1px}
