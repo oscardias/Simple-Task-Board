@@ -30,4 +30,28 @@ if ( ! function_exists('task_hierarchy_html'))
     }
 }
 
+/**
+ * Outputs the task parents HTML
+ *
+ * @access	public
+ * @return	bool
+ */
+if ( ! function_exists('task_parents_html'))
+{
+    function task_parents_html($project, $parent)
+    {
+        if($parent) {
+            
+            $CI =& get_instance();
+            $CI->load->model('task_model');
+            $tasks = $CI->task_model->get_parents($project, $parent);
+            
+            foreach($tasks as $value){
+                echo anchor(base_url()."task/view/{$project}/{$value['id']}", $value['title']);
+                echo ' > ';
+            }
+        }
+    }
+}
+
 // ------------------------------------------------------------------------
