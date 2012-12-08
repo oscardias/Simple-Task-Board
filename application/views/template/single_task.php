@@ -1,7 +1,7 @@
 <div id="task_<?php echo $task['task_id']; ?>" <?php if($task['status'] == 3) { ?> title="<?php echo strip_tags($task['description']); ?>"<?php } ?>
         class="task <?php echo ($task['user_id'] == $current_user)?'my-task':'project-task'; ?>">
     <p class="task_id">#<?php echo $task['code']; ?></p>
-    <p class="task_title"><?php echo anchor('task/view/'.$project.'/'.$task['task_id'], $task['title']); ?></p>
+    <p class="task_title"><?php echo task_parents_html($project, $task['parent_id']).anchor('task/view/'.$project.'/'.$task['task_id'], $task['title']); ?></p>
     <p class="task_user">Assigned to:
         <?php echo anchor('profile/view/'.$task['user_id'], 
                 ($users[$task['user_id']]['name'])?$users[$task['user_id']]['name']:$users[$task['user_id']]['email'], 
