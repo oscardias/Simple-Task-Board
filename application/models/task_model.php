@@ -56,6 +56,7 @@ class Task_model extends CI_Model {
         if ($status) $this->db->where('t.status', $status);
         
         $this->db->group_by('t.task_id')->
+                order_by('th.date_finished', 'desc')->
                 order_by('t.status', 'asc')->
                 order_by('t.priority', 'asc');
         
