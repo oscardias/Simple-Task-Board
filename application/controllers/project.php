@@ -12,6 +12,7 @@ class Project extends CI_Controller {
     public function tasks($project_id)
     {
         $this->load->helper('stb_date');
+        $this->load->helper('tasks');
         
         // Check permission
         if(!$this->usercontrol->has_permission('project', 'tasks'))
