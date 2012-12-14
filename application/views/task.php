@@ -24,7 +24,7 @@ $this->template->menu('task_view');
             
             <p class="task-info-description">
                 <p><strong>Description</strong></p>
-                <?php echo nl2br($description); ?>
+                <?php echo nl2br(htmlentities($description)); ?>
             </p>
             
             <?php if($children_tasks) : ?>
