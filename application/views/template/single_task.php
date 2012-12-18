@@ -34,7 +34,7 @@
             
         <?php } ?>
 
-            <p class="task_text"><?php echo nl2br(htmlspecialchars(word_limiter($task['description'], 30))); ?></p>
+            <p class="task_text"><?php echo nl2br(word_limiter(htmlspecialchars($task['description']), 30)); ?></p>
     
     <?php } ?>
     
