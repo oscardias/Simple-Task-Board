@@ -118,8 +118,8 @@ $this->template->menu('task_edit');
                         <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
                         <?php echo form_submit('cancel', 'Cancel', 'class="btn-blue"');; ?>
                         <?php
-                        if(isset($id)) {
-                            $remove_url = base_url().'task/remove/'.$project.'/'.$id;
+                        if(isset($task_id)) {
+                            $remove_url = base_url().'task/remove/'.$project_id.'/'.$task_id;
                             echo form_button('remove', 'Remove', 'class="btn-blue" id="remove-task" target-url="'.$remove_url.'"');
                         } ?>
                     </div>
