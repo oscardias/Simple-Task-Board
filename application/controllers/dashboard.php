@@ -12,6 +12,9 @@ class Dashboard extends CI_Controller {
     
     public function index()
     {
+        $this->title = 'Dashboard';
+        $this->menu = 'users|new_project';
+        
         //Load models
         $this->load->model('project_model');
         $this->load->model('task_model');
@@ -32,7 +35,7 @@ class Dashboard extends CI_Controller {
         $data['status_arr'] = $this->task_model->get_status_array();
         
         // Load View
-        $this->template->show('dashboard', $data);
+        $this->load->view('dashboard', $data);
     }
 
 }

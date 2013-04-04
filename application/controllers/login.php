@@ -21,7 +21,7 @@ class Login extends CI_Controller {
         $data['email'] = '';
         $data['password'] = '';
                 
-        $this->template->show('login', $data);
+        $this->load->view('login', $data);
     }
     
     public function validate()
