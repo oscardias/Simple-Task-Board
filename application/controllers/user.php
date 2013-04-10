@@ -26,15 +26,18 @@ class User extends CI_Controller {
         $data['users'] = $this->user_model->get(false);
         $data['level_list'] = $this->LEVEL;
         
-        $data['page_title']  = "Users";
+        $this->title = 'Users';
+        $this->menu = 'dashboard|add_user';
         
         // Load View
-        $this->template->show('users', $data);
+        $this->load->view('users', $data);
     }
 
     public function add()
     {
-        $data['page_title']  = "New User";
+        $this->title = 'New User';
+        $this->menu = 'dashboard|add_user';
+        
         $data['email']    = '';
         $data['password'] = '';
         $data['level']    = '1';
@@ -43,7 +46,7 @@ class User extends CI_Controller {
         if($this->error)
             $data['error'] = $this->error;
         
-        $this->template->show('users_add', $data);
+        $this->load->view('users_add', $data);
     }
 
     public function edit($id)
@@ -52,14 +55,16 @@ class User extends CI_Controller {
         $data = $this->user_model->get($id);
         
         $data['password'] = '';
-        $data['page_title']  = "Edit User #".$id;
+        
+        $this->title = "Edit User #$id";
+        $this->menu = 'dashboard|add_user';
         
         $data['level_list'] = $this->LEVEL;
         
         if($this->error)
             $data['error'] = $this->error;
         
-        $this->template->show('users_add', $data);
+        $this->load->view('users_add', $data);
     }
     
     public function remove($id)
