@@ -16,7 +16,9 @@ class Login extends CI_Controller {
             redirect('install');
         
         // Load View
-        $data['page_title']  = "Login";
+        $this->title  = 'Login';
+        $this->layout = 'login';
+        $this->menu   = 'none';
         
         $data['email'] = '';
         $data['password'] = '';
@@ -39,14 +41,16 @@ class Login extends CI_Controller {
             redirect('dashboard');
         } else {
             // Load View
-            $data['page_title']  = "Login";
+            $this->title  = 'Login';
+            $this->layout = 'login';
+            $this->menu   = 'none';
 
             $data['email'] = $this->input->post('email');
             $data['password'] = $this->input->post('password');
             
             $data['error'] = true;
             
-            $this->template->show('login', $data);
+            $this->load->view('login', $data);
         }
     }
     

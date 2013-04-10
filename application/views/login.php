@@ -1,37 +1,29 @@
-<div class="home-title blue-gradient">Simple Task Board</div>
-<div id="login">
     <?php if(isset($answer)) { ?>
-    <div class="install-answer"><?php echo $answer; ?></div>
+    <div class="alert alert-success"><?php echo $answer; ?></div>
     <?php } ?>
     
     <?php if(isset($already_installed) && $already_installed) { ?>
         <?php if(isset($update_database) && $update_database) { ?>
-            <p>Your database needs to be upgraded.</p>
-            <?php echo form_open('install/database'); ?>
-
-            <?php echo form_submit('upgrade', 'Upgrade', 'class="btn-blue"'); ?>
-
-            <?php echo form_close(); ?>
+            <form class="form-signin" action="<?php echo base_url('install/database'); ?>" method="post">
+                <h2 class="form-signin-heading">Database Upgrade</h2>
+                <button class="btn btn-large btn-primary" type="upgrade">Upgrade</button>
+            </form>
         <?php } else { ?>
-            Simple Task Board has already been installed.
+            <div class="alert">Simple Task Board has already been installed.</div>
         <?php } ?>
     <?php } else { ?>
-        <?php if(isset($already_installed) && !$already_installed) { echo form_open('install/run'); }
-        else { echo form_open('login/validate'); } ?>
-
-        <?php echo form_label('Email', 'email'); ?>
-        <?php echo form_input('email', $email); ?>
-        <br/>
-        <?php echo form_label('Password', 'password'); ?>
-        <?php echo form_password('password', $password); ?>
-        
-        <?php if(isset($error) && $error) { ?>
-        <p class="error">That's not right! Please check your information and try again.</p>
-        <?php } ?>
-
-        <?php if(isset($already_installed) && !$already_installed) { echo form_submit('install', 'Install', 'class="btn-blue"'); }
-        else { echo form_submit('login', 'Login', 'class="btn-blue"'); } ?>
-
-        <?php echo form_close(); ?>
+        <form class="form-signin" method="post"
+              action="<?php echo (isset($already_installed) && !$already_installed)?base_url('install/run'):base_url('login/validate'); ?>">
+            <h2 class="form-signin-heading">Login</h2>
+            <input name="email" type="text" class="input-block-level" placeholder="Email" value="<?php echo set_value('email'); ?>">
+            <input name="password" type="password" class="input-block-level" placeholder="Password" value="<?php echo set_value('password'); ?>">
+            <?php if(isset($error) && $error) : ?>
+                <div class="alert alert-error">That's not right! Please check your information and try again.</div>
+            <?php endif; ?>
+            <?php if(isset($already_installed) && !$already_installed) : ?>
+                <button class="btn btn-large btn-primary" type="install">Install</button>
+            <?php else : ?>
+                <button class="btn btn-large btn-primary" type="login">Login</button>
+            <?php endif; ?>
+        </form>
     <?php } ?>
-</div>

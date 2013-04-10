@@ -102,6 +102,7 @@
                         
                 </ul>
                 
+                <?php if(strpos($menu, 'none') === FALSE) : ?>
                 <ul class="nav pull-right">
                     <li <?php if($controller == 'profile') echo 'class="active"'; ?>>
                         <a href="<?php echo base_url('profile'); ?>">
@@ -116,6 +117,7 @@
                         </a>
                     </li>
                 </ul>
+                <?php endif; ?>
             </div>
         </div>
     </div>
