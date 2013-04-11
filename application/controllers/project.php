@@ -38,7 +38,9 @@ class Project extends CI_Controller {
         $this->load->model('project_model');
         $project = $this->project_model->get($project_id);
         
-        $data['page_title'] = "Project: ".$project['name'];
+        $this->title = "Project: {$project['name']}";
+        $this->menu = 'dashboard|edit_project|new_task';
+        
         $data['project_id']    = $project_id;
         
         $data['current_user'] = $this->session->userdata('user');
@@ -54,7 +56,7 @@ class Project extends CI_Controller {
         $this->load->helper('text');
         
         // Load View
-        $this->template->show('task_board', $data);
+        $this->load->view('task_board', $data);
     }
 
     public function add()
@@ -65,7 +67,9 @@ class Project extends CI_Controller {
         
         $this->load->model('project_model');
         
-        $data['page_title']  = "New Project";
+        $this->title = "New Project";
+        $this->menu = 'dashboard';
+        
         $data['user']        = '';
         $data['name']        = '';
         $data['description'] = '';
@@ -82,7 +86,7 @@ class Project extends CI_Controller {
         if($this->error)
             $data['error'] = $this->error;
         
-        $this->template->show('project_add', $data);
+        $this->load->view('project_add', $data);
     }
 
     public function edit($id)

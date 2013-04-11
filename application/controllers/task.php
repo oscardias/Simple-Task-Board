@@ -21,7 +21,9 @@ class Task extends CI_Controller {
     {
         $this->load->model('task_model');
         
-        $data['page_title']  = "New Task";
+        $this->title = 'New Task';
+        $this->menu = 'dashboard|tasks|edit_task';
+        
         $data['parent_id']      = 0;
         $data['title']       = '';
         $data['description'] = '';
@@ -37,7 +39,7 @@ class Task extends CI_Controller {
         if($this->error)
             $data['error'] = $this->error;
         
-        $this->template->show('task_add', $data);
+        $this->load->view('task_add', $data);
     }
 
     public function edit($project, $id)
@@ -45,7 +47,9 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $data = $this->task_model->get($project, $id);
-        $data['page_title']  = "Edit Task #".$data['code'];
+        
+        $this->title = "Edit Task #{$data['code']}";
+        $this->menu = 'dashboard|tasks';
         
         $data['project_id']  = $project;
         $data['users'] = $this->task_model->get_related_users($project);
@@ -54,7 +58,7 @@ class Task extends CI_Controller {
         if($this->error)
             $data['error'] = $this->error;
         
-        $this->template->show('task_add', $data);
+        $this->load->view('task_add', $data);
     }
 
     public function view($project, $id)
@@ -66,8 +70,10 @@ class Task extends CI_Controller {
         $this->load->model('user_model');
         
         $data = $this->task_model->get($project, $id);
-        $data['page_title']  = "View Task #".$data['code'];
         
+        $this->title = "View Task #{$data['code']}";
+        $this->menu = 'dashboard|tasks|edit_task';
+                
         $data['project_id']  = $project;
         
         if($data['parent_id'])
@@ -86,7 +92,7 @@ class Task extends CI_Controller {
         $data['task_history_last'] = $this->task_model->get_last_history($id);
         $data['status_arr'] = $this->task_model->get_status_array();
         
-        $this->template->show('task', $data);
+        $this->load->view('task', $data);
     }
     
     public function save()

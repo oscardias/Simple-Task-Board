@@ -77,7 +77,8 @@ class Layout {
             $active_menu = array(
                 'controller'   => ($CI->uri->segment(1))?$CI->uri->segment(1):'home',
                 'method'       => $CI->uri->segment(2),
-                'menu'         => isset($CI->menu)?$CI->menu:''
+                'menu'         => isset($CI->menu)?$CI->menu:'',
+                'title'        => isset($CI->title)?$CI->title:'Simple Task Board'
                 );
             $view = str_replace("{menu}", $CI->load->view('templates/menu', $active_menu, TRUE), $view);
         }

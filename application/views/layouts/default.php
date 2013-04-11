@@ -15,7 +15,7 @@
         
         <style>
           body {
-          padding-top: 60px;
+          padding-top: 100px;
           }
         </style>
         <link rel="stylesheet" href="<?php echo base_url('assets/css/custom-theme/jquery-ui-1.8.16.custom.css') ?>">

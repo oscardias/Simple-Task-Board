@@ -1,85 +1,57 @@
-<?php
-// Load Menu
-if (isset($id))
-    $this->template->menu('project_edit');
-else
-    $this->template->menu('projects');
-?>
-
-<div id="container">
-
-    <?php echo form_open('project/save'); ?>
-
-    <table>
-        <tr>
-            <td>
-                <?php echo form_label('Name *', 'name'); ?>
-            </td>
-            <td>
-                <?php echo form_input('name', set_value('name', $name)); ?>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <?php echo form_label('Description', 'description'); ?>
-            </td>
-            <td>
-                <?php
-                $data = array('name'        => 'description',
-                              'id'          => 'description',
-                              'value'       => set_value('description', $description),
-                              'rows'        => '6',
-                              'cols'        => '80');
-
-                echo form_textarea($data); ?>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div class="project-users blue-gradient">
-                    Associated Users
-                    <span id="show-hide-users" class="expand" target-id="associated-users"></span>
+<?php echo validation_errors('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>', '</div>'); ?>
+    
+<form class="form-horizontal" method="post" action="<?php echo base_url('project/save'); ?>">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="control-group">
+                <label class="control-label" for="name">Name *</label>
+                <div class="controls">
+                    <input type="text" class="input-xxlarge" name="name" id="name" placeholder="Name" value="<?php echo set_value('name', $name); ?>" />
                 </div>
-            </td>
-        </tr>
-        <tbody id="associated-users">
-        <tr>
-            <td colspan="2">
-            <?php $counter = 0; ?>
-            <?php foreach ($users as $user) { ?>
-            <div class="half-width">
-                <label>
-                <?php echo form_checkbox('users[]', $user['id'], set_checkbox('users[]', $user['id'], ($user['project'])?1:0)); ?>
-                <?php echo $user['email']; ?></label>
-                <?php //echo form_label($user['email'], 'users[]'); ?>
             </div>
-                <?php $counter++; ?>
-                <?php if($counter % 2 == 0) { ?>
-                <!--</tr><tr>-->
-                <?php } ?>
-            <?php } ?>
-            </td>
-        </tr>
-        </tbody>
-        <?php if(isset($error)) : ?>
-        <tr>
-            <td colspan="2" class="error">
-                <?php echo validation_errors(); ?>
-            </td>
-        </tr>
-        <?php endif; ?>
-        <tr>
-                <td colspan="2">
-                    <?php if (isset($id)) echo form_hidden('id', $id); ?>
-
-                    <div class="form-save-buttons">
-                        <?php echo form_submit('save', 'Save', 'class="btn-blue"'); ?>
-                        <?php echo form_submit('cancel', 'Cancel', 'class="btn-blue"'); ?>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="control-group">
+                <label class="control-label" for="description">Description *</label>
+                <div class="controls">
+                    <textarea name="description" id="description" class="input-xxlarge" rows="4">
+                    <?php echo set_value('description', $description); ?>
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="control-group">
+                <label class="control-label">Associated Users</label>
+                <div class="controls">
+                    <?php foreach ($users as $user) { ?>
+                    <div class="half-width">
+                        <label>
+                        <?php echo form_checkbox('users[]', $user['id'], set_checkbox('users[]', $user['id'], ($user['project'])?1:0)); ?>
+                        <?php echo $user['email']; ?></label>
                     </div>
-                </td>
-        </tr>
-    </table>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <hr/>
 
-    <?php echo form_close(); ?>
+    <?php if (isset($id)) echo form_hidden('id', $id); ?>
+    <div class="btn-group btn-center">
+        <button type="submit" name="save" class="btn btn-success">
+            <i class="icon-white icon-ok"></i>
+            Save
+        </button>
+        <button type="submit" name="cancel" class="btn btn-warning">
+            <i class="icon-white icon-remove"></i>
+            Cancel
+        </button>
+    </div>
 
-</div>
+</form>

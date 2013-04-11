@@ -43,7 +43,7 @@
                     <?php if(strpos($menu, 'new_project') !== FALSE && $this->usercontrol->has_permission('project')) : ?>
                         <!-- Add project btn -->
                         <li <?php if($controller == 'project') echo 'class="active"'; ?>>
-                            <a href="<?php echo base_url('project'); ?>" class="menu-btn btn_add">
+                            <a href="<?php echo base_url('project/add'); ?>" class="menu-btn btn_add">
                                 <i></i>
                                 Add New Project
                             </a>
@@ -70,22 +70,22 @@
                         </li>
                     <?php endif; ?>
 
-                    <?php if(strpos($menu, 'edit_task') !== FALSE && $this->usercontrol->has_permission('task')) : ?>
-                        <!-- Edit task btn -->
-                        <li <?php if($controller == 'task') echo 'class="active"'; ?>>
-                            <a href="<?php echo base_url('task/edit/'.$project_id.'/'.$task_id); ?>" class="menu-btn btn_edit">
-                                <i></i>
-                                Add New Task
-                            </a>
-                        </li>
-                    <?php endif; ?>
-
                     <?php if(strpos($menu, 'tasks') !== FALSE && $this->usercontrol->has_permission('project', 'tasks')) : ?>
                         <!-- View task board btn -->
                         <li <?php if($controller == 'project') echo 'class="active"'; ?>>
                             <a href="<?php echo base_url('project/tasks/'.$project_id); ?>" class="menu-btn btn_taskboard">
                                 <i></i>
                                 Taskboard
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if(strpos($menu, 'edit_task') !== FALSE && $this->usercontrol->has_permission('task')) : ?>
+                        <!-- Edit task btn -->
+                        <li <?php if($controller == 'task') echo 'class="active"'; ?>>
+                            <a href="<?php echo base_url('task/edit/'.$project_id.'/'.$task_id); ?>" class="menu-btn btn_edit">
+                                <i></i>
+                                Edit Task
                             </a>
                         </li>
                     <?php endif; ?>
@@ -122,9 +122,6 @@
         </div>
     </div>
 </div>
-<!--<div id="page-title">
-    <?php //echo $page_title; ?>
-    <?php //if($view == 'task_board') { ?>
-    <span id="switch-project-view" class="global-tasks btn" title="Show all"></span>
-    <?php //} ?>
-</div>-->
+<div class="page-title">
+    <?php echo $title; ?>
+</div>

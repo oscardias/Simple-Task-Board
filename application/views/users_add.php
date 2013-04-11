@@ -1,6 +1,3 @@
-<h2><?php echo (isset($id)?'Edit':'Add'); ?> User</h2>
-<hr/>
-
 <?php echo validation_errors('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>', '</div>'); ?>
     
 <form class="form-horizontal" method="post" action="<?php echo base_url('user/save'); ?>">
@@ -40,14 +37,16 @@
             </div>
         </div>
     </div>
+    
     <hr/>
+    
     <?php if (isset($id)) echo form_hidden('id', $id); ?>
-    <div class="btn-group center">
+    <div class="btn-group btn-center">
         <button type="submit" name="save" class="btn btn-success">
             <i class="icon-white icon-ok"></i>
             Save
         </button>
-        <button type="submit" name="cancel" class="btn btn-danger">
+        <button type="submit" name="cancel" class="btn btn-warning">
             <i class="icon-white icon-remove"></i>
             Cancel
         </button>

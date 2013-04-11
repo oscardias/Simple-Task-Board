@@ -1,5 +1,3 @@
-<h2>Users</h2>
-<hr/>
 <?php if(isset($users)) { ?>
     <table class="table table-bordered table-striped">
         <tr>
