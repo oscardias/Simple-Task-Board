@@ -5,7 +5,6 @@
     <?php if(isset($already_installed) && $already_installed) { ?>
         <?php if(isset($update_database) && $update_database) { ?>
             <form class="form-signin" action="<?php echo base_url('install/database'); ?>" method="post">
-                <h2 class="form-signin-heading">Database Upgrade</h2>
                 <button class="btn btn-large btn-primary" type="upgrade">Upgrade</button>
             </form>
         <?php } else { ?>
@@ -14,7 +13,6 @@
     <?php } else { ?>
         <form class="form-signin" method="post"
               action="<?php echo (isset($already_installed) && !$already_installed)?base_url('install/run'):base_url('login/validate'); ?>">
-            <h2 class="form-signin-heading">Login</h2>
             <input name="email" type="text" class="input-block-level" placeholder="Email" value="<?php echo set_value('email'); ?>">
             <input name="password" type="password" class="input-block-level" placeholder="Password" value="<?php echo set_value('password'); ?>">
             <?php if(isset($error) && $error) : ?>

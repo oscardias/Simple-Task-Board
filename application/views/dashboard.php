@@ -1,58 +1,37 @@
-<?php if(isset($tasks)) { ?>
-<div id="dash_tasks" class="dash_wrap">
-    <div id="dash_task_title" class="dash_wrap_title blue-gradient">
-        Tasks
-    </div>
-    <div id="dash_task_items" class="dash_wrap_items">
-        <ul>
-        <?php if($tasks) { ?>
-            <?php $listControl = 0; ?>
-            <?php foreach ($tasks as $task) { ?>
-                <li>
+<?php if(isset($tasks) && $tasks) : ?>
+<h2>You Tasks and Projects</h2>
+<div class="row-fluid">
+    <?php
+    $current_project = 0;
+    $column_control = 0;
+    ?>
+    <?php foreach ($tasks as $task) : ?>
+        <?php if($current_project != $task['project_id']) : ?>
+            <?php if($current_project != 0) : ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if($column_control % 4 == 0) { ?>
+            </div>
+            <div class="row-fluid">
+            <?php } ?>
+                
+            <?php
+            $current_project = $task['project_id'];
+            $column_control++;
+            ?>
+            <div class="span3">
+                <h3><a href="<?php echo base_url('project/tasks/'.$task['project_id']); ?>"><?php echo $task['project_name']; ?></a></h3>
+        <?php endif; ?>
+            <?php if($task['task_id']) : ?>
                 <?php echo anchor('task/view/'.$task['project_id'].'/'.$task['task_id'], '#'.$task['code'].' - '.$task['title']); ?>
-                (<?php echo $status_arr[$task['status']] ?>)
-                </li>
-                <?php $listControl++; ?>
-                <?php if($listControl % 10 == 0) { ?>
-            </ul><ul>
-                <?php } ?>
-            <?php } ?>
-        <?php } else { ?>
-            There are no tasks assigned to you.
-        <?php } ?>
-        </ul>
-    </div>
-    <div class="clear"></div>
+                (<?php echo $status_arr[$task['status']]; ?>)
+                <br/>
+            <?php else : ?>
+                <div class="alert">No tasks here...</div>
+            <?php endif; ?>
+    <?php endforeach; ?>
 </div>
-<?php } ?>
-
-<?php if(isset($projects)) { ?>
-<div id="dash_projects" class="dash_wrap">
-    <div id="dash_projects_title" class="dash_wrap_title blue-gradient">
-        Projects
-    </div>
-    <div id="dash_projects_items" class="dash_wrap_items">
-<?php foreach ($projects as $project) { ?>
-    <div id="project_<?php echo $project['id']; ?>" class="dash_project_group">
-        <p class="dash_project_title blue-gradient"><?php echo anchor('project/tasks/'.$project['id'], $project['name']); ?></p>
-
-        <?php if($project['tasks']) { ?>
-        <ul>
-        <?php foreach ($project['tasks'] as $key => $task) { ?>
-            <?php if($key < 4) { ?>
-            <li><?php echo anchor('task/view/'.$project['id'].'/'.$task['task_id'], '#'.$task['code'].' - '.$task['title']); ?>
-                <em>(<?php echo $status_arr[$task['status']] ?>)</em></li>
-            <?php } else { ?>
-            <li><em>more ...</em></li>
-            <?php } ?>
-        <?php } ?>
-        </ul>
-        <p class="form-save-buttons"><?php echo anchor('project/tasks/'.$project['id'], 'View all tasks', 'class="btn-blue dash_view_all_tasks"'); ?></p>
-        <?php } else { ?>
-        No tasks here!
-        <?php } ?>
-    </div>
-<?php } ?>
-    </div>
-</div>
-<?php } ?>
+<?php else : ?>
+<div class="alert">You don't have any tasks or projects assigned to you.</div>
+<?php endif; ?>

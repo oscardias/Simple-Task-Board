@@ -1,6 +1,13 @@
 /* GENERAL DEFINITIONS */
 .navbar-inverse .navbar-inner{
-    background:#333;
+    background: #45484d; /* Old browsers */
+    background: -moz-linear-gradient(top, #45484d 0%, #000000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #45484d 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #45484d 0%,#000000 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #45484d 0%,#000000 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #45484d 0%,#000000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 3px 2px #666;
     border-bottom:1px solid #D5D5D5;
 }
@@ -8,18 +15,33 @@
     font-size:20px;
     color:#fff;
     text-align:center;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     padding:8px 0;
     position:fixed;
-    top:42px;
+    top:43px;
     left:25%;
-    background:#333;
     border:1px solid #D5D5D5;
     border-top:0;
     border-radius: 0 0 10px 10px;
     box-shadow: 0 3px 2px #666;
     width:50%;
-    z-index: 10000;
+    color: #fff;
+    z-index:1100;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    background-color: #006dcc;
+    background-image: -moz-linear-gradient(top,#08c,#04c);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#08c),to(#04c));
+    background-image: -webkit-linear-gradient(top,#08c,#04c);
+    background-image: -o-linear-gradient(top,#08c,#04c);
+    background-image: linear-gradient(to bottom,#08c,#04c);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0044cc',GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+@media (max-width: 979px) {
+    .page-title{
+        position:static;
+        margin:-20px auto 0;
+    }
 }
 .btn-center{
     text-align: center;

@@ -129,15 +129,17 @@ class Task_model extends CI_Model {
     
     public function get_user_tasks($user)
     {
-        $this->db->select('t.*');
-        $this->db->distinct();
-        $this->db->from('task t');
-        $this->db->where('t.user_id', $user);
-        $this->db->where('t.status !=', 3);
-        $this->db->order_by('t.status', 'desc');
+        $this->db->select('t.*, p.id as project_id, p.name as project_name')->
+                from('project p')->
+                join('user_project up', "p.id = up.project AND up.user = $user")->
+                join('task t', "p.id = t.project_id AND t.user_id = $user AND t.status != 3", 'left')->
+                order_by('p.name', 'asc')->
+                order_by('t.status', 'desc');
         $get = $this->db->get();
 
-        if($get->num_rows > 0) return $get->result_array();
+        if($get->num_rows > 0)
+            return $get->result_array();
+        
         return array();
     }
     

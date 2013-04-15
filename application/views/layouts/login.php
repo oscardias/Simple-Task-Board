@@ -16,7 +16,7 @@
         
         <style>
           body {
-          padding-top: 60px;
+          padding-top: 100px;
           }
         </style>
         <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css') ?>">
