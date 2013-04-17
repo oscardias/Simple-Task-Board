@@ -363,59 +363,6 @@ td.error{
     padding:0 5px;
 }
 
-/* JQUERY UI DIALOG */
-.ui-dialog{
-    border:1px solid #D5D5D5;
-    background: #f5f5f5;
-    padding:2px;
-	box-shadow:0 0 10px #000;
-}
-.ui-dialog-titlebar{
-    padding:2px;
-    background-color:#4A8BF5;
-    background:-moz-linear-gradient(19% 75% 90deg,#4080E5, #4F8FFF);
-    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4F8FFF), to(#4080E5));
-    border:1px solid #3079ED;
-}
-.ui-dialog-title{
-    color:#fff;
-    text-shadow:1px 1px 0 #3070D5;
-}
-.ui-dialog-titlebar-close{
-    float:right;
-    margin-right: 16px;
-    text-indent: -9999px;
-}
-.ui-icon-closethick{
-    background-image: url(../img/close.png);
-    width:16px;
-    height:16px;
-    float:left;
-}
-.ui-button{
-    background-color:#4A8BF5;
-    background:-moz-linear-gradient(19% 75% 90deg,#4080E5, #4F8FFF);
-    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4F8FFF), to(#4080E5));
-}
-.ui-dialog-buttonset{
-    border-top:1px solid #d5d5d5;
-    padding:2px 0 0;
-    text-align:center;
-}
-.ui-icon-alert{
-    background-image: url(../img/alert.png);
-    width:16px;
-    height:16px;
-    float:left;
-    margin:10px;
-}
-.ui-widget-overlay{
-    position:fixed;
-    top:0;
-    background: #000;
-    opacity: 0.5;
-    filter: alpha(opacity=50); /* msie */
-}
 /* CLASSES */
 .blue-gradient, .btn-blue{background-color:#4A8BF5;
     background:-moz-linear-gradient(19% 75% 90deg,#4080E5, #4F8FFF);

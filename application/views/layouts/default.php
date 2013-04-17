@@ -40,9 +40,21 @@
             {content}
         </div>
 
-        <div id="dialog-confirm" style="display:none;" title="Are you sure?">
-            <p><span class="ui-icon ui-icon-alert"></span>This action cannot be undone.</p>
-            <p>Are you sure?</p>
+        <div id="removeModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Are you sure?</h3>
+          </div>
+          <div class="modal-body">
+              <div class="alert alert-block">
+                  <h4>Warning!</h4>
+                  <p>This action cannot be undone. Are you sure you want to continue?</p>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <a href="{url}" class="btn btn-warning">Yes, I know what I'm doing.</a>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          </div>
         </div>
         
         <script src="<?php echo base_url('assets/js/vendor/jquery-1.8.3.min.js') ?>"></script>

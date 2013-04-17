@@ -20,7 +20,7 @@
                     <i class="icon-edit"></i>
                 </a>
                 <a href="<?php echo base_url('user/remove/'.$user['id']); ?>"
-                   class="btn btn-mini btn-danger remove-user-event"
+                   class="btn btn-mini btn-danger remove-item-action"
                    title="Remove">
                     <i class="icon-remove"></i>
                 </a>

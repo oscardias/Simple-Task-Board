@@ -11,21 +11,11 @@ $(document).ready(function(){
         }   
     });
     
-    $('a.remove-user-event').click(function(){
-        var url = $(this).attr('href');
-        $('#dialog-confirm').dialog({
-            resizable: false,
-            height:140,
-            modal: true,
-            buttons: {
-                "Remove": function() {
-                    window.location = url;
-                },
-                Cancel: function() {
-                    $( this ).dialog( "close" );
-                }
-            }
-        });
+    $('.remove-item-action').click(function(){
+        var $modal = $('#removeModal');
+        var html = $modal.html();
+        html = html.replace('{url}', $(this).attr('href'));
+        $modal.html(html).modal('show');
         
         return false;
     });
@@ -54,6 +44,7 @@ $(document).ready(function(){
     
     $('.view-profile-details').live('click', function(){
         var href = $(this).attr('href');
+        
         $.get(href, function(d){
             var $modal = $(d);
             
@@ -64,22 +55,7 @@ $(document).ready(function(){
                 $modal.remove();
             });
         });
-//        $.get(href, 
-//            function(data){
-//                $(data).dialog({
-//                    resizable: false,
-//                    height:0.5 * $(window).height(),
-//                    width:0.5 * $(window).width(),
-//                    modal: true,
-//                    buttons: {
-//                        Close: function() {
-//                            $( this ).dialog( "close" );
-//                        }
-//                    }
-//                });
-//            }
-//        );
-
+        
         return false;
     });
     
