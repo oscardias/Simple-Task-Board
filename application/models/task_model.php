@@ -140,7 +140,7 @@ JOIN (SELECT @rownum := NULL, @prev := 0) AS r
 WHERE user_id = '.$user.' AND status < 3
 ORDER BY t.project_id) AS tmp
 WHERE tmp.rank <= 5) AS t ON p.id = t.project_id
-ORDER BY p.name, t.status desc';
+ORDER BY p.id desc, t.status desc';
         
         $get = $this->db->query($query);
 

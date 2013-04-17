@@ -9,7 +9,7 @@
         <?php if($current_project != $task['project_id']) : ?>
             <?php if($current_project != 0) : ?>
                     </ul>
-                    <a href="<?php echo base_url('project/tasks/'.$task['project_id']); ?>" class="btn btn-block btn-small">All Tasks</a>
+                    <a href="<?php echo base_url('project/tasks/'.$current_project); ?>" class="btn btn-block btn-small">All Tasks</a>
                 </div>
             <?php endif; ?>
 
@@ -36,7 +36,7 @@
             <?php endif; ?>
     <?php endforeach; ?>
         </ul>
-        <a href="<?php echo base_url('project/tasks/'.$task['project_id']); ?>" class="btn btn-block btn-small">All Tasks</a>
+        <a href="<?php echo base_url('project/tasks/'.$current_project); ?>" class="btn btn-block btn-small">All Tasks</a>
     </div>
 </div>
 <?php else : ?>

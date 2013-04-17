@@ -54,21 +54,31 @@ $(document).ready(function(){
     
     $('.view-profile-details').live('click', function(){
         var href = $(this).attr('href');
-        $.get(href, 
-            function(data){
-                $(data).dialog({
-                    resizable: false,
-                    height:0.5 * $(window).height(),
-                    width:0.5 * $(window).width(),
-                    modal: true,
-                    buttons: {
-                        Close: function() {
-                            $( this ).dialog( "close" );
-                        }
-                    }
-                });
-            }
-        );
+        $.get(href, function(d){
+            var $modal = $(d);
+            
+            $('body').append($modal);
+            $modal.modal('show');
+
+            $modal.on('hidden', function(){
+                $modal.remove();
+            });
+        });
+//        $.get(href, 
+//            function(data){
+//                $(data).dialog({
+//                    resizable: false,
+//                    height:0.5 * $(window).height(),
+//                    width:0.5 * $(window).width(),
+//                    modal: true,
+//                    buttons: {
+//                        Close: function() {
+//                            $( this ).dialog( "close" );
+//                        }
+//                    }
+//                });
+//            }
+//        );
 
         return false;
     });

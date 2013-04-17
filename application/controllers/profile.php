@@ -95,11 +95,17 @@ class Profile extends CI_Controller {
             $data['user']['photo'] = 'upload/profile/'.$user_id.'/large'.$data['user']['photo'];
         
         if(!IS_AJAX) {
-            $data['page_title']  = "Profile: {$data['user']['name']}";
+            $user = ($data['user']['name']?$data['user']['name']:$data['user']['email']);
+            
+            $this->layout = 'default';
+            $this->title = "Profile: {$user}";
+            $this->menu = 'users|new_project';
 
             // Load View
-            $this->template->show('profile', $data);
+            $this->load->view('profile', $data);
         } else {
+            $this->layout = 'ajax';
+                
             // Load View
             $this->load->view('profile_details', $data);
         }
