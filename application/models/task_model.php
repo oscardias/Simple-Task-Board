@@ -129,13 +129,20 @@ class Task_model extends CI_Model {
     
     public function get_user_tasks($user)
     {
-        $this->db->select('t.*, p.id as project_id, p.name as project_name')->
-                from('project p')->
-                join('user_project up', "p.id = up.project AND up.user = $user")->
-                join('task t', "p.id = t.project_id AND t.user_id = $user AND t.status != 3", 'left')->
-                order_by('p.name', 'asc')->
-                order_by('t.status', 'desc');
-        $get = $this->db->get();
+        // Get Projects and 5 tasks in each project
+        $query = 'SELECT t.*, p.id as project_id, p.name as project_name
+FROM project p
+JOIN user_project up ON p.id = up.project AND up.user = '.$user.'
+LEFT JOIN (SELECT tmp.* FROM
+(SELECT *, IF( @prev <> project_id, @rownum := 1, @rownum := @rownum+1 ) AS rank, @prev := project_id
+FROM task t
+JOIN (SELECT @rownum := NULL, @prev := 0) AS r 
+WHERE user_id = '.$user.' AND status < 3
+ORDER BY t.project_id) AS tmp
+WHERE tmp.rank <= 5) AS t ON p.id = t.project_id
+ORDER BY p.name, t.status desc';
+        
+        $get = $this->db->query($query);
 
         if($get->num_rows > 0)
             return $get->result_array();

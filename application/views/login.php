@@ -5,7 +5,7 @@
     <?php if(isset($already_installed) && $already_installed) { ?>
         <?php if(isset($update_database) && $update_database) { ?>
             <form class="form-signin" action="<?php echo base_url('install/database'); ?>" method="post">
-                <button class="btn btn-large btn-primary" type="upgrade">Upgrade</button>
+                <button class="btn btn-primary" type="upgrade">Upgrade</button>
             </form>
         <?php } else { ?>
             <div class="alert">Simple Task Board has already been installed.</div>
@@ -19,9 +19,9 @@
                 <div class="alert alert-error">That's not right! Please check your information and try again.</div>
             <?php endif; ?>
             <?php if(isset($already_installed) && !$already_installed) : ?>
-                <button class="btn btn-large btn-primary" type="install">Install</button>
+                <button class="btn btn-primary" type="install">Install</button>
             <?php else : ?>
-                <button class="btn btn-large btn-primary" type="login">Login</button>
+                <button class="btn btn-primary" type="login">Login</button>
             <?php endif; ?>
         </form>
     <?php } ?>

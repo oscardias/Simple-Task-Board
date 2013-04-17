@@ -64,17 +64,6 @@ body.login{
      -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
           box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin input[type="text"],
-.form-signin input[type="password"] {
-  font-size: 16px;
-  height: auto;
-  margin-bottom: 15px;
-  padding: 7px 9px;
-}
 
 /* MENU */
 .navbar-inverse .nav>li>a.menu-btn{
@@ -125,84 +114,27 @@ body.login{
 
 /* MAIN */
 /* DASHBOARD */
-.dash_wrap{
-    margin-bottom: 10px;
-    padding:2px;
-    height: 206px;
-    overflow:hidden;
+.dashboard-tasks{
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #fbfbfb;
+  border: 1px solid #e3e3e3;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.dash_wrap_title{
-    float:left;
-    height:203px;
-    line-height: 203px;
-    width:10%;
-    margin-right: 10px;
-    font-size:14px;
-    text-align: center;
-    color:#fff;
-    text-shadow:1px 1px 0 #3070D5;
-    border:1px solid #3079ED;
-}
-.dash_wrap_items{
-    border:1px solid #D5D5D5;
-    padding:2px;
-    width:80%;
-    height: 200px;
-    overflow: auto;
-}
-.dash_wrap_items:hover{
+.dashboard-tasks:hover{
     -moz-box-shadow:0 0 5px #999;
     -webkit-box-shadow:0 0 5px #999;
     box-shadow:0 0 5px #999
 }
-.dash_project_group{
-    border:1px solid #D5D5D5;
-    padding:2px;
-}
-#dash_task_items ul{
+.dashboard-tasks ul{
     list-style: none;
-    margin:3px 0;
-    padding: 0 10px;
-    float:left;
-}
-#dash_task_items li, .dash_project_group li{
-    margin:4px 0;
-}
-.dash_project_group{
-    border:1px solid #D5D5D5;
-    margin:0 4px 4px 0;
-    padding:2px;
-    width:250px;
-    float:left;
-}
-.dash_project_group ul{
-    list-style: none;
-    margin:3px 0;
-    padding:0 10px;
-}
-.dash_project_title{
-    margin:2px auto 8px;
-    padding:2px;
-    font-size:14px;
-    text-align: center;
-    border:1px solid #3079ED
-}
-.dash_project_title a{
-    color:#fff;
-    text-shadow:1px 1px 0 #3070D5;
-}
-.dash_view_all_tasks{
-    color:#fff;
-    font-size:12px;
-    text-decoration:none;
-    text-shadow:1px 1px 0 #3070D5;
-    padding:2px 4px;
-    margin:0 4px;
-    border-radius:3px;
-    border:1px solid #3079ED;
-}
-.dash_view_all_tasks:hover{
-    color:#fff;
+    margin-left:0;
 }
 /* USERS */
 #users_table tr{
