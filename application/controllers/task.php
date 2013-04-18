@@ -22,7 +22,7 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $this->title = 'New Task';
-        $this->menu = 'dashboard|tasks|edit_task';
+        $this->menu = 'dashboard|tasks';
         
         $data['parent_id']      = 0;
         $data['title']       = '';
@@ -100,8 +100,12 @@ class Task extends CI_Controller {
         $project_id = $this->input->post('project_id');
         $id = $this->input->post('task_id');
         
-        if($this->input->post('cancel') !== FALSE)
-            redirect('task/view/'.$project_id.'/'.$id);
+        if($this->input->post('cancel') !== FALSE) {
+            if($id)
+                redirect('task/view/'.$project_id.'/'.$id);
+            else
+                redirect('project/tasks/'.$project_id);
+        }
                     
         $this->load->library('form_validation');
         

@@ -99,14 +99,16 @@ class Project extends CI_Controller {
         
         $data = $this->project_model->get($id);
         
-        $data['page_title']  = "Edit Project #".$id;
+        $this->title = "Edit Project #$id";
+        $this->menu = 'dashboard|tasks';
+        
         $data['project_id']  = $id;
         $data['users'] = $this->project_model->get_related_users($id);
         
         if($this->error)
             $data['error'] = $this->error;
         
-        $this->template->show('project_add', $data);
+        $this->load->view('project_add', $data);
     }
     
     public function save()

@@ -16,9 +16,7 @@
             <div class="control-group">
                 <label class="control-label" for="description">Description *</label>
                 <div class="controls">
-                    <textarea name="description" id="description" class="input-xxlarge" rows="4">
-                    <?php echo set_value('description', $description); ?>
-                    </textarea>
+                    <textarea name="description" id="description" class="input-xxlarge" rows="4"><?php echo set_value('description', $description); ?></textarea>
                 </div>
             </div>
         </div>
