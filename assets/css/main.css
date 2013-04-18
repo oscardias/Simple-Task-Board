@@ -273,51 +273,8 @@ ul.task-history ul{
 ul.task-history li{
     margin:2px 0;
 }
-/* FORMS */
-#profile-links .add_link{
-    cursor: pointer;
-}
-#profile_photo img {
-    margin:10px 136px;
-}
-#profile_photo input {
-    /*display:none;*/
-}
-input:disabled,textarea:disabled,select:disabled,button:disabled{
-    background: #e9e9e9;
-}
-input[type=checkbox]{
-    width:auto;
-}
-td.error{
-    color: #DD0000;
-    padding:0 5px;
-}
 
 /* CLASSES */
-.blue-gradient, .btn-blue{background-color:#4A8BF5;
-    background:-moz-linear-gradient(19% 75% 90deg,#4080E5, #4F8FFF);
-    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4F8FFF), to(#4080E5));
-}
-.btn-blue:hover{background-color:#3D7DE0;
-    background:-moz-linear-gradient(19% 75% 90deg,#4080E5, #3574D5);
-    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#3574D5), to(#4080E5));
-}
-.darker-on-hover:hover{
-    background:#e5e5e5;
-}
-.expand{
-    background-image: url(../img/expand.png);
-    background-repeat: no-repeat;
-    padding-left:16px;
-    cursor:pointer;
-}
-.collapse{
-    background-image: url(../img/collapse.png);
-    background-repeat: no-repeat;
-    padding-left:16px;
-    cursor:pointer;
-}
 .half-width{
     width:50%;
     float:left;

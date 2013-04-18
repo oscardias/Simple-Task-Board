@@ -127,5 +127,10 @@ $(document).ready(function(){
         
         return false;
    });
-    
+
+    // Forms
+    tinyMCE.init({
+            mode : "textareas",
+            theme : "modern"
+    });
  });

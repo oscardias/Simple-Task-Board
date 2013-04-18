@@ -43,9 +43,9 @@
     <div class="row-fluid">
         <div class="span12">
             <div class="control-group">
-                <label class="control-label" for="text">Description</label>
+                <label class="control-label" for="description">Description</label>
                 <div class="controls">
-                    <textarea name="text" id="text" class="input-xxlarge" rows="5"><?php echo set_value('description', $description); ?></textarea>
+                    <textarea name="description" id="description" class="input-xxlarge" rows="6"><?php echo set_value('description', $description); ?></textarea>
                 </div>
             </div>
         </div>

@@ -22,13 +22,14 @@ class Profile extends CI_Controller {
         if($data['photo'])
             $data['photo'] = 'upload/profile/'.$this->session->userdata('user').'/large'.$data['photo'];
         
-        $data['page_title']  = "My Profile";
+        $this->title = "My Profile";
+        $this->menu = 'dashboard';
         
         if($this->error)
             $data['error'] = $this->error;
         
         // Load View
-            $this->template->show('profile_edit', $data);
+        $this->load->view('profile_edit', $data);
     }
     
     public function save()

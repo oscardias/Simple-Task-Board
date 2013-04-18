@@ -15,7 +15,7 @@
 
         <p class="task-info-description">
             <p><strong>Description</strong></p>
-            <?php echo nl2br(htmlspecialchars($description)); ?>
+            <?php echo $description; ?>
         </p>
 
         <?php if($children_tasks) : ?>

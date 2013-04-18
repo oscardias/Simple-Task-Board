@@ -60,6 +60,7 @@
         <script src="<?php echo base_url('assets/js/vendor/jquery-1.8.3.min.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/vendor/bootstrap.min.js?ver=1.00') ?>"></script>
         <script src="<?php echo base_url('assets/js/vendor/bootstrap-inputmask.min.js?ver=1.00') ?>"></script>
+        <script src="<?php echo base_url('assets/js/vendor/tinymce/tinymce.min.js?ver=1.00') ?>"></script>
         <script src="<?php echo base_url('assets/js/plugins.js?ver=1.00') ?>"></script>
         <script src="<?php echo base_url('assets/js/main.js?ver=1.04') ?>"></script>
         {scripts}
