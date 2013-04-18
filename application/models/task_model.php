@@ -200,7 +200,7 @@ ORDER BY p.id desc, t.status desc';
 
     public function get_comments($task)
     {
-        $this->db->select('task_comments.*, user.email')->
+        $this->db->select('task_comments.*, user.name, user.email')->
                 from('task_comments')->
                 join('user', 'task_comments.user_id = user.id')->
                 where('task_id', $task);

@@ -1,18 +1,16 @@
-<div class="task-info">
-    <p class="task-info-title">
-        <?php echo $title; ?>
-    </p>
-    <div class="task-info-left">
-
+<h2><?php echo $title; ?></h2>
+<div class="row-fluid">
+    <div class="span8">
         <?php if($parent_tasks) : ?>
-        <p class="task-info-breadcrumb">
-            <?php foreach($parent_tasks as $key => $value){ ?>
-            <?php echo ($key == 0)?'':'&gt;'; ?>
-            <?php echo anchor(base_url()."task/view/{$project_id}/{$value['id']}", $value['title']); ?>
-            <?php } ?>
-            &gt;
-            <?php echo $title; ?>
-        </p>
+        <ul class="breadcrumb">
+            <?php foreach($parent_tasks as $key => $value): ?>
+            <li>
+                <?php echo anchor(base_url()."task/view/{$project_id}/{$value['id']}", $value['title']); ?>
+                <span class="divider">&gt;</span>
+            </li>
+            <?php endforeach; ?>
+            <li class="active"><?php echo $title; ?></li>
+        </ul>
         <?php endif; ?>
 
         <p class="task-info-description">
@@ -21,33 +19,33 @@
         </p>
 
         <?php if($children_tasks) : ?>
-        <p class="task-info-breadcrumb">
+        <p>
             <p><strong>Children</strong></p>
             <?php task_hierarchy_html($project_id, $children_tasks); ?>
         </p>
         <?php endif; ?>
 
         <?php if($files) { ?>
-        <p class="task-info-files">
+        <p>
             <strong>Files:</strong>
             <?php echo $files; ?>
         </p>
         <?php } ?>
         <?php if($database) { ?>
-        <p class="task-info-database">
+        <p>
             <strong>Database:</strong>
             <?php echo $database; ?>
         </p>
         <?php } ?>
     </div>
-
-    <div class="task-info-right">
-        <p class="task-info-priority">
+    
+    <div class="span4 well">
+        <p>
             <strong>Priority:</strong>
             <?php $options = array('0' => 'Very High', '1' => 'High', '2' => 'Normal', '3' => 'Low', '4' => 'Very Low'); ?>
             <?php echo $options[$priority]; ?>
         </p>
-        <p class="task-info-user">
+        <p>
             <strong>Assigned To:</strong>
             <em><?php echo anchor('profile/view/'.$user['id'], ($user['name'])?$user['name']:$user['email'], 'class="view-profile-details"'); ?></em>
         </p>
@@ -55,7 +53,7 @@
             <strong>Current Phase:</strong>
             <?php echo $status_arr[$status]; ?>
         </p>
-        <p class="task-info-status">
+        <p >
             <?php if($total_duration || $task_history_date_created) { ?>
             <p><strong>Duration:</strong><br/>
                 <?php if($task_history_date_created) { ?>
@@ -104,39 +102,41 @@
         </ul>
         </p>
     </div>
-
 </div>
 
-<div class="task-comments">
-    <p class="task-comments-title"><strong>Comments</strong></p>
-    <?php if($comments) { ?>
-    <?php foreach ($comments as $comment) { ?>
-    <div class="task-comment-single" id="task-comment-id-<?php echo $comment['task_comments_id']; ?>">
-        <p><strong><?php echo $comment['email']; ?></strong> <em>(<?php echo $comment['date_created']; ?>)</em></p>
-        <?php echo $comment['comment']; ?>
+<div class="well">
+<h4>Comments</h4>
+<div class="row-fluid">
+    <div class="span12">
+        <?php if($comments) { ?>
+        <?php foreach ($comments as $comment) { ?>
+        <div id="task-comment-id-<?php echo $comment['task_comments_id']; ?>">
+            <p><strong><?php echo ($comment['name']?$comment['name']:$comment['email']); ?></strong> <em>(<?php echo $comment['date_created']; ?>)</em></p>
+            <?php echo $comment['comment']; ?>
+        </div>
+        <?php } ?>
+        <?php } else { ?>
+        No comments here!
+        <?php } ?>
     </div>
-    <?php } ?>
-    <?php } else { ?>
-    No comments here!
-    <?php } ?>
-    <div class="task-comment-form">
-        <?php echo form_open('task/comment'); ?>
+</div>
 
-        <p class="task-comments-title"><strong><?php echo form_label('New Comment', 'comment'); ?></strong></p>
-        <?php
-        $data = array('name'        => 'comment',
-                      'id'          => 'comment',
-                      'value'       => set_value('comment'),
-                      'rows'        => '6',
-                      'cols'        => '80');
+<hr/>
 
-        echo form_textarea($data); ?>
+<form class="form-horizontal" method="post" action="<?php echo base_url('task/comment'); ?>">
 
-        <?php echo form_hidden('project_id', $project_id); ?>
-        <?php echo form_hidden('task_id', $task_id); ?>
-
-        <p><?php echo form_submit('submit', 'Submit', 'class="blue-gradient"'); ?></p>
-
-        <?php echo form_close(); ?>
+    <div class="row-fluid">
+        <div class="span12">
+            <textarea name="comment" id="comment" rows="5" class="input-xxlarge" placeholder="New comment"><?php echo set_value('comment'); ?></textarea>
+            <button type="submit" name="submit" class="btn btn-success">
+                <i class="icon-white icon-ok"></i>
+                Submit
+            </button>
+        </div>
     </div>
+
+    <?php echo form_hidden('project_id', $project_id); ?>
+    <?php echo form_hidden('task_id', $task_id); ?>
+
+</form>
 </div>
