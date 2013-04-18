@@ -2,7 +2,7 @@
 Simple Task Board
 #################
 
-- Version: 1.4.2
+- Version: 2.0
 - Link: http://oscardias.com/projects/simple-task-board/
 - Author: Oscar Dias
 - Website: http://oscardias.com
@@ -11,8 +11,11 @@ Simple Task Board
 Description
 ***********
 
-A simple task board to help managing software projects. It is developed in PHP and uses the CodeIgniter Framework.
-It includes multiple users/projects/tasks.
+A simple task board to help managing software projects. It lets you create multiple users
+and associate them with different projects. Inside each project you can create multiple
+tasks.
+
+It is developed in PHP and uses the CodeIgniter Framework. Since version 2.0 it also uses Twitter Bootstrap.
 
 ************
 Installation
@@ -38,4 +41,5 @@ I plan to update some portions of this application in the following months. Curr
 - Moving tasks: tasks need to ask for new user and comment when moved from In Progress to Testing.
 - Pagination: paginate tasks in the dashboard and the list of users.
 - Tasks estimation: add an estimation field to enable a comparison between estimated and realised.
+- Send emails: When a task is associated with a different user and Periodic email notifying used about his tasks
 - ... if you have any ideas, let me know ...
