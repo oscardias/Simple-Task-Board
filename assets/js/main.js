@@ -85,26 +85,6 @@ $(document).ready(function(){
     });
     
     /* Task actios */
-    $('#remove-task').click(function(){
-        var targetUrl = $(this).attr('target-url');
-        
-        $('#dialog-confirm').dialog({
-            resizable: false,
-            height:140,
-            modal: true,
-            buttons: {
-                "Remove": function() {
-                    window.location = targetUrl;
-                },
-                Cancel: function() {
-                    $( this ).dialog( "close" );
-                }
-            }
-        });
-        
-        return false;
-    });
-    
      $('a.task_time_control').live('click', function(){
        var element = $(this);
        var duration = element.next();
@@ -121,7 +101,7 @@ $(document).ready(function(){
                        element.attr('title', 'Stop');
                        element.attr('href', data.new_action);
                        element.removeClass('play').addClass('stop');
-                       duration.html(data.duration + ' - ongoing');
+                       duration.html(data.duration + ' - running');
                    }
                }
            },
@@ -132,24 +112,20 @@ $(document).ready(function(){
    });
    
    $('#task-history-details').click(function(){
-       var href = $(this).attr('href');
-       $.get(href, 
-           function(data){
-               $(data).dialog({
-                   resizable: false,
-                   height:0.8 * $(window).height(),
-                   width:0.8 * $(window).width(),
-                   modal: true,
-                   buttons: {
-                       Close: function() {
-                           $( this ).dialog( "close" );
-                       }
-                   }
-               });
-           }
-       );
-       
-       return false;
+        var href = $(this).attr('href');
+        
+        $.get(href, function(d){
+            var $modal = $(d);
+            
+            $('body').append($modal);
+            $modal.modal('show');
+
+            $modal.on('hidden', function(){
+                $modal.remove();
+            });
+        });
+        
+        return false;
    });
     
  });

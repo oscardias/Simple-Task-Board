@@ -188,6 +188,8 @@ class Task extends CI_Controller {
     
     public function timer($project, $id, $action = 'stop')
     {
+        $this->layout = 'ajax';
+        
         $this->load->helper('stb_date');
         $this->load->model('task_model');
         
@@ -220,20 +222,23 @@ class Task extends CI_Controller {
         
         // Get the task
         $data = $this->task_model->get($project, $id);
-        $data['page_title']  = "Task #".$data['code']." History";
         
         // Get the history
         $data['task_history'] = $this->task_model->get_history($id, true);
-        
         $data['status_arr'] = $this->task_model->get_status_array();
 
         if(!IS_AJAX) {
             $data['project_id']  = $project;
             $data['task_id']  = $id;
             
-            $this->template->show('task_history', $data);
+            $this->title = "Task #{$data['code']} History";
+            $this->menu = 'dashboard|tasks|view_task';
+            
+            $this->load->view('task_history', $data);
         } else {
-            $this->load->view('task_history_details', $data);
+            $this->layout = 'ajax';
+            
+            $this->load->view('task_history_modal', $data);
         }
     }    
     

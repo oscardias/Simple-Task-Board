@@ -97,17 +97,16 @@ class Profile extends CI_Controller {
         if(!IS_AJAX) {
             $user = ($data['user']['name']?$data['user']['name']:$data['user']['email']);
             
-            $this->layout = 'default';
             $this->title = "Profile: {$user}";
-            $this->menu = 'users|new_project';
+            $this->menu = 'dashboard|users';
 
             // Load View
-            $this->load->view('profile', $data);
+            $this->load->view('profile_details', $data);
         } else {
             $this->layout = 'ajax';
                 
             // Load View
-            $this->load->view('profile_details', $data);
+            $this->load->view('profile_details_modal', $data);
         }
     }
 }

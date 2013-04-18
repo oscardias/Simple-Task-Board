@@ -86,7 +86,7 @@
                     <?php if($task_history_date_created) { ?>
                     <?php echo timespan_diff($value['duration'] + (time() - strtotime($task_history_date_created))); ?>
                             <?php if($value['status'] != (count($status_arr) - 1)) { ?>
-                            - ongoing
+                            - running
                             <?php } ?>
                     <?php } else { ?>
                     <?php echo timespan_diff($value['duration']); ?>

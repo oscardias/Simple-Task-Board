@@ -27,7 +27,7 @@
             </td>
         </tr>
     <?php } ?>
-    </div>
+    </table>
 <?php } else { ?>
     <div class="alert">No users registered.</div>
 <?php } ?>

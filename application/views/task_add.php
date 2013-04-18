@@ -83,10 +83,10 @@
             Cancel
         </button>
         <?php if(isset($task_id)) : ?>
-        <button type="button" name="remove" class="btn btn-danger" id="remove-task" target-url="<?php echo base_url('task/remove/'.$project_id.'/'.$task_id); ?>">
+        <a href="<?php echo base_url('task/remove/'.$project_id.'/'.$task_id); ?>" class="btn btn-danger remove-item-action">
             <i class="icon-white icon-remove"></i>
             Remove
-        </button>
+        </a>
         <?php endif; ?>
     </div>
 
