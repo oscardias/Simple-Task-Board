@@ -82,6 +82,7 @@ $(document).ready(function(){
             $(this).attr('title', 'Show all');
             $(this).removeClass('user-tasks').addClass('global-tasks');
         }
+        return false;
     });
     
     /* Task actios */

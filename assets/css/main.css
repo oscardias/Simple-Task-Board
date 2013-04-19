@@ -160,49 +160,41 @@ body.login{
 #associated-users{
     display:none;
 }
-.global-tasks, .user-tasks{
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    margin:2px 8px;
-    padding:2px;
+.switch-tasks-btn{
+    margin:-2px 8px;
+    padding:3px;
+    float:right;
     width:16px;
     height:16px;
-    cursor:pointer;
-    float:right;
+    border-radius:3px;
+    border:1px solid #D67804;
+    background-color:#FFB51B;
+    background-image:-webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
+    background-image:-webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:-moz-linear-gradient(top,#FFD500,#FF9C30); /* FF3.6+ */
+    background-image:-ms-linear-gradient(top,#FFD500,#FF9C30); /* IE10 */
+    background-image:-o-linear-gradient(top,#FFD500,#FF9C30); /* Opera 11.10+ */
+    background-image:linear-gradient(top,#FFD500,#FF9C30);
 }
-.global-tasks{
-    background-color:#FFB51B;background-image:url(../img/global.png);
-    background-image:url(../img/global.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
-    background-image:url(../img/global.png), -webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
-    background-image:url(../img/global.png), -moz-linear-gradient(top,#FFD500,#FF9C30); /* FF3.6+ */
-    background-image:url(../img/global.png), -ms-linear-gradient(top,#FFD500,#FF9C30); /* IE10 */
-    background-image:url(../img/global.png), -o-linear-gradient(top,#FFD500,#FF9C30); /* Opera 11.10+ */
-    background-image:url(../img/global.png), linear-gradient(top,#FFD500,#FF9C30)
+.switch-tasks-btn:hover{
+    background-color:#FB8F19;
+    background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F78400), to(#FF9C30));
+    background-image:-webkit-linear-gradient(top,#F78400,#FF9C30); /* Chrome 10+, Saf5.1+ */
+    background-image:-moz-linear-gradient(top,#F78400,#FF9C30); /* FF3.6+ */
+    background-image:-ms-linear-gradient(top,#F78400,#FF9C30); /* IE10 */
+    background-image:-o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
+    background-image:linear-gradient(top,#F78400,#FF9C30)
 }
-.global-tasks:hover{background-color:#FB8F19;background-image:url(../img/global.png);
-    background-image:url(../img/global.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F78400), to(#FF9C30));
-    background-image:url(../img/global.png), -webkit-linear-gradient(top,#F78400,#FF9C30); /* Chrome 10+, Saf5.1+ */
-    background-image:url(../img/global.png), -moz-linear-gradient(top,#F78400,#FF9C30); /* FF3.6+ */
-    background-image:url(../img/global.png), -ms-linear-gradient(top,#F78400,#FF9C30); /* IE10 */
-    background-image:url(../img/global.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
-    background-image:url(../img/global.png), linear-gradient(top,#F78400,#FF9C30)
+.switch-tasks-btn i{
+    width:16px;
+    height:16px;
+    display:inline-block;
 }
-.user-tasks{
-    background-color:#FFB51B;background-image:url(../img/user.png);
-    background-image:url(../img/user.png), -webkit-gradient(linear, left top, left bottom, from(#FFD500), to(#FF9C30));
-    background-image:url(../img/user.png), -webkit-linear-gradient(top,#FFD500,#FF9C30); /* Chrome 10+, Saf5.1+ */
-    background-image:url(../img/user.png), -moz-linear-gradient(top,#FFD500,#FF9C30); /* FF3.6+ */
-    background-image:url(../img/user.png), -ms-linear-gradient(top,#FFD500,#FF9C30); /* IE10 */
-    background-image:url(../img/user.png), -o-linear-gradient(top,#FFD500,#FF9C30); /* Opera 11.10+ */
-    background-image:url(../img/user.png), linear-gradient(top,#FFD500,#FF9C30)
+.global-tasks i{
+    background-image:url(../img/global.png);
 }
-.user-tasks:hover{background-color:#FB8F19;background-image:url(../img/user.png);
-    background-image:url(../img/user.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F78400), to(#FF9C30));
-    background-image:url(../img/user.png), -webkit-linear-gradient(top,#F78400,#FF9C30); /* Chrome 10+, Saf5.1+ */
-    background-image:url(../img/user.png), -moz-linear-gradient(top,#F78400,#FF9C30); /* FF3.6+ */
-    background-image:url(../img/user.png), -ms-linear-gradient(top,#F78400,#FF9C30); /* IE10 */
-    background-image:url(../img/user.png), -o-linear-gradient(top,#F78400,#FF9C30); /* Opera 11.10+ */
-    background-image:url(../img/user.png), linear-gradient(top,#F78400,#FF9C30)
+.user-tasks i{
+    background-image:url(../img/user.png);
 }
 .project-task{
     display:none;
