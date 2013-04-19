@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Simple Task Board : Task board for project management" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Simple Task Board</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/oscardias/Simple-Task-Board">View on GitHub</a>
+
+          <h1 id="project_title">Simple Task Board</h1>
+          <h2 id="project_tagline">Task board for project management</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/oscardias/Simple-Task-Board/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/oscardias/Simple-Task-Board/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Simple Task Board</h1>
+
+<ul>
+<li>Version: 2.0</li>
+<li>Link: <a href="http://oscardias.com/projects/simple-task-board/">http://oscardias.com/projects/simple-task-board/</a>
+</li>
+<li>Author: Oscar Dias</li>
+<li>Website: <a href="http://oscardias.com">http://oscardias.com</a>
+</li>
+</ul><hr><h2>Description</h2>
+
+<p>A simple task board to help managing software projects. It lets you create multiple users
+and associate them with different projects. Inside each project you can create multiple
+tasks.</p>
+
+<p>It is developed in PHP and uses the CodeIgniter Framework. Since version 2.0 it also uses Twitter Bootstrap.</p>
+
+<h2>Installation</h2>
+
+<p>Create the database using db/create.sql, place the files in your server and update the following:</p>
+
+<ul>
+<li>application/config/config.php: update $config['base_url'] with your url.</li>
+<li>application/config/database.php: update your database information.</li>
+<li>.htaccess in your root folder: update /task_board/index.php with your URL.</li>
+<li>enable mod_rewrite in your Apache server.</li>
+</ul><p>Run /install (where  should be your localhost or domain/folder).</p>
+
+<p>If you have any problems let me know.</p>
+
+<h2>Next updates</h2>
+
+<p>I plan to update some portions of this application in the following months. Currently these are the features to be developed:</p>
+
+<ul>
+<li>Moving tasks: tasks need to ask for new user and comment when moved from In Progress to Testing.</li>
+<li>Pagination: paginate tasks in the dashboard and the list of users.</li>
+<li>Tasks estimation: add an estimation field to enable a comparison between estimated and realised.</li>
+<li>Send emails: When a task is associated with a different user and Periodic email notifying used about his tasks</li>
+<li>... if you have any ideas, let me know ...</li>
+</ul><h2>Changelog</h2>
+
+<h3>2.0</h3>
+
+<ul>
+<li>Twitter Bootstrap: app totally redesigned using Twitter Bootstrap</li>
+</ul><h3>1.4.1</h3>
+
+<ul>
+<li>Hide Task in Parent List: When editing a task, it shouldn’t appear in the Parent dropdown, otherwise it can be its own parent.</li>
+<li>Show Parent Task: In the taskboard it needs to show the parent task name as well, otherwise two tasks can have the same name and be hard to identify.</li>
+<li>Completed Tasks: Order finished tasks by most recent updated to the older one.</li>
+<li>Convert Line Breaks into HTML: Use nl2br to convert descriptions.</li>
+</ul><h3>1.4</h3>
+
+<ul>
+<li>User Profiles: user profiles were added, with a button where the user can ad hist photo, name and social media links (Twitter, Facebok, Linkedin…)</li>
+</ul><h3>1.3.4</h3>
+
+<ul>
+<li>Validation: added rules for other fields, in order to enable the set_value function.</li>
+<li>Buttons CSS: changes in the buttons CSS with the inclusion of <i> tag.</i>
+</li>
+</ul><h3>1.3.3</h3>
+
+<ul>
+<li>Task Duration: updated in order to save the user.</li>
+<li>Task History: functionality to display the complete history of a task.</li>
+</ul><h3>1.3.2</h3>
+
+<ul>
+<li>Bug fix: projects, tasks and users could be created with empty information. This was fixed with the addition of a form validation for required fields.</li>
+</ul><h3>1.3.1</h3>
+
+<ul>
+<li>Task Duration: display total task duration in the task board and in the task view.</li>
+<li>Timer: functionality to stop/continue tracking the time.</li>
+</ul><h3>1.3</h3>
+
+<ul>
+<li>Task history: track what happens with the tasks and how long it takes in each phase.</li>
+<li>Database update:
+updates in tables task and task_comments
+inclusion of foreign keys
+creation of table task_history</li>
+</ul><h3>1.2</h3>
+
+<ul>
+<li>User levels: implement level verification to allow the correct functionalities to each level.</li>
+<li>Database update: creation of routine to update the database automatically.</li>
+</ul><h3>1.1</h3>
+
+<ul>
+<li>Task comments: add comments in each task.</li>
+<li>Database upgrade logic.</li>
+</ul><h3>1.0.1</h3>
+
+<ul>
+<li>General bug fixes.</li>
+</ul><h3>1.0</h3>
+
+<ul>
+<li>First version</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Simple Task Board maintained by <a href="https://github.com/oscardias">oscardias</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-11826716-5");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
