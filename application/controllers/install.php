@@ -24,12 +24,14 @@ class Install extends CI_Controller {
         }
         
         // Load View
-        $data['page_title']  = "Installation";
+        $this->title = 'Installation';
+        $this->menu = 'none';
+        $this->layout = 'login';
         
         $data['email'] = '';
         $data['password'] = '';
         
-        $this->template->show('login', $data);
+        $this->load->view('login', $data);
     }
     
     public function run()
@@ -47,14 +49,16 @@ class Install extends CI_Controller {
         }
         
         // Load View
-        $data['page_title']  = "Login";
+        $this->title = "Login";
+        $this->menu = 'none';
+        $this->layout = 'login';
         
         $data['email'] = '';
         $data['password'] = '';
         
         $data['answer'] = 'User created!';
         
-        $this->template->show('login', $data);
+        $this->load->view('login', $data);
     }
     
     public function database()
@@ -66,13 +70,15 @@ class Install extends CI_Controller {
         }
         
         // Load View
-        $data['page_title']  = "Login";
+        $this->title = "Login";
+        $this->menu = 'none';
+        $this->layout = 'login';
         
         $data['email'] = '';
         $data['password'] = '';
         
         $data['answer'] = 'Database upgraded!';
         
-        $this->template->show('login', $data);
+        $this->load->view('login', $data);
     }
 }
