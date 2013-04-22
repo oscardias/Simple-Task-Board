@@ -34,17 +34,43 @@
     
     <div class="task_links">
         <?php if($task['status'] == 0) { ?>
-            <?php echo anchor('task/move/'.$project.'/'.$task['task_id'].'/1', 'Start &raquo;'); ?>
+        
+        <a href="<?php echo base_url('task/move/'.$project.'/'.$task['task_id'].'/1'); ?>" class="btn btn-mini">
+            <i class="icon-step-forward"></i>
+            Start
+        </a>
+        
         <?php } else if($task['status'] == 1) { ?>
-            <?php echo anchor('task/move/'.$project.'/'.$task['task_id'].'/0', '&laquo; Back'); ?>
-            |
-            <?php echo anchor('task/move/'.$project.'/'.$task['task_id'].'/2', 'Test &raquo;'); ?>
+        
+        <div class="btn-group">
+            <a href="<?php echo base_url('task/move/'.$project.'/'.$task['task_id'].'/0'); ?>" class="btn btn-mini get-comment-action">
+                <i class="icon-step-backward"></i>
+                Back
+            </a>
+            <a href="<?php echo base_url('task/move/'.$project.'/'.$task['task_id'].'/2'); ?>" class="btn btn-mini get-comment-action">
+                <i class="icon-step-forward"></i>
+                Test
+            </a>
+        </div>
+        
         <?php } else if($task['status'] == 2) { ?>
-            <?php echo anchor('task/move/'.$project.'/'.$task['task_id'].'/1', '&laquo; Back'); ?>
-            |
-            <?php echo anchor('task/move/'.$project.'/'.$task['task_id'].'/3', 'Finish &raquo;'); ?>
+
+        <div class="btn-group">
+            <a href="<?php echo base_url('task/move/'.$project.'/'.$task['task_id'].'/1'); ?>" class="btn btn-mini get-comment-action">
+                <i class="icon-step-backward"></i>
+                Back
+            </a>
+            <a href="<?php echo base_url('task/move/'.$project.'/'.$task['task_id'].'/3'); ?>" class="btn btn-mini get-comment-action">
+                <i class="icon-step-forward"></i>
+                Finish
+            </a>
+        </div>
+        
         <?php } else if($task['status'] == 3) { ?>
-            <?php echo anchor('task/move/'.$project.'/'.$task['task_id'].'/2', '&laquo; Back'); ?>
+            <a href="<?php echo base_url('task/move/'.$project.'/'.$task['task_id'].'/2'); ?>" class="btn btn-mini get-comment-action">
+                <i class="icon-step-backward"></i>
+                Back
+            </a>
         <?php } ?>
     </div>
 </div>

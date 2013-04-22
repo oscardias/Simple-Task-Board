@@ -166,6 +166,59 @@ class Task extends CI_Controller {
         redirect('project/tasks/'.$project);
     }
     
+    public function ajax_comment($project_id, $task_id, $status)
+    {
+        if(!IS_AJAX) {
+            redirect('project/tasks/'.$project_id);
+        }
+        
+        $this->layout = 'ajax';
+        
+        if($this->input->post('user_id')) {
+            
+            // Save user
+            $this->load->model('task_model');
+            
+            if($this->input->post('user_id') != $this->session->userdata('user')) {
+                $sql_data = array('user_id' => $this->input->post('user_id'));
+
+                $this->task_model->update(
+                        $this->input->post('project_id'),
+                        $this->input->post('task_id'),
+                        $sql_data);
+            }
+            
+            // Save comment
+            if($this->input->post('comment')) {
+                $data = array(
+                    'task_id' => $this->input->post('task_id'),
+                    'user_id' => $this->session->userdata('user'),
+                    'comment' => $this->input->post('comment')
+                );
+
+                $this->task_model->create_comment($data);
+            }
+
+            echo base_url("task/move/$project_id/$task_id/$status");
+            
+        } else {
+            
+            // Load modal
+            $this->load->model('task_model');
+            
+            $data = array(
+                'task_id' => $task_id,
+                'project_id' => $project_id,
+                'status' => $status,
+                'user_id' => $this->session->userdata('user'),
+                'users' => $this->task_model->get_related_users($project_id)
+            );
+
+            $this->load->view('task_comment_modal', $data);
+            
+        }
+    }
+    
     public function remove($project, $id)
     {
         $this->load->model('task_model');

@@ -218,13 +218,13 @@ body.login{
     -webkit-box-shadow:0 0 5px #999;
     box-shadow:0 0 5px #999
 }
-.task_id{margin:0;padding:1px;position:absolute;right:8px;top:8´x}
+.task_id{margin:0;padding:1px;position:absolute;right:8px;top:8px}
 .task_title{font-weight:bold;margin:0;padding:1px;width:80%}
 .task_text{margin:0;padding:1px}
 .task_info{margin:0;padding:1px}
 .task_user, .task_time{margin:2px 0;font-style:italic;color:#666;font-size:11px;}
 .task_user{display:inline-block;width:45%}
-.task_links{text-align:right;margin:0;padding:1px;display:inline-block;width:50%}
+.task_links{margin:0;padding:1px 0;float:right;}
 .task_time_control{
     float:right;
     width:16px;

@@ -128,6 +128,35 @@ $(document).ready(function(){
         
         return false;
    });
+   
+    $('.get-comment-action').click(function(){
+        var href = $(this).attr('href').split('/');
+        href = CI.base_url + 'task/ajax_comment/' + href[href.length - 3] + '/' + href[href.length - 2] + '/' + href[href.length - 1];
+        
+        $.get(href, function(d){
+            var $modal = $(d);
+
+            $('body').append($modal);
+            $modal.modal('show');
+
+            $modal.on('hidden', function(){
+                $modal.remove();
+            });
+        });
+        
+        return false;
+    });
+    
+    $('#task-comment-submit').live('click', function(){
+        var $form = $('#task-comment-modal-form');
+        
+        $.post($form.attr('action'),
+            $form.serialize(),
+            function(d){
+                window.location = d;
+            }
+        );
+    });
 
     // Forms
     tinyMCE.init({
