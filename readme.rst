@@ -37,7 +37,6 @@ Next updates
 
 I plan to update some portions of this application in the following months. Currently these are the features to be developed:
 
-- Moving tasks: tasks need to ask for new user and comment when moved from In Progress to Testing.
 - Pagination: paginate tasks in the dashboard and the list of users.
 - Tasks estimation: add an estimation field to enable a comparison between estimated and realised.
 - Send emails: When a task is associated with a different user and Periodic email notifying used about his tasks
