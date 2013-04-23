@@ -110,7 +110,7 @@
     <div class="span12">
         <?php if($comments) { ?>
         <?php foreach ($comments as $comment) { ?>
-        <div id="task-comment-id-<?php echo $comment['task_comments_id']; ?>">
+        <div id="task-comment-id-<?php echo $comment['task_comments_id']; ?>" class="well">
             <p><strong><?php echo ($comment['name']?$comment['name']:$comment['email']); ?></strong> <em>(<?php echo $comment['date_created']; ?>)</em></p>
             <?php echo $comment['comment']; ?>
         </div>
