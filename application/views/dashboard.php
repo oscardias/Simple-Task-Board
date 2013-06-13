@@ -1,5 +1,5 @@
 <?php if(isset($tasks) && $tasks) : ?>
-<h2>You Tasks and Projects</h2>
+<h2>Your Tasks and Projects</h2>
 <div class="row-fluid">
     <?php
     $current_project = 0;
