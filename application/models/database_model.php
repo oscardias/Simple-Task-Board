@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '1.4';
+    private $latest_database_version = '1.5';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -360,6 +360,73 @@ class Database_model extends CI_Model {
             // Create database version indicator
             $this->update_setting('database_version', '1.4');
             $this->current_database_version = '1.4';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+        // Execute 1.4 -> 1.5 database updates
+        if($this->current_database_version == '1.4') {
+            
+            $this->db->trans_start();
+            
+            //ALTER TABLE  `task` ADD  `duration` INT UNSIGNED NULL AFTER  `priority`;
+            if(!$this->field_exists('task', 'duration'))
+                $this->db->query('ALTER TABLE  `task` ADD  `duration` INT UNSIGNED NULL AFTER  `priority`');
+            
+            //ALTER TABLE  `task` ADD  `start_date` DATE NULL AFTER  `estimated`;
+            if(!$this->field_exists('task', 'start_date'))
+                $this->db->query('ALTER TABLE  `task` ADD  `start_date` DATE NULL AFTER  `estimated`');
+
+            //CREATE TABLE task_predecessor
+            if(!$this->table_exists('task_predecessor')) {
+                $fields = array(
+                    'task_predecessor_id' => array(
+                        'type' => 'INT',
+                        'constraint' => 10, 
+                        'unsigned' => TRUE,
+                        'auto_increment' => TRUE
+                    ),
+                    'task_id' => array(
+                        'type' => 'INT',
+                        'constraint' => 10, 
+                        'unsigned' => TRUE,
+                        'null' => FALSE
+                    ),
+                    'predecessor_id' => array(
+                        'type' => 'INT',
+                        'constraint' => 10, 
+                        'unsigned' => TRUE,
+                        'null' => FALSE
+                     )
+                );
+                $this->dbforge->add_field($fields);
+                $this->dbforge->add_field("type ENUM('fs','ss') NOT NULL DEFAULT 'fs'");
+                $this->dbforge->add_key('task_predecessor_id', TRUE);
+                $this->dbforge->create_table('task_predecessor', TRUE);
+
+                $this->db->query('CREATE INDEX `task` ON `task_predecessor`(`task_id`)');
+                
+                // Foreign Keys
+                $this->db->query('ALTER TABLE  `task_predecessor` ADD CONSTRAINT `task_predecessor_stbfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`task_id`) ON DELETE CASCADE ON UPDATE CASCADE');
+                $this->db->query('ALTER TABLE  `task_predecessor` ADD CONSTRAINT `task_predecessor_stbfk_2` FOREIGN KEY (`predecessor_id`) REFERENCES `task` (`task_id`) ON DELETE CASCADE ON UPDATE CASCADE');
+            }
+            
+            // Drop old columns
+            if($this->field_exists('task', 'files'))
+                $this->dbforge->drop_column('task', 'files');
+            
+            if($this->field_exists('task', 'database'))
+                $this->dbforge->drop_column('task', 'database');
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '1.5');
+            $this->current_database_version = '1.5';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));

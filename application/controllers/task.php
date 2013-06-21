@@ -24,12 +24,12 @@ class Task extends CI_Controller {
         $this->title = 'New Task';
         $this->menu = 'dashboard|tasks';
         
-        $data['parent_id']      = 0;
+        $data['parent_id']   = 0;
         $data['title']       = '';
         $data['description'] = '';
         $data['priority']    = '2';
-        $data['files']       = '';
-        $data['database']    = '';
+        $data['duration']    = '';
+        $data['start_date']  = '';
         
         $data['project_id']  = $project;
         $data['users'] = $this->task_model->get_related_users($project);
@@ -47,6 +47,7 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $data = $this->task_model->get($project, $id);
+        $data['start_date'] = date('m/d/Y', strtotime($data['start_date']));
         
         $this->title = "Edit Task #{$data['code']}";
         $this->menu = 'dashboard|tasks';
@@ -114,8 +115,8 @@ class Task extends CI_Controller {
         $this->form_validation->set_rules('priority', 'Priority', '');
         $this->form_validation->set_rules('description', 'Description', 'trim');
         $this->form_validation->set_rules('user_id', 'Assigned to', '');
-        $this->form_validation->set_rules('files', 'Files changed', 'trim');
-        $this->form_validation->set_rules('database', 'Database changes', 'trim');
+        $this->form_validation->set_rules('duration', 'Estimated Duration', 'trim');
+        $this->form_validation->set_rules('start_date', 'Start Date', 'trim');
         
         if($this->form_validation->run() === false)  {
             $this->error = true;
@@ -134,15 +135,15 @@ class Task extends CI_Controller {
         $this->load->model('task_model');
         
         $sql_data = array(
-            'project_id' => $project_id,
-            'status' => ($this->input->post('status'))?$this->input->post('status'):0,
-            'title' => $this->input->post('title'),
-            'parent_id' => $this->input->post('parent_id'),
+            'project_id'  => $project_id,
+            'status'      => ($this->input->post('status'))?$this->input->post('status'):0,
+            'title'       => $this->input->post('title'),
+            'parent_id'   => $this->input->post('parent_id'),
             'description' => $this->input->post('description'),
-            'priority' => $this->input->post('priority'),
+            'priority'    => $this->input->post('priority'),
             'user_id'     => $this->input->post('user_id'),
-            'files'    => ($this->input->post('files'))?$this->input->post('files'):'',
-            'database' => ($this->input->post('database'))?$this->input->post('database'):''
+            'duration'    => $this->input->post('duration'),
+            'start_date'  => date('Y-m-d', strtotime($this->input->post('start_date')))
         );
         
         if ($id)

@@ -43,6 +43,31 @@
     <div class="row-fluid">
         <div class="span12">
             <div class="control-group">
+                <label class="control-label" for="duration">Estimated Duration</label>
+                <div class="controls">
+                    <input type="text" name="duration" id="duration" value="<?php echo set_value('duration', $duration); ?>">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="control-group">
+                <label class="control-label" for="start_date">Start Date</label>
+                <div class="controls">
+                        <div class="input-append">
+                            <input type="text" name="start_date" id="start_date" class="datepicker" value="<?php echo set_value('start_date', $start_date); ?>">
+                            <a href="#" title="Select date" class="btn datepicker-action">
+                                <i class="icon-calendar"></i>
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="control-group">
                 <label class="control-label" for="description">Description</label>
                 <div class="controls">
                     <textarea name="description" id="description" class="input-xxlarge" rows="6"><?php echo set_value('description', $description); ?></textarea>

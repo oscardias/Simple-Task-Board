@@ -2,6 +2,13 @@ $(document).ready(function(){
     /* Login focus */
     $('input[name=email]').focus();
     
+    // Date Picker
+    $('.datepicker').datepicker();
+    $('.datepicker-action').click(function(e){
+        e.preventDefault();
+        $(this).prev('input').datepicker('show');
+    });
+    
     /* User actions */
     $('#reset_password').click(function(){
         if ($(this).is(':checked')) {
