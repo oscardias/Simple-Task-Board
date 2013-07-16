@@ -24,17 +24,17 @@ class Task extends CI_Controller {
         $this->title = 'New Task';
         $this->menu = 'dashboard|tasks';
         
-        $data['parent_id']   = 0;
-        $data['title']       = '';
-        $data['description'] = '';
-        $data['priority']    = '2';
-        $data['duration']    = '';
-        $data['start_date']  = '';
+        $data['parent_id']      = 0;
+        $data['title']          = '';
+        $data['description']    = '';
+        $data['priority']       = '2';
+        $data['duration']  = '';
+        $data['start_date']     = '';
         
-        $data['project_id']  = $project;
-        $data['users'] = $this->task_model->get_related_users($project);
-        $data['user_id'] = $this->session->userdata('user');
-        $data['tasks'] = $this->task_model->get_hierarchy($project);
+        $data['project_id'] = $project;
+        $data['users']      = $this->task_model->get_related_users($project);
+        $data['user_id']    = $this->session->userdata('user');
+        $data['tasks']      = $this->task_model->get_hierarchy($project);
         
         if($this->error)
             $data['error'] = $this->error;
@@ -133,6 +133,8 @@ class Task extends CI_Controller {
         }
         
         $this->load->model('task_model');
+        
+        // Calculate duration
         
         $sql_data = array(
             'project_id'  => $project_id,

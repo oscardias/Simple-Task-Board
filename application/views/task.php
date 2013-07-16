@@ -24,35 +24,34 @@
             <?php task_hierarchy_html($project_id, $children_tasks); ?>
         </p>
         <?php endif; ?>
-
-        <?php if($files) { ?>
-        <p>
-            <strong>Files:</strong>
-            <?php echo $files; ?>
-        </p>
-        <?php } ?>
-        <?php if($database) { ?>
-        <p>
-            <strong>Database:</strong>
-            <?php echo $database; ?>
-        </p>
-        <?php } ?>
     </div>
     
     <div class="span4 well">
+        <p>
+            <strong>Assigned To:</strong>
+            <em><?php echo anchor('profile/view/'.$user['id'], ($user['name'])?$user['name']:$user['email'], 'class="view-profile-details"'); ?></em>
+        </p>
         <p>
             <strong>Priority:</strong>
             <?php $options = array('0' => 'Very High', '1' => 'High', '2' => 'Normal', '3' => 'Low', '4' => 'Very Low'); ?>
             <?php echo $options[$priority]; ?>
         </p>
         <p>
-            <strong>Assigned To:</strong>
-            <em><?php echo anchor('profile/view/'.$user['id'], ($user['name'])?$user['name']:$user['email'], 'class="view-profile-details"'); ?></em>
-        </p>
-        <p>
             <strong>Current Phase:</strong>
             <?php echo $status_arr[$status]; ?>
         </p>
+        <?php if($duration) { ?>
+        <p>
+            <strong>Estimated duration:</strong>
+            <?php echo $duration; ?> hours
+        </p>
+        <?php } ?>
+        <?php if($start_date) { ?>
+        <p>
+            <strong>Start date:</strong>
+            <?php echo date('m/d/Y', strtotime($start_date)); ?>
+        </p>
+        <?php } ?>
         <p >
             <?php if($total_duration || $task_history_date_created) { ?>
             <p><strong>Duration:</strong><br/>
