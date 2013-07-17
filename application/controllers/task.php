@@ -144,7 +144,7 @@ class Task extends CI_Controller {
             'description' => $this->input->post('description'),
             'priority'    => $this->input->post('priority'),
             'user_id'     => $this->input->post('user_id'),
-            'due_date'    => date('Y-m-d', strtotime($this->input->post('due_date')))
+            'due_date'    => ($this->input->post('due_date'))?date('Y-m-d', strtotime($this->input->post('due_date'))):NULL
         );
         
         if ($id)
