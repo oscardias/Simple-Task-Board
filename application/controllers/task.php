@@ -19,6 +19,7 @@ class Task extends CI_Controller {
 
     public function add($project)
     {
+        $this->load->helper('tasks');
         $this->load->model('task_model');
         
         $this->title = 'New Task';
@@ -43,6 +44,7 @@ class Task extends CI_Controller {
 
     public function edit($project, $id)
     {
+        $this->load->helper('tasks');
         $this->load->model('task_model');
         
         $data = $this->task_model->get($project, $id);

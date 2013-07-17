@@ -33,7 +33,7 @@
         </p>
         <p>
             <strong>Priority:</strong>
-            <?php echo task_priority_texts($priority); ?>
+            <?php echo task_priority_text($priority); ?>
         </p>
         <p>
             <strong>Current Phase:</strong>

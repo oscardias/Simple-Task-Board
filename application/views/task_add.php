@@ -35,7 +35,7 @@
                 <div class="control-group">
                     <label class="control-label" for="priority">Priority</label>
                     <div class="controls">
-                        <?php $options = task_priority_texts();
+                        <?php $options = task_priority_text();
                               echo form_dropdown('priority', $options, set_value('priority', $priority), 'class="input-xxlarge"'); ?>
                     </div>
                 </div>

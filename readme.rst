@@ -2,7 +2,7 @@
 Simple Task Board
 #################
 
-- Version: 2.2
+- Version: 2.2.1
 - Author: Oscar Dias
 - Website: http://oscardias.com
 
