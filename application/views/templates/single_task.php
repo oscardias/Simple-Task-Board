@@ -32,7 +32,7 @@
         
         <span class="label <?php echo task_priority_class($task['priority']); ?>"><?php echo strtolower(task_priority_text($task['priority'])); ?></span>
         
-        <?php if($task['due_date'] && (strtotime(date('Y-m-d')) - strtotime($task['due_date'])) > 0) : ?>
+        <?php if(($task['status'] < 3) && $task['due_date'] && (strtotime(date('Y-m-d')) - strtotime($task['due_date'])) > 0) : ?>
         <span class="label label-important">late</span>
         <?php endif; ?>
     </div>

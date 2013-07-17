@@ -44,7 +44,7 @@
             <strong>Due date:</strong>
             <?php echo date('m/d/Y', strtotime($due_date)); ?>
             
-            <?php if((strtotime(date('Y-m-d')) - strtotime($due_date)) > 0) : ?>
+            <?php if(($status < 3) && (strtotime(date('Y-m-d')) - strtotime($due_date)) > 0) : ?>
             <span class="label label-important">late</span>
             <?php endif; ?>
         </p>
