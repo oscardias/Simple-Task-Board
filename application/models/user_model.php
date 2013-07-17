@@ -57,12 +57,23 @@ class User_model extends CI_Model {
         return array();
     }
     
-    public function validate_github($email)
+    public function validate_github($email, $github_username, $github_token)
     {
         $this->db->where('email', $email);
         $get = $this->db->get('user');
 
-        if($get->num_rows > 0) return $get->row_array();
+        if($get->num_rows > 0) {
+            // Save user's github username
+            $user = $get->row_array();
+            
+            $this->db->where('id', $user['id'])->
+                update('user', array(
+                    'github_username' => $github_username,
+                    'github_token' => $github_token
+                    ));
+            
+            return $user;
+        }
         return array();
     }
 

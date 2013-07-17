@@ -119,12 +119,13 @@ class Login extends CI_Controller {
 
                 // Check if user exists and login
                 $this->load->model('user_model');
-                $result = $this->user_model->validate_github($email);
+                $result = $this->user_model->validate_github($email, $username, $access_token);
                 if($result) {
                     $this->session->set_userdata(array(
                         'logged' => true,
-                        'user'  => $result['id'],
-                        'level' => $result['level']
+                        'user'   => $result['id'],
+                        'level'  => $result['level'],
+                        'github' => true
                     ));
 
                     redirect('dashboard');

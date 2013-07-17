@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '1.6';
+    private $latest_database_version = '1.7';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -460,6 +460,32 @@ class Database_model extends CI_Model {
             // Create database version indicator
             $this->update_setting('database_version', '1.6');
             $this->current_database_version = '1.6';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+        // Execute 1.6 -> 1.7 database updates
+        if($this->current_database_version == '1.6') {
+            
+            $this->db->trans_start();
+            
+            //ALTER TABLE  `user` ADD  `github_username` DATE NULL AFTER  `photo`;
+            if(!$this->field_exists('user', 'github_username'))
+                $this->db->query('ALTER TABLE  `user` ADD  `github_username` VARCHAR(100) NULL AFTER  `photo`');
+                        
+            //ALTER TABLE  `user` ADD  `github_token` DATE NULL AFTER  `github_username`;
+            if(!$this->field_exists('user', 'github_token'))
+                $this->db->query('ALTER TABLE  `user` ADD  `github_token` VARCHAR(40) NULL AFTER  `github_username`');
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '1.7');
+            $this->current_database_version = '1.7';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
