@@ -56,6 +56,15 @@ class User_model extends CI_Model {
         if($get->num_rows > 0) return $get->row_array();
         return array();
     }
+    
+    public function validate_github($email)
+    {
+        $this->db->where('email', $email);
+        $get = $this->db->get('user');
+
+        if($get->num_rows > 0) return $get->row_array();
+        return array();
+    }
 
     public function delete($id)
     {

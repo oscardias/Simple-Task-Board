@@ -27,15 +27,18 @@ $(document).ready(function(){
         return false;
     });
     
-    var profile_links = $('#profile-links');
+    var profile_links = $('#profile_links');
     if(profile_links[0]){
-        $('.add_link', profile_links).live('click', function(){
-            if ($(this).html() == '(+)') {
+        $('.add_link', profile_links).live('click', function(e){
+            e.preventDefault();
+            var $icon = $(this).find('i');
+            
+            if ($icon.hasClass('icon-plus')) {
                 var add = $('<div>' + $('div', profile_links).last().html() + '</div>').hide();
                 profile_links.append(add);
                 add.find('input').val('');
                 add.fadeIn();
-                $(this).html('(-)');
+                $icon.removeClass('icon-plus').addClass('icon-minus');
             } else {
                 $(this).parent().fadeOut().remove();
             }   
