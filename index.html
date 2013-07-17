@@ -70,7 +70,7 @@ tasks.</p>
 <li>application/config/database.php: update your database information.</li>
 <li>.htaccess in your root folder: update /task_board/index.php with your URL.</li>
 <li>enable mod_rewrite in your Apache server.</li>
-</ul><p>Run /install (where  should be your localhost or domain/folder).</p>
+</ul><p>Run &lt;server&gt;/install (replace &lt;server&gt; with your localhost or domain/folder).</p>
 
 <p>If you have any problems let me know.</p>
 
@@ -79,12 +79,18 @@ tasks.</p>
 <p>I plan to update some portions of this application in the following months. Currently these are the features to be developed:</p>
 
 <ul>
+<li>Github integration: login with Github, get commit messages and sync issues (if possible).</li>
 <li>Pagination: paginate tasks in the dashboard and the list of users.</li>
-<li>Tasks estimation: add an estimation field to enable a comparison between estimated and realised.</li>
 <li>Send emails: When a task is associated with a different user and Periodic email notifying used about his tasks</li>
 <li>... if you have any ideas, let me know ...</li>
 </ul><h2>Changelog</h2>
 
+<h3>2.2</h3>
+
+<ul>
+<li>Task due date: field for due date added to tasks - indicates when the task is late.</li>
+<li>Task board updates: few changes to the task board.</li>
+<li>Bug fixes: removed old files and database fields.</li>
 <h3>2.1</h3>
 
 <ul>
