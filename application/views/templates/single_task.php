@@ -28,6 +28,15 @@
                 
     <?php } ?>
     
+    <div>
+        
+        <span class="label <?php echo task_priority_class($task['priority']); ?>"><?php echo strtolower(task_priority_text($task['priority'])); ?></span>
+        
+        <?php if($task['due_date'] && (strtotime(date('Y-m-d')) - strtotime($task['due_date'])) > 0) : ?>
+        <span class="label label-important">late</span>
+        <?php endif; ?>
+    </div>
+
     <div class="task_user"><?php echo anchor('profile/view/'.$task['user_id'], 
                 ($users[$task['user_id']]['name'])?$users[$task['user_id']]['name']:$users[$task['user_id']]['email'], 
                 'class="view-profile-details"'); ?></div>

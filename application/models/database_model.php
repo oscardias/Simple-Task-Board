@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '1.5';
+    private $latest_database_version = '1.6';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -379,9 +379,9 @@ class Database_model extends CI_Model {
             if(!$this->field_exists('task', 'duration'))
                 $this->db->query('ALTER TABLE  `task` ADD  `duration` INT UNSIGNED NULL AFTER  `priority`');
             
-            //ALTER TABLE  `task` ADD  `start_date` DATE NULL AFTER  `estimated`;
+            //ALTER TABLE  `task` ADD  `start_date` DATE NULL AFTER  `duration`;
             if(!$this->field_exists('task', 'start_date'))
-                $this->db->query('ALTER TABLE  `task` ADD  `start_date` DATE NULL AFTER  `estimated`');
+                $this->db->query('ALTER TABLE  `task` ADD  `start_date` DATE NULL AFTER  `duration`');
 
             //CREATE TABLE task_predecessor
             if(!$this->table_exists('task_predecessor')) {
@@ -427,6 +427,39 @@ class Database_model extends CI_Model {
             // Create database version indicator
             $this->update_setting('database_version', '1.5');
             $this->current_database_version = '1.5';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+        // Execute 1.5 -> 1.6 database updates
+        if($this->current_database_version == '1.5') {
+            
+            $this->db->trans_start();
+            
+            //Drop previus columns
+            if($this->field_exists('task', 'duration'))
+                $this->dbforge->drop_column('task', 'duration');
+            
+            if($this->field_exists('task', 'start_date'))
+                $this->dbforge->drop_column('task', 'start_date');
+
+            //DROP TABLE task_predecessor
+            if($this->table_exists('task_predecessor'))
+                $this->dbforge->drop_table('task_predecessor');
+            
+            //ALTER TABLE  `task` ADD  `due_date` DATE NULL AFTER  `priority`;
+            if(!$this->field_exists('task', 'due_date'))
+                $this->db->query('ALTER TABLE  `task` ADD  `due_date` DATE NULL AFTER  `priority`');
+                        
+            // Create database version indicator
+            $this->update_setting('database_version', '1.6');
+            $this->current_database_version = '1.6';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));

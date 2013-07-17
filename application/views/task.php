@@ -33,23 +33,20 @@
         </p>
         <p>
             <strong>Priority:</strong>
-            <?php $options = array('0' => 'Very High', '1' => 'High', '2' => 'Normal', '3' => 'Low', '4' => 'Very Low'); ?>
-            <?php echo $options[$priority]; ?>
+            <?php echo task_priority_texts($priority); ?>
         </p>
         <p>
             <strong>Current Phase:</strong>
             <?php echo $status_arr[$status]; ?>
         </p>
-        <?php if($duration) { ?>
+        <?php if($due_date) { ?>
         <p>
-            <strong>Estimated duration:</strong>
-            <?php echo $duration; ?> hours
-        </p>
-        <?php } ?>
-        <?php if($start_date) { ?>
-        <p>
-            <strong>Start date:</strong>
-            <?php echo date('m/d/Y', strtotime($start_date)); ?>
+            <strong>Due date:</strong>
+            <?php echo date('m/d/Y', strtotime($due_date)); ?>
+            
+            <?php if((strtotime(date('Y-m-d')) - strtotime($due_date)) > 0) : ?>
+            <span class="label label-important">late</span>
+            <?php endif; ?>
         </p>
         <?php } ?>
         <p >

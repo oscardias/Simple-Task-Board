@@ -54,4 +54,38 @@ if ( ! function_exists('task_parents_html'))
     }
 }
 
+/**
+ * Task priority text
+ *
+ * @access	public
+ * @return	bool
+ */
+if ( ! function_exists('task_priority_text'))
+{
+    function task_priority_text($priority = FALSE)
+    {
+        $options = array('0' => 'Urgent', '1' => 'High', '2' => 'Medium', '3' => 'Low', '4' => 'Minimal');
+        
+        if($priority !== FALSE)
+            return $options[$priority];
+        else 
+            return $options;
+    }
+}
+
+/**
+ * Task priority label class
+ *
+ * @access	public
+ * @return	bool
+ */
+if ( ! function_exists('task_priority_class'))
+{
+    function task_priority_class($priority)
+    {
+        $options = array('0' => 'label-important', '1' => 'label-warning', '2' => 'label-info', '3' => '', '4' => '');
+        return $options[$priority];
+    }
+}
+
 // ------------------------------------------------------------------------

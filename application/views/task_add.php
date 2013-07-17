@@ -35,7 +35,7 @@
                 <div class="control-group">
                     <label class="control-label" for="priority">Priority</label>
                     <div class="controls">
-                        <?php $options = array('0' => 'Very High', '1' => 'High', '2' => 'Normal', '3' => 'Low', '4' => 'Very Low');
+                        <?php $options = task_priority_texts();
                               echo form_dropdown('priority', $options, set_value('priority', $priority), 'class="input-xxlarge"'); ?>
                     </div>
                 </div>
@@ -73,20 +73,10 @@
         <div class="row-fluid">
             <div class="span12">
                 <div class="control-group">
-                    <label class="control-label" for="duration">Estimated Duration</label>
-                    <div class="controls">
-                        <input type="text" name="duration" id="duration" placeholder="in hours" value="<?php echo set_value('duration', $duration); ?>">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="control-group">
-                    <label class="control-label" for="start_date">Start Date</label>
+                    <label class="control-label" for="due_date">Due Date</label>
                     <div class="controls">
                             <div class="input-append">
-                                <input type="text" name="start_date" id="start_date" class="datepicker" value="<?php echo set_value('start_date', $start_date); ?>">
+                                <input type="text" name="due_date" id="due_date" class="datepicker" value="<?php echo set_value('due_date', $due_date); ?>">
                                 <a href="#" title="Select date" class="btn datepicker-action">
                                     <i class="icon-calendar"></i>
                                 </a>
