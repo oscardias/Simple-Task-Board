@@ -2,7 +2,7 @@
 Simple Task Board
 #################
 
-- Version: 2.2.1
+- Version: 2.2.2
 - Author: Oscar Dias
 - Website: http://oscardias.com
 
@@ -37,7 +37,7 @@ Next updates
 
 I plan to update some portions of this application in the following months. Currently these are the features to be developed:
 
-- Github integration: login with Github, get commit messages and sync issues (if possible).
+- Github integration: get commit messages and sync issues (if possible).
 - Pagination: paginate tasks in the dashboard and the list of users.
 - Send emails: When a task is associated with a different user and Periodic email notifying used about his tasks
 - ... if you have any ideas, let me know ...
