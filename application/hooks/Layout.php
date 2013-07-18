@@ -78,7 +78,8 @@ class Layout {
                 'controller'   => ($CI->uri->segment(1))?$CI->uri->segment(1):'home',
                 'method'       => $CI->uri->segment(2),
                 'menu'         => isset($CI->menu)?$CI->menu:'',
-                'title'        => isset($CI->title)?$CI->title:'Simple Task Board'
+                'title'        => isset($CI->title)?$CI->title:'Simple Task Board',
+                'github_sync'  => isset($CI->github_sync)?$CI->github_sync:FALSE,
                 );
             $view = str_replace("{menu}", $CI->load->view('templates/menu', $active_menu, TRUE), $view);
         }

@@ -17,6 +17,8 @@ class Task_model extends CI_Model {
         } else
             $data['code'] = 1;
         
+        $data['date_updated'] = date('Y-m-d H:i:s');
+        
         $insert = $this->db->insert('task', $data);
         if($insert)
             return $this->db->insert_id();
@@ -31,6 +33,8 @@ class Task_model extends CI_Model {
         
         if(isset($data['parent_id']) && !$data['parent_id'])
             $data['parent_id'] = null;
+        
+        $data['date_updated'] = date('Y-m-d H:i:s');
         
         if($move) {
             $this->timer($id, 'move', $data['status']);

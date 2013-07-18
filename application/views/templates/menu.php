@@ -122,11 +122,19 @@
         </div>
     </div>
 </div>
+
 <div class="page-title">
     <?php echo $title; ?>
     <?php if($controller == 'project' && $method == 'tasks') { ?>
-    <a href="#" id="switch-project-view" class="switch-tasks-btn global-tasks" title="Show all">
-        <i></i>
-    </a>
+        <a href="#" id="switch-project-view" class="switch-tasks-btn global-tasks" title="Show all">
+            <i></i>
+        </a>
+    
+        <?php if($github_sync) { ?>
+            <a href="<?php echo base_url('project/github_sync/'.$github_sync); ?>" class="btn btn-mini pull-right" title="Sync with Github">
+                <i class="icon-refresh"></i>
+                Github
+            </a>
+        <?php } ?>
     <?php } ?>
 </div>

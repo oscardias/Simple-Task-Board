@@ -167,10 +167,4 @@ $(document).ready(function(){
             }
         );
     });
-
-    // Forms
-    tinyMCE.init({
-            mode : "textareas",
-            theme : "modern"
-    });
  });

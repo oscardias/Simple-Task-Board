@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '1.7';
+    private $latest_database_version = '1.9';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -475,17 +475,61 @@ class Database_model extends CI_Model {
             
             $this->db->trans_start();
             
-            //ALTER TABLE  `user` ADD  `github_username` DATE NULL AFTER  `photo`;
+            //ALTER TABLE  `user` ADD  `github_username` VARCHAR(100) NULL AFTER  `photo`;
             if(!$this->field_exists('user', 'github_username'))
                 $this->db->query('ALTER TABLE  `user` ADD  `github_username` VARCHAR(100) NULL AFTER  `photo`');
                         
-            //ALTER TABLE  `user` ADD  `github_token` DATE NULL AFTER  `github_username`;
+            //ALTER TABLE  `user` ADD  `github_token` VARCHAR(40) NULL AFTER  `github_username`;
             if(!$this->field_exists('user', 'github_token'))
                 $this->db->query('ALTER TABLE  `user` ADD  `github_token` VARCHAR(40) NULL AFTER  `github_username`');
             
             // Create database version indicator
             $this->update_setting('database_version', '1.7');
             $this->current_database_version = '1.7';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+        // Execute 1.7 -> 1.8 database updates
+        if($this->current_database_version == '1.7') {
+            
+            $this->db->trans_start();
+            
+            //ALTER TABLE  `project` ADD  `github_repo` VARCHAR(255) NULL AFTER  `description`;
+            if(!$this->field_exists('project', 'github_repo'))
+                $this->db->query('ALTER TABLE  `project` ADD  `github_repo` VARCHAR(255) NULL AFTER  `description`');
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '1.8');
+            $this->current_database_version = '1.8';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+        // Execute 1.8 -> 1.9 database updates
+        if($this->current_database_version == '1.8') {
+            
+            $this->db->trans_start();
+            
+            //ALTER TABLE  `task` ADD  `date_updated` DATETIME NULL AFTER  `date_created`;
+            if(!$this->field_exists('task', 'date_updated'))
+                $this->db->query('ALTER TABLE  `task` ADD  `date_updated` DATETIME NULL AFTER  `date_created`');
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '1.9');
+            $this->current_database_version = '1.9';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
