@@ -182,8 +182,6 @@ class Project extends CI_Controller {
     
     function github_sync($project_id)
     {
-        die('DANGER! This is not working yet!!!');
-        
         // Validate if user logged with github
         if(!$this->session->userdata('github'))
             redirect('project/tasks/'.$project_id);
@@ -214,7 +212,6 @@ class Project extends CI_Controller {
         $issues = array_merge($issues_closed, $issues_open);
         unset($issues_closed);
         unset($issues_open);
-        //var_dump($issues);
         
         // Reorder issues
         $ordered_issues = array();
@@ -247,8 +244,13 @@ class Project extends CI_Controller {
                         if(strtotime($task['date_updated']) > strtotime($issues[$task['code']]['updated_at'])) {
                             $issue_upd[$task['code']]['assignee'] = $task['github_username'];
                         } else {
-                            $user = $this->user_model->get_github($issues[$task['code']]['assignee']['login']);
-                            $task_upd[$task['code']]['user_id'] = $user['id'];
+                            if($issues[$task['code']]['assignee']['login']) {
+                                $user = $this->user_model->get_github($issues[$task['code']]['assignee']['login']);
+                                $task_upd[$task['code']] = array(
+                                    'task_id' => $task['task_id'],
+                                    'user_id' => $user['id']
+                                );
+                            }
                         }
                     }
                 }
@@ -288,9 +290,10 @@ class Project extends CI_Controller {
                 unset($issues[$task['code']]);
             } else {
                 // Create issue
+                $issue_new[$task['code']]['task_id'] = $task['task_id']; // Validate same code
+                $issue_new[$task['code']]['code'] = $task['code']; // Validate same code
                 $issue_new[$task['code']]['title'] = $task['title'];
                 $issue_new[$task['code']]['body'] = $task['description'];
-                $issue_new[$task['code']]['state'] = ($task['status'] == 3)?'closed':'open';
                 
                 if($task['github_username'])
                     $issue_new[$task['code']]['assignee'] = $task['github_username'];
@@ -320,6 +323,7 @@ class Project extends CI_Controller {
         //*****************
         // Execute updates
         // Update local
+        //var_dump($task_upd);
         $this->task_model->update_local($task_new, $task_upd);
         
         // Update Github

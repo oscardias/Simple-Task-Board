@@ -326,6 +326,7 @@ ORDER BY p.id desc, t.status desc';
         return $this->db->select('task.*, user.github_username')->
                 where('project_id', $project_id)->
                 join('user', 'task.user_id = user.id')->
+                order_by('task.code', 'asc')->
                 get('task')->result_array();
     }
     
@@ -346,21 +347,45 @@ ORDER BY p.id desc, t.status desc';
     public function update_github($new, $upd, $repo, $access_token)
     {
         if($new) {
+            // If task code change
+            $task_upd = array();
+        
             // Create new issues
             foreach ($new as $issue) {
-                $post = http_build_query($issue);
+                $task_id = $issue['task_id'];
+                $code = $issue['code'];
+                unset($issue['task_id']);
+                unset($issue['code']);
                 
-                $context = stream_context_create(array("http" => array(
-                    "method" => "POST",
-                    "header" => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                                "Content-Length: ". strlen($post) . "\r\n".
-                                "Accept: application/json" ,  
-                    "content" => $post,
-                ))); 
+                // Open connection
+                $ch = curl_init();
 
-                $json_data = file_get_contents("https://api.github.com/repos/$repo/issues?access_token=$access_token", false, $context);
+                // Set options
+                curl_setopt($ch,CURLOPT_URL, "https://api.github.com/repos/$repo/issues?access_token=$access_token");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($ch,CURLOPT_POST, TRUE);
+                curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($issue));
+
+                // Execute post
+                $result = curl_exec($ch);
+
+                // Close connection
+                curl_close($ch);
+                
+                // Check if task code needs to be updated
+                $result_array = json_decode($result, TRUE);
+                
+                if($result_array['number'] != $code) {
+                    $task_upd[] = array(
+                        'task_id' => $task_id,
+                        'code'    => $result_array['number']
+                    );
+                }
             }
         }
+        
+        // Update task codes
+        $this->update_local(array(), $task_upd);
         
         if($upd) {
             // Edit existing issues
@@ -368,17 +393,19 @@ ORDER BY p.id desc, t.status desc';
                 $number = $issue['number'];
                 unset($issue['number']);
                 
-                $post = http_build_query($issue);
-                
-                $context = stream_context_create(array("http" => array(
-                    "method" => "POST",
-                    "header" => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                                "Content-Length: ". strlen($post) . "\r\n".
-                                "Accept: application/json" ,  
-                    "content" => $post,
-                ))); 
+                // Open connection
+                $ch = curl_init();
 
-                $json_data = file_get_contents("https://api.github.com/repos/$repo/issues/$number?access_token=$access_token", false, $context);
+                // Set options
+                curl_setopt($ch,CURLOPT_URL, "https://api.github.com/repos/$repo/issues/$number?access_token=$access_token");
+                curl_setopt($ch,CURLOPT_POST, 1);
+                curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($issue));
+
+                // Execute post
+                $result = curl_exec($ch);
+
+                // Close connection
+                curl_close($ch);
             }
         }
     }    

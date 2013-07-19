@@ -59,10 +59,22 @@ class User_model extends CI_Model {
     
     public function get_github($login)
     {
-        $this->db->where('github_username', $login);
-        $get = $this->db->get('user');
+        $user = $this->db->where('github_username', $login)->
+                get('user')->row_array();
+        
+        // Create new user if user does not exists
+        if(!$user) {
+            $user = array(
+                'email' => $login.'{at}github',
+                'level' => 3,
+                'name'  => $login,
+                'github_username' => $login
+            );
+            $this->db->insert('user', $user);
+            $user['id'] = $this->db->insert_id();
+        }
 
-        return $get->row_array();
+        return $user;
     }
     
     public function validate_github($email, $github_username, $github_token)

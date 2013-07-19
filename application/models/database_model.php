@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '1.9';
+    private $latest_database_version = '2.0';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -530,6 +530,63 @@ class Database_model extends CI_Model {
             // Create database version indicator
             $this->update_setting('database_version', '1.9');
             $this->current_database_version = '1.9';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+        // Execute 1.9 -> 2.0 database updates
+        if($this->current_database_version == '1.9') {
+            // Github integration - create tasks for deleted tasks
+            // No gaps betwen task numbers
+            $this->db->trans_start();
+            
+            // Get any user with github login
+            $user = $this->db->where('github_username IS NOT NULL', null, false)->
+                    limit(1)->get('user')->row_array();
+            
+            // Check if an user was found
+            if($user) {
+                // Get projects
+                $projects = $this->db->get('project')->result_array();
+                foreach ($projects as $project) {
+                    $tasks = $this->db->where('project_id', $project['id'])->
+                            get('task')->result_array();
+                    $ord_tasks = array();
+                    $max_code = 0;
+                    foreach ($tasks as $task) {
+                        $ord_tasks[$task['code']] = $task;
+                        if($max_code < $task['code'])
+                            $max_code = $task['code'];
+                    }
+
+                    // Check all codes
+                    for($i = 1; $i <= $max_code; $i++){
+                        if(!isset($ord_tasks[$i])) {
+                            $insert = array(
+                                'project_id' => $project['id'],
+                                'user_id' => $user['id'],
+                                'code' => $i,
+                                'title' => 'Deleted Task',
+                                'description' => 'Task Deleted From Simple Task Board',
+                                'priority' => 4,
+                                'status' => 3
+                            );
+
+                            $this->db->insert('task', $insert);
+                        }
+                    }
+                }
+            }
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '2.0');
+            $this->current_database_version = '2.0';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
