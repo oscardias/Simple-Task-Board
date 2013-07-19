@@ -57,6 +57,14 @@ class User_model extends CI_Model {
         return array();
     }
     
+    public function get_github($login)
+    {
+        $this->db->where('github_username', $login);
+        $get = $this->db->get('user');
+
+        return $get->row_array();
+    }
+    
     public function validate_github($email, $github_username, $github_token)
     {
         $this->db->where('email', $email);

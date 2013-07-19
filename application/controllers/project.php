@@ -188,13 +188,16 @@ class Project extends CI_Controller {
         if(!$this->session->userdata('github'))
             redirect('project/tasks/'.$project_id);
         
+        // Load models
+        $this->load->model('project_model');
+        $this->load->model('user_model');
+        $this->load->model('task_model');
+        
         // Get project info
-        $project = $this->db->where('id', $project_id)->
-                get('project')->row_array();
+        $project = $this->project_model->get($project_id);
         
         // Get user info
-        $user = $this->db->where('id', $this->session->userdata('user'))->
-                get('user')->row_array();
+        $user = $this->user_model->get($this->session->userdata('user'));
         
         // Validate if necessary info was set
         if(!($project['github_repo'] && $user['github_token'])) {
@@ -206,7 +209,7 @@ class Project extends CI_Controller {
         $issues_open = json_decode($issues_open, TRUE);
         
         $issues_closed = file_get_contents("https://api.github.com/repos/{$project['github_repo']}/issues?state=closed&access_token={$user['github_token']}");
-        $issues_closed = json_decode($issues_open, TRUE);
+        $issues_closed = json_decode($issues_closed, TRUE);
         
         $issues = array_merge($issues_closed, $issues_open);
         unset($issues_closed);
@@ -222,14 +225,10 @@ class Project extends CI_Controller {
         unset($ordered_issues);
         
         // Fetch local tasks
-        $tasks = $this->db->select('task.*, user.github_username')->
-                where('project_id', $project_id)->
-                join('user', 'task.user_id = user.id')->
-                get('task')->result_array();
+        $tasks = $this->task_model->get_github($project_id);
         
         //************
         // Sync tasks
-        
         // Vars to store updates
         $issue_upd = array();
         $issue_new = array();
@@ -248,7 +247,8 @@ class Project extends CI_Controller {
                         if(strtotime($task['date_updated']) > strtotime($issues[$task['code']]['updated_at'])) {
                             $issue_upd[$task['code']]['assignee'] = $task['github_username'];
                         } else {
-                            $task_upd[$task['code']]['github']['assignee'] = $issues[$task['code']]['assignee']['login'];
+                            $user = $this->user_model->get_github($issues[$task['code']]['assignee']['login']);
+                            $task_upd[$task['code']]['user_id'] = $user['id'];
                         }
                     }
                 }
@@ -264,13 +264,23 @@ class Project extends CI_Controller {
                   )
                 {
                     if(strtotime($task['date_updated']) > strtotime($issues[$task['code']]['updated_at'])) {
+                        $issue_upd[$task['code']]['number'] = $task['code'];
                         $issue_upd[$task['code']]['title'] = $task['title'];
                         $issue_upd[$task['code']]['body'] = $task['description'];
                         $issue_upd[$task['code']]['state'] = ($task['status'] == 3)?'closed':'open';
                     } else {
-                        $task_upd[$task['code']]['title'] = $issues[$task['code']]['title'];
-                        $task_upd[$task['code']]['description'] = $issues[$task['code']]['body'];
-                        $task_upd[$task['code']]['status'] = ($issues[$task['code']]['state'] == 'closed')?3:0;
+                        $task_upd[$task['code']] = array(
+                            'task_id' => $task['task_id'],
+                            'project_id' => $project_id,
+                            'parent_id' => NULL,
+                            'code' => $issues[$task['code']]['number'],
+                            'status' => ($issues[$task['code']]['state'] == 'closed')?3:0,
+                            'title' => $issues[$task['code']]['title'],
+                            'priority' => 2,
+                            'due_date' => NULL,
+                            'description' => $issues[$task['code']]['body'],
+                            'date_updated' => date('Y-m-d H:i:s', strtotime($issues[$task['code']]['updated_at']))
+                        );
                     }
                 }
                 
@@ -290,18 +300,30 @@ class Project extends CI_Controller {
         // If issues remaining, loop and create local tasks
         if(count($issues)) {
             foreach ($issues as $key => $issue) {
-                $task_new[$key]['title'] = $issue['title'];
-                $task_new[$key]['description'] = $issue['body'];
-                $task_new[$key]['status'] = ($issue['state'] == 'closed')?3:0;
-                $task_new[$key]['github']['assignee'] = $issue['assignee']['login'];
+                $user = $this->user_model->get_github($issue['assignee']['login']);
+                
+                $task_new[$key] = array(
+                    'project_id' => $project_id,
+                    'parent_id' => NULL,
+                    'user_id' => $user['id'],
+                    'code' => $issue['number'],
+                    'status' => ($issue['state'] == 'closed')?3:0,
+                    'title' => $issue['title'],
+                    'priority' => 2,
+                    'due_date' => NULL,
+                    'description' => $issue['body'],
+                    'date_updated' => date('Y-m-d H:i:s', strtotime($issue['updated_at']))
+                );
             }
         }
         
         //*****************
         // Execute updates
         // Update local
+        $this->task_model->update_local($task_new, $task_upd);
         
         // Update Github
+        $this->task_model->update_github($issue_new, $issue_upd, $project['github_repo'], $user['github_token']);
         
         // Redirect to task board
         redirect('project/tasks/'.$project_id);

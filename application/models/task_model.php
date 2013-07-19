@@ -320,4 +320,66 @@ ORDER BY p.id desc, t.status desc';
         $this->db->trans_complete();
         return $this->db->trans_status();
     }
+    
+    public function get_github($project_id)
+    {
+        return $this->db->select('task.*, user.github_username')->
+                where('project_id', $project_id)->
+                join('user', 'task.user_id = user.id')->
+                get('task')->result_array();
+    }
+    
+    public function update_local($new, $upd)
+    {
+        $this->db->trans_start();
+        
+        if($new)
+            $this->db->insert_batch('task', $new);
+        
+        if($upd)
+            $this->db->update_batch('task', $upd, 'task_id');
+        
+        $this->db->trans_complete();
+        return $this->db->trans_status();
+    }    
+
+    public function update_github($new, $upd, $repo, $access_token)
+    {
+        if($new) {
+            // Create new issues
+            foreach ($new as $issue) {
+                $post = http_build_query($issue);
+                
+                $context = stream_context_create(array("http" => array(
+                    "method" => "POST",
+                    "header" => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                                "Content-Length: ". strlen($post) . "\r\n".
+                                "Accept: application/json" ,  
+                    "content" => $post,
+                ))); 
+
+                $json_data = file_get_contents("https://api.github.com/repos/$repo/issues?access_token=$access_token", false, $context);
+            }
+        }
+        
+        if($upd) {
+            // Edit existing issues
+            foreach ($upd as $issue) {
+                $number = $issue['number'];
+                unset($issue['number']);
+                
+                $post = http_build_query($issue);
+                
+                $context = stream_context_create(array("http" => array(
+                    "method" => "POST",
+                    "header" => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                                "Content-Length: ". strlen($post) . "\r\n".
+                                "Accept: application/json" ,  
+                    "content" => $post,
+                ))); 
+
+                $json_data = file_get_contents("https://api.github.com/repos/$repo/issues/$number?access_token=$access_token", false, $context);
+            }
+        }
+    }    
 }
