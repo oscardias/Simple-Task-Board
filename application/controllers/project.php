@@ -203,20 +203,12 @@ class Project extends CI_Controller {
         }
         
         // Fetch info from Github
-        $issues_open = file_get_contents("https://api.github.com/repos/{$project['github_repo']}/issues?access_token={$user['github_token']}");
-        $issues_open = json_decode($issues_open, TRUE);
-        
-        $issues_closed = file_get_contents("https://api.github.com/repos/{$project['github_repo']}/issues?state=closed&access_token={$user['github_token']}");
-        $issues_closed = json_decode($issues_closed, TRUE);
-        
-        $issues = array_merge($issues_closed, $issues_open);
-        unset($issues_closed);
-        unset($issues_open);
+        $issues = $this->_get_github_issues($project['github_repo'], $user['github_token']);
         
         // Reorder issues
         $ordered_issues = array();
         foreach ($issues as $issue) {
-            $ordered_issues[$issue['number']] = $issue;
+            $ordered_issues[(int)$issue['number']] = $issue;
         }
         $issues = $ordered_issues;
         unset($ordered_issues);
@@ -234,19 +226,20 @@ class Project extends CI_Controller {
         
         // Loop through local tasks and check github issues
         foreach ($tasks as $task) {
+            $code = (int)$task['code'];
             // Check if there is an issue with this code
-            if(isset($issues[$task['code']])) {
+            if(isset($issues[$code])) {
                 // Check if entry is the same
                 // Assignee
-                if($task['github_username'] != $issues[$task['code']]['assignee']['login']) {
+                if($task['github_username'] != $issues[$code]['assignee']['login']) {
                     // Only update this info if user has the github username locally
                     if($task['github_username']) {
-                        if(strtotime($task['date_updated']) > strtotime($issues[$task['code']]['updated_at'])) {
-                            $issue_upd[$task['code']]['assignee'] = $task['github_username'];
+                        if(strtotime($task['date_updated']) > strtotime($issues[$code]['updated_at'])) {
+                            $issue_upd[$code]['assignee'] = $task['github_username'];
                         } else {
-                            if($issues[$task['code']]['assignee']['login']) {
-                                $user = $this->user_model->get_github($issues[$task['code']]['assignee']['login']);
-                                $task_upd[$task['code']] = array(
+                            if($issues[$code]['assignee']['login']) {
+                                $user = $this->user_model->get_github($issues[$code]['assignee']['login']);
+                                $task_upd[$code] = array(
                                     'task_id' => $task['task_id'],
                                     'user_id' => $user['id']
                                 );
@@ -257,46 +250,47 @@ class Project extends CI_Controller {
                     
                 // Contents
                 if(
-                    $task['title'] != $issues[$task['code']]['title'] ||
-                    $task['description'] != $issues[$task['code']]['body'] ||
+                    $task['title'] != $issues[$code]['title'] ||
+                    $task['description'] != $issues[$code]['body'] ||
                     (
-                        $task['status'] == 3 && $issues[$task['code']]['state'] == 'open' ||
-                        $task['status'] < 3 && $issues[$task['code']]['state'] == 'closed'
+                        $task['status'] == 3 && $issues[$code]['state'] == 'open' ||
+                        $task['status'] < 3 && $issues[$code]['state'] == 'closed'
                     )
                   )
                 {
-                    if(strtotime($task['date_updated']) > strtotime($issues[$task['code']]['updated_at'])) {
-                        $issue_upd[$task['code']]['number'] = $task['code'];
-                        $issue_upd[$task['code']]['title'] = $task['title'];
-                        $issue_upd[$task['code']]['body'] = $task['description'];
-                        $issue_upd[$task['code']]['state'] = ($task['status'] == 3)?'closed':'open';
+                    if(strtotime($task['date_updated']) > strtotime($issues[$code]['updated_at'])) {
+                        $issue_upd[$code]['number'] = $code;
+                        $issue_upd[$code]['title'] = $task['title'];
+                        $issue_upd[$code]['body'] = $task['description'];
+                        $issue_upd[$code]['state'] = ($task['status'] == 3)?'closed':'open';
                     } else {
-                        $task_upd[$task['code']] = array(
+                        $task_upd[$code] = array(
                             'task_id' => $task['task_id'],
                             'project_id' => $project_id,
                             'parent_id' => NULL,
-                            'code' => $issues[$task['code']]['number'],
-                            'status' => ($issues[$task['code']]['state'] == 'closed')?3:0,
-                            'title' => $issues[$task['code']]['title'],
+                            'code' => $issues[$code]['number'],
+                            'status' => ($issues[$code]['state'] == 'closed')?3:0,
+                            'title' => $issues[$code]['title'],
                             'priority' => 2,
                             'due_date' => NULL,
-                            'description' => $issues[$task['code']]['body'],
-                            'date_updated' => date('Y-m-d H:i:s', strtotime($issues[$task['code']]['updated_at']))
+                            'description' => $issues[$code]['body'],
+                            'date_updated' => date('Y-m-d H:i:s', strtotime($issues[$code]['updated_at']))
                         );
                     }
                 }
                 
                 // Unset this issue, so we don't loop it again later
-                unset($issues[$task['code']]);
+                unset($issues[$code]);
             } else {
                 // Create issue
-                $issue_new[$task['code']]['task_id'] = $task['task_id']; // Validate same code
-                $issue_new[$task['code']]['code'] = $task['code']; // Validate same code
-                $issue_new[$task['code']]['title'] = $task['title'];
-                $issue_new[$task['code']]['body'] = $task['description'];
+                $issue_new[$code]['task_id'] = $task['task_id']; // Validate same code
+                $issue_new[$code]['code'] = $task['code']; // Validate same code
+                $issue_new[$code]['title'] = $task['title'];
+                $issue_new[$code]['body'] = $task['description'];
+                $issue_new[$code]['state'] = ($task['status'] == 3)?'closed':'open';
                 
                 if($task['github_username'])
-                    $issue_new[$task['code']]['assignee'] = $task['github_username'];
+                    $issue_new[$code]['assignee'] = $task['github_username'];
             }
         }
         
@@ -323,7 +317,6 @@ class Project extends CI_Controller {
         //*****************
         // Execute updates
         // Update local
-        //var_dump($task_upd);
         $this->task_model->update_local($task_new, $task_upd);
         
         // Update Github
@@ -331,5 +324,45 @@ class Project extends CI_Controller {
         
         // Redirect to task board
         redirect('project/tasks/'.$project_id);
+    }
+    
+    private function _get_github_issues($repo, $access_token, $state = 'open', $url = false)
+    {
+        // Open connection
+        $ch = curl_init();
+
+        // Set options
+        if($url === FALSE)
+            $url = "https://api.github.com/repos/$repo/issues?state=$state&access_token=$access_token";
+        
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, TRUE);
+
+        // Execute post
+        $response = curl_exec($ch);
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+        
+        $link = '';
+        preg_match("/Link: <(.*)>; rel=\"next\"/", $header, $link);
+
+        // Close connection
+        curl_close($ch);
+        
+        $issues = json_decode($body, TRUE);
+        
+        if($link) {
+            $additional = $this->_get_github_issues($repo, $access_token, $state, $link[1]);
+            return array_merge($issues, $additional);
+        } else {
+            if($state == 'open') {
+                $additional = $this->_get_github_issues($repo, $access_token, 'close');
+                return array_merge($issues, $additional);
+            } else {
+                return $issues;
+            }
+        }
     }
 }

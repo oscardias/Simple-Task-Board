@@ -357,25 +357,17 @@ ORDER BY p.id desc, t.status desc';
                 unset($issue['task_id']);
                 unset($issue['code']);
                 
-                // Open connection
-                $ch = curl_init();
-
-                // Set options
-                curl_setopt($ch,CURLOPT_URL, "https://api.github.com/repos/$repo/issues?access_token=$access_token");
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                curl_setopt($ch,CURLOPT_POST, TRUE);
-                curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($issue));
-
-                // Execute post
-                $result = curl_exec($ch);
-
-                // Close connection
-                curl_close($ch);
-                
-                // Check if task code needs to be updated
+                $result = $this->_github_edit_issue($repo, $access_token, $issue);
                 $result_array = json_decode($result, TRUE);
                 
-                if($result_array['number'] != $code) {
+                if($issue['state'] == 'closed') {
+                    // Set issue to closed state
+                    $issue['number'] = $result_array['number'];
+                    $this->_github_edit_issue($repo, $access_token, $issue);
+                }
+                                
+                // Check if task code needs to be updated
+                if($issue['number'] != $code) {
                     $task_upd[] = array(
                         'task_id' => $task_id,
                         'code'    => $result_array['number']
@@ -390,23 +382,34 @@ ORDER BY p.id desc, t.status desc';
         if($upd) {
             // Edit existing issues
             foreach ($upd as $issue) {
-                $number = $issue['number'];
-                unset($issue['number']);
-                
-                // Open connection
-                $ch = curl_init();
-
-                // Set options
-                curl_setopt($ch,CURLOPT_URL, "https://api.github.com/repos/$repo/issues/$number?access_token=$access_token");
-                curl_setopt($ch,CURLOPT_POST, 1);
-                curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($issue));
-
-                // Execute post
-                $result = curl_exec($ch);
-
-                // Close connection
-                curl_close($ch);
+                $this->_github_edit_issue($repo, $access_token, $issue);
             }
         }
-    }    
+    }
+    
+    private function _github_edit_issue($repo, $access_token, $issue)
+    {
+        // Open connection
+        $ch = curl_init();
+
+        // Set options
+        if(isset($issue['number'])) {
+            $number = $issue['number'];
+            unset($issue['number']);
+            curl_setopt($ch, CURLOPT_URL, "https://api.github.com/repos/$repo/issues/$number?access_token=$access_token");
+        } else {
+            curl_setopt($ch, CURLOPT_URL, "https://api.github.com/repos/$repo/issues?access_token=$access_token");
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($issue));
+
+        // Execute post
+        $result = curl_exec($ch);
+
+        // Close connection
+        curl_close($ch);
+        
+        return $result;
+    }
 }
