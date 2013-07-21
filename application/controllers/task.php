@@ -75,6 +75,10 @@ class Task extends CI_Controller {
         
         $data = $this->task_model->get($project, $id);
         
+        $this->load->helper('markdown');
+        $markdown = new Michelf\Markdown();
+        $data['description'] = $markdown->defaultTransform($data['description']);
+        
         $this->title = "View Task #{$data['code']}";
         $this->menu = 'dashboard|tasks|edit_task';
                 
