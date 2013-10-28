@@ -297,7 +297,7 @@ class Project extends CI_Controller {
         // If issues remaining, loop and create local tasks
         if(count($issues)) {
             foreach ($issues as $key => $issue) {
-                $user = $this->user_model->get_github($issue['login']['login']);
+                $user = $this->user_model->get_github($issue['user']['login']);
                 
                 $task_new[$key] = array(
                     'project_id' => $project_id,
