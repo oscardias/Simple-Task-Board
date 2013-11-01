@@ -155,11 +155,33 @@ class Task extends CI_Controller {
         );
         
         if ($id)
-            $this->task_model->update($this->input->post('project_id'), $id, $sql_data);
-        else
+            $this->task_model->update($project_id, $id, $sql_data);
+        else {
             $id = $this->task_model->create($sql_data);
+            
+            // Sync to Github
+            $project = $this->db->where('project_id', $project_id)->
+                    get('project')->row_array();
+            
+            $issue_new = array(
+                0 => array(
+                    'task_id' => $id,
+                    'title'   => $sql_data['title'],
+                    'body'    => $sql_data['description'],
+                    'state'   => 'open'
+                )
+            );
+            
+            $user = $this->db->where('user_id', $this->input->post('user_id'))->
+                    get('user')->row_array();
 
-        redirect('task/view/'.$this->input->post('project_id').'/'.$id);
+            if($user['github_username'])
+                $issue_new[0]['assignee'] = $user['github_username'];
+            
+            $this->task_model->update_github($issue_new, array(), $project['github_repo'], $user['github_token']);
+        }
+
+        redirect('task/view/'.$project_id.'/'.$id);
     }
     
     public function move($project, $id, $status)
