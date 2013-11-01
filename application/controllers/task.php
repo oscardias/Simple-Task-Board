@@ -160,7 +160,7 @@ class Task extends CI_Controller {
             $id = $this->task_model->create($sql_data);
             
             // Sync to Github
-            $project = $this->db->where('project_id', $project_id)->
+            $project = $this->db->where('id', $project_id)->
                     get('project')->row_array();
             
             $issue_new = array(
@@ -172,7 +172,7 @@ class Task extends CI_Controller {
                 )
             );
             
-            $user = $this->db->where('user_id', $this->input->post('user_id'))->
+            $user = $this->db->where('id', $this->input->post('user_id'))->
                     get('user')->row_array();
 
             if($user['github_username'])
