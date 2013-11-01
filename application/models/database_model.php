@@ -615,7 +615,7 @@ class Database_model extends CI_Model {
             
             // Get projects with Github integration
             $projects = $this->db->where('github_repo IS NOT NULL', FALSE, NULL)->
-                    where('github_repo !=', '')->
+                    where("github_repo != ''", FALSE, NULL)->
                     get('project')->result_array();
             
             // Update project's tasks with github_code (same as code currently)
