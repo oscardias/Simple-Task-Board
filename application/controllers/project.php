@@ -226,9 +226,9 @@ class Project extends CI_Controller {
         
         // Loop through local tasks and check github issues
         foreach ($tasks as $task) {
-            $code = (int)$task['code'];
+            $code = (int)$task['github_code'];
             // Check if there is an issue with this code
-            if(isset($issues[$code])) {
+            if($code && isset($issues[$code])) {
                 // Check if entry is the same
                 // Assignee
                 if($task['github_username'] != $issues[$code]['assignee']['login']) {
@@ -239,10 +239,13 @@ class Project extends CI_Controller {
                         } else {
                             if($issues[$code]['assignee']['login']) {
                                 $user = $this->user_model->get_github($issues[$code]['assignee']['login']);
-                                $task_upd[$code] = array(
-                                    'task_id' => $task['task_id'],
-                                    'user_id' => $user['id']
-                                );
+                                
+                                if($user) {
+                                    $task_upd[$code] = array(
+                                        'task_id' => $task['task_id'],
+                                        'user_id' => $user['id']
+                                    );
+                                }
                             }
                         }
                     }
@@ -266,13 +269,9 @@ class Project extends CI_Controller {
                     } else {
                         $task_upd[$code] = array(
                             'task_id' => $task['task_id'],
-                            'project_id' => $project_id,
-                            'parent_id' => NULL,
-                            'code' => $issues[$code]['number'],
+                            'github_code' => $issues[$code]['number'],
                             'status' => ($issues[$code]['state'] == 'closed')?3:0,
                             'title' => $issues[$code]['title'],
-                            'priority' => 2,
-                            'due_date' => NULL,
                             'description' => $issues[$code]['body'],
                             'date_updated' => date('Y-m-d H:i:s', strtotime($issues[$code]['updated_at']))
                         );
@@ -284,7 +283,6 @@ class Project extends CI_Controller {
             } else {
                 // Create issue
                 $issue_new[$code]['task_id'] = $task['task_id']; // Validate same code
-                $issue_new[$code]['code'] = $task['code']; // Validate same code
                 $issue_new[$code]['title'] = $task['title'];
                 $issue_new[$code]['body'] = $task['description'];
                 $issue_new[$code]['state'] = ($task['status'] == 3)?'closed':'open';
@@ -296,6 +294,12 @@ class Project extends CI_Controller {
         
         // If issues remaining, loop and create local tasks
         if(count($issues)) {
+            // Get last code
+            $max_code = $this->db->select_max('code')->
+                    where('project_id', $project_id)->
+                    get('task')->row_array();
+            $max_code = $max_code['code'] + 1;
+
             foreach ($issues as $key => $issue) {
                 $user = $this->user_model->get_github($issue['user']['login']);
                 
@@ -303,7 +307,9 @@ class Project extends CI_Controller {
                     'project_id' => $project_id,
                     'parent_id' => NULL,
                     'user_id' => $user['id'],
-                    'code' => $issue['number'],
+                    'code' => $max_code,
+                    'github_sync' => 1,
+                    'github_code' => $issue['number'],
                     'status' => ($issue['state'] == 'closed')?3:0,
                     'title' => $issue['title'],
                     'priority' => 2,
@@ -311,6 +317,8 @@ class Project extends CI_Controller {
                     'description' => $issue['body'],
                     'date_updated' => date('Y-m-d H:i:s', strtotime($issue['updated_at']))
                 );
+                
+                $max_code++;
             }
         }
         

@@ -9,7 +9,7 @@
                 <span class="divider">&gt;</span>
             </li>
             <?php endforeach; ?>
-            <li class="active"><?php echo $title; ?></li>
+            <li class="active"><?php echo $task_id . ' - ' . $title; ?></li>
         </ul>
         <?php endif; ?>
 
@@ -39,6 +39,7 @@
             <strong>Current Phase:</strong>
             <?php echo $status_arr[$status]; ?>
         </p>
+        
         <?php if($due_date) { ?>
         <p>
             <strong>Due date:</strong>
@@ -49,6 +50,14 @@
             <?php endif; ?>
         </p>
         <?php } ?>
+        
+        <?php if($github_sync) { ?>
+        <p>
+            <strong>Github Issue:</strong>
+            <?php echo '#'.$github_code; ?>
+        </p>
+        <?php } ?>
+        
         <p >
             <?php if($total_duration || $task_history_date_created) { ?>
             <p><strong>Duration:</strong><br/>

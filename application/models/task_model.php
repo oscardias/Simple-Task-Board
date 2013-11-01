@@ -326,8 +326,9 @@ ORDER BY p.id desc, t.status desc';
     {
         return $this->db->select('task.*, user.github_username')->
                 where('project_id', $project_id)->
+                where('github_sync', 1)->
                 join('user', 'task.user_id = user.id')->
-                order_by('task.code', 'asc')->
+                order_by('task.github_code', 'asc')->
                 get('task')->result_array();
     }
     
@@ -354,9 +355,7 @@ ORDER BY p.id desc, t.status desc';
             // Create new issues
             foreach ($new as $issue) {
                 $task_id = $issue['task_id'];
-                $code = $issue['code'];
                 unset($issue['task_id']);
-                unset($issue['code']);
                 
                 $result = $this->_github_edit_issue($repo, $access_token, $issue);
                 $result_array = json_decode($result, TRUE);
@@ -367,13 +366,11 @@ ORDER BY p.id desc, t.status desc';
                     $this->_github_edit_issue($repo, $access_token, $issue);
                 }
                                 
-                // Check if task code needs to be updated
-                if($issue['number'] != $code) {
-                    $task_upd[] = array(
-                        'task_id' => $task_id,
-                        'code'    => $result_array['number']
-                    );
-                }
+                // Update task github_code
+                $task_upd[] = array(
+                    'task_id'     => $task_id,
+                    'github_code' => $result_array['number']
+                );
             }
         }
         

@@ -25,11 +25,12 @@ class Task extends CI_Controller {
         $this->title = 'New Task';
         $this->menu = 'dashboard|tasks';
         
-        $data['parent_id']      = 0;
-        $data['title']          = '';
-        $data['description']    = '';
-        $data['priority']       = '2';
-        $data['due_date']     = '';
+        $data['parent_id']   = 0;
+        $data['title']       = '';
+        $data['description'] = '';
+        $data['priority']    = '2';
+        $data['due_date']    = '';
+        $data['github_sync'] = 0;
         
         $data['project_id'] = $project;
         $data['users']      = $this->task_model->get_related_users($project);
@@ -123,6 +124,7 @@ class Task extends CI_Controller {
         $this->form_validation->set_rules('description', 'Description', 'trim');
         $this->form_validation->set_rules('user_id', 'Assigned to', '');
         $this->form_validation->set_rules('due_date', 'Due Date', 'trim');
+        $this->form_validation->set_rules('github_sync', 'Sync to Github', 'trim');
         
         if($this->form_validation->run() === false)  {
             $this->error = true;
@@ -148,7 +150,8 @@ class Task extends CI_Controller {
             'description' => $this->input->post('description'),
             'priority'    => $this->input->post('priority'),
             'user_id'     => $this->input->post('user_id'),
-            'due_date'    => ($this->input->post('due_date'))?date('Y-m-d', strtotime($this->input->post('due_date'))):NULL
+            'due_date'    => ($this->input->post('due_date'))?date('Y-m-d', strtotime($this->input->post('due_date'))):NULL,
+            'github_sync' => $this->input->post('github_sync')?1:0
         );
         
         if ($id)

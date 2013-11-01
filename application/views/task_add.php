@@ -85,6 +85,17 @@
                 </div>
             </div>
         </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="control-group">
+                    <label class="control-label" for="github_sync">Sync to Github</label>
+                    <div class="controls">
+                        <input type="checkbox" id="github_sync" name="github_sync"
+                               value="1" <?php echo set_checkbox('github_sync', 1, $github_sync == 1); ?> />
+                    </div>
+                </div>
+            </div>
+        </div>
     </fieldset>
     <hr/>
 

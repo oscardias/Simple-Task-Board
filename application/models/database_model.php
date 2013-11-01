@@ -2,7 +2,7 @@
 
 class Database_model extends CI_Model {
 
-    private $latest_database_version = '2.0';
+    private $latest_database_version = '2.1';
     private $current_database_version = '1.0';
     
     public function is_up_to_date()
@@ -587,6 +587,48 @@ class Database_model extends CI_Model {
             // Create database version indicator
             $this->update_setting('database_version', '2.0');
             $this->current_database_version = '2.0';
+            
+            // Create installation date
+            $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
+            
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE)
+                return false;
+            
+        }
+        
+            
+        // Execute 2.0 -> 2.1 database updates
+        if($this->current_database_version == '2.0') {
+            // Github integration update
+            // Indicate github sync for task
+            //ALTER TABLE `task` ADD COLUMN `github_sync` BIT NOT NULL DEFAULT 0;
+            if(!$this->field_exists('task', 'github_sync'))
+                $this->db->query('ALTER TABLE `task` ADD COLUMN `github_sync` BIT NOT NULL DEFAULT 0;');
+            // Indicate github issue number
+            //ALTER TABLE  `task` ADD  `github_code` INT NULL AFTER  `code`;
+            if(!$this->field_exists('task', 'github_code'))
+                $this->db->query('ALTER TABLE  `task` ADD  `github_code` INT NULL;');
+            
+            // Update data
+            $this->db->trans_start();
+            
+            // Get projects with Github integration
+            $projects = $this->db->where('github_repo IS NOT NULL', FALSE, NULL)->
+                    where('github_repo <>', '')->
+                    get('project')->result_array();
+            
+            // Update project's tasks with github_code (same as code currently)
+            foreach ($projects as $project) {
+                $this->db->where('project_id', $project['id'])->
+                        set('github_code', 'code', FALSE)->
+                        set('github_sync', 1)->
+                        update('task');
+            }
+            
+            // Create database version indicator
+            $this->update_setting('database_version', '2.1');
+            $this->current_database_version = '2.1';
             
             // Create installation date
             $this->update_setting('stb_install_date', date("Y-m-d H:i:s"));
