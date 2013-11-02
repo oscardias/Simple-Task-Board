@@ -249,7 +249,7 @@ class Task extends CI_Controller {
         $task['status'] = 3;
         
         // Sync to Github
-        if($task('github_code')) $this->_update_github($task);
+        if($task['github_code']) $this->_update_github($task);
         
         // Remove task
         $this->task_model->delete($project, $id);
