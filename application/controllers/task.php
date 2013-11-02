@@ -158,28 +158,14 @@ class Task extends CI_Controller {
             $this->task_model->update($project_id, $id, $sql_data);
         else {
             $id = $this->task_model->create($sql_data);
-            
-            // Sync to Github
-            $project = $this->db->where('id', $project_id)->
-                    get('project')->row_array();
-            
-            $issue_new = array(
-                0 => array(
-                    'task_id' => $id,
-                    'title'   => $sql_data['title'],
-                    'body'    => $sql_data['description'],
-                    'state'   => 'open'
-                )
-            );
-            
-            $user = $this->db->where('id', $this->input->post('user_id'))->
-                    get('user')->row_array();
-
-            if($user['github_username'])
-                $issue_new[0]['assignee'] = $user['github_username'];
-            
-            $this->task_model->update_github($issue_new, array(), $project['github_repo'], $user['github_token']);
+            $sql_data['task_id'] = $id;
         }
+        
+        // Sync to Github
+        if($this->input->post('github_code'))
+            $this->_update_github($sql_data, FALSE);
+        else
+            $this->_update_github($sql_data);
 
         redirect('task/view/'.$project_id.'/'.$id);
     }
@@ -253,8 +239,23 @@ class Task extends CI_Controller {
     public function remove($project, $id)
     {
         $this->load->model('task_model');
+        
+        // Set gihub task as removed
+        $task = $this->task_model->get($project, $id);
+        
+        $task['title'] = $task['title'].' [Removed]';
+        $task['description'] = $task['description']."\n\n".'**Removed from Simple Task Board**';
+        $task['status'] = 3;
+        
+        // Sync to Github
+        if($task('github_code'))
+            $this->_update_github($task, FALSE);
+        else
+            $this->_update_github($task);
+        
+        // Remove task
         $this->task_model->delete($project, $id);
-
+        
         redirect('project/tasks/'.$project);
     }
     
@@ -330,4 +331,36 @@ class Task extends CI_Controller {
         }
     }    
     
+    /*
+     * Private methods
+     */
+    private function _update_github($task, $new = TRUE)
+    {
+        // Check if task should be synced
+        if(!$task['github_sync'])
+            return true;
+        
+        $project = $this->db->where('id', $task['project_id'])->
+                get('project')->row_array();
+
+        $issue = array(
+            0 => array(
+                'title'   => $task['title'],
+                'body'    => $task['description'],
+                'state'   => ($task['status'] == 3)?'closed':'open'
+            )
+        );
+
+        $user = $this->db->where('id', $task['user_id'])->
+                get('user')->row_array();
+
+        if($user['github_username'])
+            $issue[0]['assignee'] = $user['github_username'];
+
+        if($new) {
+            $issue[0]['task_id'] = $task['id'];
+            $this->task_model->update_github($issue, array(), $project['github_repo'], $user['github_token']);
+        } else
+            $this->task_model->update_github(array(), $issue, $project['github_repo'], $user['github_token']);
+    }
 }

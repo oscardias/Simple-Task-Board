@@ -100,6 +100,7 @@
     <hr/>
 
     <?php if (isset($task_id)) echo form_hidden('task_id', $task_id); ?>
+    <?php if (isset($github_code)) echo form_hidden('github_code', $github_code); ?>
     <?php if (isset($status)) echo form_hidden('status', $status); ?>
     <?php if (isset($project_id)) echo form_hidden('project_id', $project_id); ?>
     
