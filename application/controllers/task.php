@@ -162,9 +162,10 @@ class Task extends CI_Controller {
         }
         
         // Sync to Github
-        if($this->input->post('github_code'))
-            $this->_update_github($sql_data, FALSE);
-        else
+        if($this->input->post('github_code')) {
+            $sql_data['github_code'] = $this->input->post('github_code');
+            $this->_update_github($sql_data);
+        } else
             $this->_update_github($sql_data);
 
         redirect('task/view/'.$project_id.'/'.$id);
@@ -248,10 +249,7 @@ class Task extends CI_Controller {
         $task['status'] = 3;
         
         // Sync to Github
-        if($task('github_code'))
-            $this->_update_github($task, FALSE);
-        else
-            $this->_update_github($task);
+        if($task('github_code')) $this->_update_github($task);
         
         // Remove task
         $this->task_model->delete($project, $id);
@@ -334,7 +332,7 @@ class Task extends CI_Controller {
     /*
      * Private methods
      */
-    private function _update_github($task, $new = TRUE)
+    private function _update_github($task)
     {
         // Check if task should be synced
         if(!$task['github_sync'])
@@ -357,10 +355,14 @@ class Task extends CI_Controller {
         if($user['github_username'])
             $issue[0]['assignee'] = $user['github_username'];
 
-        if($new) {
+        if(isset($task['github_code']) && $task['github_code']) {
+            // Update issue
+            $issue[0]['number'] = $task['github_code'];
+            $this->task_model->update_github(array(), $issue, $project['github_repo'], $user['github_token']);
+        } else {
+            // Create new issue
             $issue[0]['task_id'] = $task['id'];
             $this->task_model->update_github($issue, array(), $project['github_repo'], $user['github_token']);
-        } else
-            $this->task_model->update_github(array(), $issue, $project['github_repo'], $user['github_token']);
+        }
     }
 }
