@@ -361,7 +361,7 @@ class Task extends CI_Controller {
             $this->task_model->update_github(array(), $issue, $project['github_repo'], $user['github_token']);
         } else {
             // Create new issue
-            $issue[0]['task_id'] = $task['id'];
+            $issue[0]['task_id'] = $task['task_id'];
             $this->task_model->update_github($issue, array(), $project['github_repo'], $user['github_token']);
         }
     }

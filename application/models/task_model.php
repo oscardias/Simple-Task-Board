@@ -372,10 +372,11 @@ ORDER BY p.id desc, t.status desc';
                     'github_code' => $result_array['number']
                 );
             }
+            
+            // Update task codes
+            if($task_upd)
+                $this->update_local(array(), $task_upd);
         }
-        
-        // Update task codes
-        $this->update_local(array(), $task_upd);
         
         if($upd) {
             // Edit existing issues
