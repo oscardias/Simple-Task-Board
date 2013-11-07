@@ -13,6 +13,13 @@
         </ul>
         <?php endif; ?>
 
+        <?php if($github_sync) : ?>
+        <p class="well well-small">
+            <strong>Github Issue:</strong>
+            <?php echo '#' . $github_code . ' - ' . $title; ?>
+        </p>
+        <?php endif; ?>
+        
         <p class="task-info-description">
             <p><strong>Description</strong></p>
             <?php echo $description; ?>
@@ -22,13 +29,6 @@
         <p>
             <p><strong>Children</strong></p>
             <?php task_hierarchy_html($project_id, $children_tasks); ?>
-        </p>
-        <?php endif; ?>
-        
-        <?php if($github_sync) : ?>
-        <p class="well well-small">
-            <strong>Github Issue:</strong>
-            <?php echo '#' . $github_code . ' - ' . $title; ?>
         </p>
         <?php endif; ?>
     </div>
