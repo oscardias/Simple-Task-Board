@@ -1,4 +1,4 @@
-<h2><?php echo $title; ?></h2>
+<h2><?php echo '#' . $code . ' - ' . $title; ?></h2>
 <div class="row-fluid">
     <div class="span8">
         <?php if($parent_tasks) : ?>
@@ -9,7 +9,7 @@
                 <span class="divider">&gt;</span>
             </li>
             <?php endforeach; ?>
-            <li class="active"><?php echo $task_id . ' - ' . $title; ?></li>
+            <li class="active"><?php echo $code . ' - ' . $title; ?></li>
         </ul>
         <?php endif; ?>
 
@@ -22,6 +22,13 @@
         <p>
             <p><strong>Children</strong></p>
             <?php task_hierarchy_html($project_id, $children_tasks); ?>
+        </p>
+        <?php endif; ?>
+        
+        <?php if($github_sync) : ?>
+        <p class="well well-small">
+            <strong>Github Issue:</strong>
+            <?php echo '#' . $github_code . ' - ' . $title; ?>
         </p>
         <?php endif; ?>
     </div>
@@ -48,13 +55,6 @@
             <?php if(($status < 3) && (strtotime(date('Y-m-d')) - strtotime($due_date)) > 0) : ?>
             <span class="label label-important">late</span>
             <?php endif; ?>
-        </p>
-        <?php } ?>
-        
-        <?php if($github_sync) { ?>
-        <p>
-            <strong>Github Issue:</strong>
-            <?php echo '#'.$github_code; ?>
         </p>
         <?php } ?>
         
