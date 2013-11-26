@@ -402,6 +402,8 @@ ORDER BY p.id desc, t.status desc';
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($issue));
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Simple Task Board');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 
         // Execute post
         $result = curl_exec($ch);
