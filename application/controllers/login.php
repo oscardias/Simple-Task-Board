@@ -85,7 +85,7 @@ class Login extends CI_Controller {
                     CURLOPT_RETURNTRANSFER => 1,
                     CURLOPT_URL => "https://github.com/login/oauth/access_token",
                     CURLOPT_USERAGENT => 'Simple Task Board',
-                    CURLOPT_HTTPHEADER => 'Accept: application/json',
+                    CURLOPT_HTTPHEADER => array('Accept: application/json'),
                     CURLOPT_POST => 1,
                     CURLOPT_POSTFIELDS => array(
                         'client_id' => $client_id ,
@@ -113,7 +113,7 @@ class Login extends CI_Controller {
                     CURLOPT_RETURNTRANSFER => 1,
                     CURLOPT_URL => "https://api.github.com/user?access_token=$access_token",
                     CURLOPT_USERAGENT => 'Simple Task Board',
-                    CURLOPT_HTTPHEADER => 'Accept: application/json'
+                    CURLOPT_HTTPHEADER => array('Accept: application/json'),
                 ));
                 
                 // Send the request & save response to $resp
@@ -133,7 +133,7 @@ class Login extends CI_Controller {
                     CURLOPT_RETURNTRANSFER => 1,
                     CURLOPT_URL => "https://api.github.com/user/emails?access_token=$access_token",
                     CURLOPT_USERAGENT => 'Simple Task Board',
-                    CURLOPT_HTTPHEADER => 'Accept: application/json'
+                    CURLOPT_HTTPHEADER => array('Accept: application/json'),
                 ));
                 
                 // Send the request & save response to $resp
