@@ -77,49 +77,78 @@ class Login extends CI_Controller {
             {
                 $code = $_GET['code'];
 
-                //perform post request now
-                $post = http_build_query(array(
-                    'client_id' => $client_id ,
-                    'redirect_uri' => $redirect_url ,
-                    'client_secret' => $client_secret,
-                    'code' => $code ,
+                // Get cURL resource
+                $curl = curl_init();
+                
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => "https://github.com/login/oauth/access_token",
+                    CURLOPT_USERAGENT => 'Simple Task Board',
+                    CURLOPT_HTTPHEADER => 'Accept: application/json',
+                    CURLOPT_POST => 1,
+                    CURLOPT_POSTFIELDS => array(
+                        'client_id' => $client_id ,
+                        'redirect_uri' => $redirect_url ,
+                        'client_secret' => $client_secret,
+                        'code' => $code
+                    )
                 ));
+                
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                
+                // Close request to clear up some resources
+                curl_close($curl);
 
-                $context = stream_context_create(array("http" => array(
-                    "method" => "POST",
-                    "header" => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                                "Content-Length: ". strlen($post) . "\r\n".
-                                "Accept: application/json" ,  
-                    "content" => $post,
-                ))); 
-
-                $json_data = file_get_contents("https://github.com/login/oauth/access_token", false, $context);
-
-                $r = json_decode($json_data , true);
+                $r = json_decode($resp , true);
 
                 $access_token = $r['access_token'];
 
-                $url = "https://api.github.com/user?access_token=$access_token";
+                // Get cURL resource
+                $curl = curl_init();
+                
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => "https://api.github.com/user?access_token=$access_token",
+                    CURLOPT_USERAGENT => 'Simple Task Board',
+                    CURLOPT_HTTPHEADER => 'Accept: application/json'
+                ));
+                
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                
+                // Close request to clear up some resources
+                curl_close($curl);
 
-                $data =  file_get_contents($url);
-
-                //echo $data;
-                $user_data = json_decode($data , true);
+                $user_data = json_decode($resp, true);
                 $username = $user_data['login'];
+                
+                // Get cURL resource
+                $curl = curl_init();
+                
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => "https://api.github.com/user/emails?access_token=$access_token",
+                    CURLOPT_USERAGENT => 'Simple Task Board',
+                    CURLOPT_HTTPHEADER => 'Accept: application/json'
+                ));
+                
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                
+                // Close request to clear up some resources
+                curl_close($curl);                
 
-                $emails =  file_get_contents("https://api.github.com/user/emails?access_token=$access_token");
-                $emails = json_decode($emails , true);
+                $emails = json_decode($resp, true);
                 $email = $emails[0];
-
-//                $signup_data = array(
-//                    'username' => $username ,
-//                    'email' => $email ,
-//                    'source' => 'github' ,
-//                );
 
                 // Check if user exists and login
                 $this->load->model('user_model');
                 $result = $this->user_model->validate_github($email, $username, $access_token);
+                
                 if($result) {
                     $this->session->set_userdata(array(
                         'logged' => true,
