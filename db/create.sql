@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   `files` text NOT NULL,
   `database` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `due_date` date NOT NULL,
   PRIMARY KEY (`task_id`),
   KEY `status` (`project_id`,`status`),
   KEY `parent` (`parent_id`)
@@ -136,6 +137,7 @@ CREATE TABLE IF NOT EXISTS `task_history` (
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(40) NOT NULL,
   `level` tinyint(4) NOT NULL,
