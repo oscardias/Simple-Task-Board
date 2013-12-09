@@ -164,9 +164,8 @@ class Task extends CI_Controller {
         // Sync to Github
         if($this->input->post('github_code')) {
             $sql_data['github_code'] = $this->input->post('github_code');
-            $this->_update_github($sql_data);
-        } else
-            $this->_update_github($sql_data);
+        }
+        $this->_update_github($sql_data);
 
         redirect('task/view/'.$project_id.'/'.$id);
     }
@@ -180,6 +179,10 @@ class Task extends CI_Controller {
         );
 
         $this->task_model->update($project, $id, $sql_data, true);
+        
+        // Sync to Github
+        $task = $this->task_model->get($project, $id);
+        $this->_update_github($task);
 
         redirect('project/tasks/'.$project);
     }
@@ -241,7 +244,7 @@ class Task extends CI_Controller {
     {
         $this->load->model('task_model');
         
-        // Set gihub task as removed
+        // Set github task as removed
         $task = $this->task_model->get($project, $id);
         
         $task['title'] = $task['title'].' [Removed]';
@@ -249,7 +252,7 @@ class Task extends CI_Controller {
         $task['status'] = 3;
         
         // Sync to Github
-        if($task['github_code']) $this->_update_github($task);
+        $this->_update_github($task);
         
         // Remove task
         $this->task_model->delete($project, $id);

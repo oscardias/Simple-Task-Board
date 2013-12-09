@@ -219,8 +219,6 @@ class Project extends CI_Controller {
         //************
         // Sync tasks
         // Vars to store updates
-        $issue_upd = array();
-        $issue_new = array();
         $task_upd = array();
         $task_new = array();
         
@@ -233,20 +231,14 @@ class Project extends CI_Controller {
                 // Assignee
                 if($task['github_username'] != $issues[$code]['assignee']['login']) {
                     // Only update this info if user has the github username locally
-                    if($task['github_username']) {
-                        if(strtotime($task['date_updated']) > strtotime($issues[$code]['updated_at'])) {
-                            $issue_upd[$code]['assignee'] = $task['github_username'];
-                        } else {
-                            if($issues[$code]['assignee']['login']) {
-                                $user = $this->user_model->get_github($issues[$code]['assignee']['login']);
-                                
-                                if($user) {
-                                    $task_upd[$code] = array(
-                                        'task_id' => $task['task_id'],
-                                        'user_id' => $user['id']
-                                    );
-                                }
-                            }
+                    if($task['github_username'] && $issues[$code]['assignee']['login']) {
+                        $user = $this->user_model->get_github($issues[$code]['assignee']['login']);
+
+                        if($user) {
+                            $task_upd[$code] = array(
+                                'task_id' => $task['task_id'],
+                                'user_id' => $user['id']
+                            );
                         }
                     }
                 }
@@ -256,39 +248,23 @@ class Project extends CI_Controller {
                     $task['title'] != $issues[$code]['title'] ||
                     $task['description'] != $issues[$code]['body'] ||
                     (
-                        $task['status'] == 3 && $issues[$code]['state'] == 'open' ||
-                        $task['status'] < 3 && $issues[$code]['state'] == 'closed'
+                        ( $task['status'] == 3 && $issues[$code]['state'] == 'open' ) ||
+                        ( $task['status'] < 3 && $issues[$code]['state'] == 'closed' )
                     )
                   )
                 {
-                    if(strtotime($task['date_updated']) > strtotime($issues[$code]['updated_at'])) {
-                        $issue_upd[$code]['number'] = $code;
-                        $issue_upd[$code]['title'] = $task['title'];
-                        $issue_upd[$code]['body'] = $task['description'];
-                        $issue_upd[$code]['state'] = ($task['status'] == 3)?'closed':'open';
-                    } else {
-                        $task_upd[$code] = array(
-                            'task_id' => $task['task_id'],
-                            'github_code' => $issues[$code]['number'],
-                            'status' => ($issues[$code]['state'] == 'closed')?3:0,
-                            'title' => $issues[$code]['title'],
-                            'description' => $issues[$code]['body'],
-                            'date_updated' => date('Y-m-d H:i:s', strtotime($issues[$code]['updated_at']))
-                        );
-                    }
+                    $task_upd[$code] = array(
+                        'task_id' => $task['task_id'],
+                        'github_code' => $issues[$code]['number'],
+                        'status' => ($issues[$code]['state'] == 'closed')?3:0,
+                        'title' => $issues[$code]['title'],
+                        'description' => $issues[$code]['body'],
+                        'date_updated' => date('Y-m-d H:i:s', strtotime($issues[$code]['updated_at']))
+                    );
                 }
                 
                 // Unset this issue, so we don't loop it again later
                 unset($issues[$code]);
-            } else {
-                // Create issue
-                $issue_new[$code]['task_id'] = $task['task_id']; // Validate same code
-                $issue_new[$code]['title'] = $task['title'];
-                $issue_new[$code]['body'] = $task['description'];
-                $issue_new[$code]['state'] = ($task['status'] == 3)?'closed':'open';
-                
-                if($task['github_username'])
-                    $issue_new[$code]['assignee'] = $task['github_username'];
             }
         }
         
@@ -323,12 +299,8 @@ class Project extends CI_Controller {
         }
         
         //*****************
-        // Execute updates
-        // Update local
+        // Update local tatks
         $this->task_model->update_local($task_new, $task_upd);
-        
-        // Update Github
-        $this->task_model->update_github($issue_new, $issue_upd, $project['github_repo'], $user['github_token']);
         
         // Redirect to task board
         redirect('project/tasks/'.$project_id);
