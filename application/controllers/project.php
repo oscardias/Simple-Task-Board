@@ -318,6 +318,8 @@ class Project extends CI_Controller {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, TRUE);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Simple Task Board');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 
         // Execute post
         $response = curl_exec($ch);
