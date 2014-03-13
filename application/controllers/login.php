@@ -143,7 +143,7 @@ class Login extends CI_Controller {
                 curl_close($curl);                
 
                 $emails = json_decode($resp, true);
-                $email = $emails[0]['email'];
+                $email = $emails[0];
 
                 // Check if user exists and login
                 $this->load->model('user_model');
