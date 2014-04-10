@@ -93,7 +93,7 @@
                         <?php if($photo) : ?>
                         <img src="<?php echo base_url().$photo; ?>" title="Your photo - click to change" />
                         <?php else : ?>
-                        <img src="<?php echo base_url().'images/profile/default128.png'; ?>" title="Your photo - click to change" />
+                        <img src="<?php echo base_url().'assets/img/profile/default128.png'; ?>" title="Your photo - click to change" />
                         <?php endif; ?>
                     </div>
                     <?php echo form_upload('photo'); ?>
