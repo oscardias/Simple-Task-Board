@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS `task_comments` (
 CREATE TABLE IF NOT EXISTS `task_history` (
   `task_history_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `task_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `status` tinyint(4) unsigned NOT NULL,
   `date_created` datetime NOT NULL,
   `date_finished` datetime DEFAULT NULL,
