@@ -118,7 +118,7 @@ class Task extends CI_Controller {
         $this->form_validation->set_rules('priority', 'Priority', '');
         $this->form_validation->set_rules('description', 'Description', 'trim');
         $this->form_validation->set_rules('user_id', 'Assigned to', '');
-        $this->form_validation->set_rules('due_date', 'Due Date', 'trim');
+        $this->form_validation->set_rules('due_date', 'Due Date', 'trim|required');
         
         if($this->form_validation->run() === false)  {
             $this->error = true;
